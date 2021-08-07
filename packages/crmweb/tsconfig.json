@@ -18,7 +18,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "jsx": "react"
   },
   "include": [
     "src/**/*.ts",
@@ -27,6 +28,6 @@
     "src/containers/Login/Logintsx"
   ],
   "exclude": [
-      "node_modules"
+    "node_modules"
   ]
 }

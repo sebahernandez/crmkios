@@ -12,6 +12,7 @@ import * as serviceWorker from './serviceWorker';
 import { WebSocketLink } from "@apollo/client/link/ws"; 
 import './theme/global.css';
 import { useState } from 'react';
+import React from 'react';
 
 
 const createApolloClient = () => {

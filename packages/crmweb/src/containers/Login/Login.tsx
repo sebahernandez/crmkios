@@ -8,6 +8,7 @@ import { DASHBOARD } from '../../settings/constants';
 import { AuthContext } from 'context/auth';
 import { FormFields, FormTitle } from 'components/FormFields/FormFields';
 import { Alert } from 'react-bootstrap';
+import React from 'react';
 
 /**
  * Develop by Alejandro Sandoval 

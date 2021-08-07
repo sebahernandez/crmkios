@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import { render } from "react-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Main } from "./Model.style";
+import React from "react";
 
 export const ModalCommand = ({order}) => {
     const values = [true];

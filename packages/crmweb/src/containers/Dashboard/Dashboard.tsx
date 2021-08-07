@@ -15,6 +15,7 @@ import { CartIconBig } from 'assets/icons/CartIconBig';
 import { UserIcon } from 'assets/icons/UserIcon';
 import { DeliveryIcon } from 'assets/icons/DeliveryIcon';
 import { isNull } from 'util';
+import React from 'react';
 
 
 var Col = withStyle(Column, () => ({
