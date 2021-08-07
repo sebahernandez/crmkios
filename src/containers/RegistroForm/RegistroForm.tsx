@@ -141,10 +141,10 @@ export default function RegistroForm() {
 } 
 
   React.useEffect(() => {
-    register({ name: 'clave' });
+  /*   register({ name: 'clave' });
     register({ name: 'npmbre' });
     register({ name: 'apellido' });
-    register({ name: 'usuario' });
+    register({ name: 'usuario' }); */
   }, [register]);
 
 
@@ -232,21 +232,21 @@ export default function RegistroForm() {
 						  <FormFields>
               <FormLabel>Nombre</FormLabel>
               <Input   onChange={event => SetNombre(event.target.value)}
-                    inputRef={register({ required: true, maxLength: 50 })}
+                    inputRef={register}
                     name="user_name"
                   />
                </FormFields>	 
               <FormFields>
               <FormLabel>Apellido</FormLabel>
               <Input   onChange={event => SetApellido(event.target.value)} 
-                    inputRef={register({ required: true, maxLength: 50 })}
+                    inputRef={register}
                     name="apellido"
                   />
                </FormFields>					 
             <FormFields>
               <FormLabel>Telefono</FormLabel>
               <Input   onChange={event => SetTelefono(event.target.value)} 
-                    inputRef={register({ required: true, maxLength: 50 })}
+                    inputRef={register }
                     name="telefono"
                   />
                </FormFields>
@@ -254,7 +254,7 @@ export default function RegistroForm() {
             <FormFields>
               <FormLabel>Correo</FormLabel>
               <Input  onChange={event => SetUsuario(event.target.value)} 
-                    inputRef={register({ required: true, maxLength: 50 })}
+                    inputRef={register}
                     name="user_email"
                   />
                </FormFields>

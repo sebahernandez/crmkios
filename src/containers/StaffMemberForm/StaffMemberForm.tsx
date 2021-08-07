@@ -98,10 +98,10 @@ const StaffMemberForm: React.FC<Props> = (props) => {
 
 
   React.useEffect(() => {
-    register({ name: 'clientid' });
+    /* register({ name: 'clientid' });
     register({ name: 'rol' });
     register({ name: 'telefono' });
-    register({ name: 'imageURL', required: true });
+    register({ name: 'imageURL', required: true }); */
   }, [register]);
 
  
@@ -223,7 +223,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
                 <FormFields>
                   <FormLabel>Nombre</FormLabel>
                   <Input
-                    inputRef={register({ required: true, maxLength: 20 })}
+                    inputRef={register}
                     name="nombre"
                   />
                 </FormFields>
@@ -231,7 +231,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
                 <FormFields>
                   <FormLabel>Apellido Paterno</FormLabel>
                   <Input
-                    inputRef={register({ required: true, maxLength: 20 })}
+                    inputRef={register}
                     name="paterno"
                   />
                 </FormFields>
@@ -239,7 +239,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
                 <FormFields>
                   <FormLabel>Apellido Materno</FormLabel>
                   <Input
-                    inputRef={register({ required: true, maxLength: 20 })}
+                    inputRef={register}
                     name="materno"
                   />
                 </FormFields>
@@ -331,7 +331,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
                     onCountryChange={({ option }) => setCountry(option)}
                     text={text}
                     onTextChange={(e) => setText(e.currentTarget.value)}
-                    inputRef={register({ required: true })}
+                    inputRef={register}
                     name="telefono"
                   />
                 </FormFields>
@@ -340,7 +340,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
                   <FormLabel>Email</FormLabel>
                   <Input
                     type="email"
-                    inputRef={register({ required: true })}
+                    inputRef={register}
                     name="email"
                   />
                 </FormFields>

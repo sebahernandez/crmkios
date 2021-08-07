@@ -59,8 +59,8 @@ const SiteSettingsForm: React.FC<Props> = (clientid) => {
     setValue('reactDropzone', files);
   };
   React.useEffect(() => {
-    register({ name: 'reactSelect' });
-    register({ name: 'reactDropzone' });
+   /*  register({ name: 'reactSelect' });
+    register({ name: 'reactDropzone' }); */
     setImageURL(data1 && data1.setting[0].image_url);
   }, [register]);
 
@@ -108,7 +108,7 @@ const SiteSettingsForm: React.FC<Props> = (clientid) => {
                 <Input
                   value={data1 && data1.setting[0].site_name}
                   name="site_name"
-                  inputRef={register({ required: true, maxLength: 20 })}
+                  inputRef={register}
                 />
               </FormFields>
 
