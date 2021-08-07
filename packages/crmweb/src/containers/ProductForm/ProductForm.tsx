@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form'; 
 import { useMutation, gql, useQuery } from '@apollo/client';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';

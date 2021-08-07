@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { useMutation, gql } from '@apollo/client';
 import { useDrawerDispatch } from 'context/DrawerContext';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import Uploader from 'components/Uploader/Uploader';
 import Input from 'components/Input/Input';
 import Button, { KIND } from 'components/Button/Button';

@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { useMutation, gql } from '@apollo/client';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Input from 'components/Input/Input';
 import Checkbox from 'components/CheckBox/CheckBox';
