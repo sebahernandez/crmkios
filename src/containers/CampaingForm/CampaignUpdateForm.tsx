@@ -3,12 +3,12 @@ import { useMutation, gql } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useDrawerDispatch, useDrawerState } from 'context/DrawerContext';
-import Button, { KIND } from '../../components/Button/Button';
-import DrawerBox from '../../components/DrawerBox/DrawerBox';
-import { Row, Col } from '../../components/FlexBox/FlexBox';
-import Input from '../../components/Input/Input';
-import { FormFields, FormLabel } from '../../components/FormFields/FormFields';
-import { app } from '../../base';
+import Button, { KIND } from 'components/Button/Button';
+import DrawerBox from 'components/DrawerBox/DrawerBox';
+import { Row, Col } from 'components/FlexBox/FlexBox';
+import Input from 'components/Input/Input';
+import { FormFields, FormLabel } from 'components/FormFields/FormFields';
+import { app } from 'base';
 
 import {
   Form,

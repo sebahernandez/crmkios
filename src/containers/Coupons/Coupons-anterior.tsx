@@ -111,25 +111,7 @@ export default function Coupons({clientid}) {
 
     setSearch(value);
  
-  }
-  function onAllCheck(event) {
-    if (event.target.checked) {
-      const idx = data1 && data1.coupons.map((coupon) => coupon.id);
-      setCheckedId(idx);
-    } else {
-      setCheckedId([]);
-    }
-    setChecked(event.target.checked);
-  }
-
-  function handleCheckbox(event) {
-    const { name } = event.currentTarget;
-    if (!checkedId.includes(name)) {
-      setCheckedId((prevState) => [...prevState, name]);
-    } else {
-      setCheckedId((prevState) => prevState.filter((id) => id !== name));
-    }
-  }
+  } 
 
   const numberToPercent = (num, total) => {
     return (num * 100) / total;
