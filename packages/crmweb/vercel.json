@@ -1,0 +1,8 @@
+{
+  "build": {
+    "env": {
+      "CI": "false",
+      "REACT_APP_API_URL": "https://cuddly-hog-22.hasura.app/v1/graphql"
+    }
+  }
+}
