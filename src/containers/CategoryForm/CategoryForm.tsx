@@ -51,9 +51,9 @@ const AddCategory: React.FC<Props> = (props) => {
   const [imageURL, setImageURL] = useState(null);    
 
   React.useEffect(() => {
-    register({ name: 'clientid' });
+/*     register({ name: 'clientid' });
     register({ name: 'parent' });
-    register({ name: 'image' });
+    register({ name: 'image' }); */
   }, [register]);
 
   const [insert_categorias, {error}] = useMutation(CREATE_CATEGORY );

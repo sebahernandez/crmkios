@@ -74,13 +74,13 @@ const ModifyCategory: React.FC<Props> = () => {
 
 
   React.useEffect(() => { 
-    register({ name: 'clientid' }); 
-    register({ name: 'image', required: true });
+   /*  register({ name: 'clientid' }); 
+    register({ name: 'image', required: true }); */
     
   }, [register]);
 
 
-  const onFileChange = async (e) => {
+  const onFileChange = async ( e ) => {
     const file = e.target.files[0];
     if(file){
       const storageRef = app.storage().ref();

@@ -66,9 +66,9 @@ const ModifyCoupon: React.FC<Props> = () => {
   
 
   React.useEffect(() => { 
-    register({ name: 'clientid' }); 
-    register({ name: 'image', required: true });
-    setImage(data1.image);
+  /*     register({ name: 'clientid' });  */
+  /*   register({ name: 'image', required: true }); */
+   /*  setImage(data1.image); */
   }, [register]);
 
   const [update_cupon, {error}] = useMutation(UPDATE_CUPON );
@@ -76,7 +76,7 @@ const ModifyCoupon: React.FC<Props> = () => {
 
  
 
-  const onFileChange = async (e) => {
+  const onFileChange = async ( e: any ) => {
     const file = e.target.files[0];
     if(file){
       const storageRef = app.storage().ref();
@@ -89,7 +89,7 @@ const ModifyCoupon: React.FC<Props> = () => {
    } 
 
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: { titulo: any; code: any; discount: any; numero_cupon: any; cupones_usados: any; }) => {
      
     const cupon = {
       id: data1.id,

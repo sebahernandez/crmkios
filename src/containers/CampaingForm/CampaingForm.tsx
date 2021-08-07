@@ -61,7 +61,7 @@ const AddCampaing: React.FC<Props> = (props) => {
   const { register, handleSubmit, setValue } = useForm();
   const [categoria, setCategoria] = useState(null); 
   React.useEffect(() => { 
-    register({ name: 'image', required: true });
+   /*  register({ name: 'image', required: true }); */
   }, [register]);
   const [createCoupon] = useMutation(CREATE_COUPON);
 
