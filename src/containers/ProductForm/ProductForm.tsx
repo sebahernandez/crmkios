@@ -74,9 +74,9 @@ const AddProduct: React.FC<Props> = (props) => {
   
   
   React.useEffect(() => {
-    register({ name: 'clientid' });
+   /*  register({ name: 'clientid' });
     register({ name: 'categorias' });
-    register({ name: 'imageURL', required: true });
+    register({ name: 'imageURL', required: true }); */
   }, [register]);
 
   const [insert_producto, {error}] = useMutation(CREATE_PRODUCT );
@@ -244,7 +244,7 @@ const AddProduct: React.FC<Props> = (props) => {
                   <FormLabel>Precio Referencia</FormLabel>
                   <Input
                     type="text"
-                    inputRef={register({ required: true })}
+                    inputRef={register}
                     name="precio"
                   />
                 </FormFields>
@@ -269,7 +269,7 @@ const AddProduct: React.FC<Props> = (props) => {
                   <FormLabel>Cantidad</FormLabel>
                   <Input
                     type="number"
-                    inputRef={register({ required: true })}
+                    inputRef={register}
                     name="cantidad"
                   />
                 </FormFields>

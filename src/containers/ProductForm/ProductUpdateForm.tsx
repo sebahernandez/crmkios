@@ -98,11 +98,11 @@ const ModifyProduct: React.FC<Props> = () => {
   
 
   React.useEffect(() => {
-    register({ name: 'orderId' });
+   /*  register({ name: 'orderId' });
     register({ name: 'clientid' });
     register({ name: 'categorias' });
     register({ name: 'categoria' });
-    register({ name: 'imageURL', required: true }); 
+    register({ name: 'imageURL', required: true });  */
   }, [register]);
 
   const [update_producto, {error}] = useMutation(UPDATE_PRODUCT );
