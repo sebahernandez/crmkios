@@ -1,2 +1,4 @@
-# web
-SHOP / ADMIN
+# CRM TU ECOMMERCE
+# ADMIN 
+
+Gestor del Suscriptor sobre el SHOP
