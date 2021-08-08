@@ -4,7 +4,7 @@ import Button from 'components/Button/Button';
 import Popover, { PLACEMENT } from 'components/Popover/Popover';
 import Notification from 'components/Notification/Notification';
 import { AuthContext } from 'context/auth';
-import { STAFF_MEMBERS, SETTINGS } from 'settings/constants';
+import { COMMAND_ORDER, STAFF_MEMBERS, SETTINGS } from 'settings/constants';
 import { NotificationIcon } from 'assets/icons/NotificationIcon';
 import { AlertDotIcon } from 'assets/icons/AlertDotIcon';
 import { ArrowLeftRound } from 'assets/icons/ArrowLeftRound';
@@ -39,6 +39,7 @@ const data = [
   },
 ];
 const Topbar = ({ refs }: any) => {
+  const [info, setInfo ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
   const dispatch = useDrawerDispatch();
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -47,11 +48,19 @@ const Topbar = ({ refs }: any) => {
     [dispatch]
   );
 
+  if(info===null){
+    window.location.href = '/login';
+    window.open('/login');
+  }
+ 
+ 
+
+
   return (
     <TopbarWrapper ref={refs}>
       <Logo>
         <Link to="/">
-          <LogoImage src={Logoimage} alt="pickbazar-admin" />
+          <LogoImage src={JSON.parse(sessionStorage.getItem('infoUser')).img_site_url}   />
         </Link>
       </Logo>
 
@@ -100,7 +109,7 @@ const Topbar = ({ refs }: any) => {
       </DrawerWrapper>
 
       <TopbarRightSide>
-        <Button onClick={openDrawer}>Add Products</Button>
+        <Button onClick={openDrawer}>Agregar Producto</Button>
 
         <Popover
           content={({ close }) => <Notification data={data} onClear={close} />}
@@ -131,19 +140,28 @@ const Topbar = ({ refs }: any) => {
         <Popover
           content={({ close }) => (
             <UserDropdowItem>
+              <NavLink to={COMMAND_ORDER} exact={false} onClick={close}>
+                Panel Pedidos
+              </NavLink>
               <NavLink to={STAFF_MEMBERS} exact={false} onClick={close}>
-                Staff
+                Equipo
               </NavLink>
               <NavLink to={SETTINGS} exact={false} onClick={close}>
-                Settings
+                Configuración
               </NavLink>
               <LogoutBtn
                 onClick={() => {
                   signout();
+
+                  sessionStorage.removeItem('infoUser');
+                  sessionStorage.setItem('infoUser',null);
+                  sessionStorage.setItem('clientid',null);
+                  sessionStorage.clear();
+                  window.sessionStorage.clear();
                   close();
                 }}
               >
-                Logout
+                Cerrar Sesión
               </LogoutBtn>
             </UserDropdowItem>
           )}
@@ -164,7 +182,7 @@ const Topbar = ({ refs }: any) => {
           }}
         >
           <ProfileImg>
-            <Image src={UserImage} alt="user" />
+            <Image src={JSON.parse(sessionStorage.getItem('infoUser')).img_user_url} alt="user" />
           </ProfileImg>
         </Popover>
       </TopbarRightSide>

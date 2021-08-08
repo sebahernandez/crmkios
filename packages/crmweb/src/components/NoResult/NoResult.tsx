@@ -19,7 +19,7 @@ const NoResult: React.FC<NoResultProps> = ({
 }) => {
   return (
     <NoResultWrapper id={id} style={style}>
-      <h3>Sorry, No result found :(</h3>
+      <h3>Discúlpanos, Resultados no encontrados :(</h3>
 
       <ImageWrapper>
         <img src={NoResultSvg} alt="No Result" />
@@ -29,7 +29,7 @@ const NoResult: React.FC<NoResultProps> = ({
         <ButtonWrapper>
           <div onClick={onClick}>
             <Button>
-              Try Again Later
+              Inténtelo mas tarde nuevamente.
               {/* <ArrowPrev /> Go Back */}
             </Button>
           </div>

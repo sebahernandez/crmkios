@@ -6,7 +6,6 @@ import { useDrawerDispatch } from 'context/DrawerContext';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Uploader from 'components/Uploader/Uploader';
 import Input from 'components/Input/Input';
-import Select from 'components/Select/Select';
 import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
 import { Row, Col } from 'components/FlexBox/FlexBox';
@@ -17,92 +16,85 @@ import {
   FieldDetails,
   ButtonGroup,
 } from '../DrawerItems/DrawerItems.style';
+import { app } from '../../base';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
+import config from 'settings/config';
 
-const GET_CATEGORIES = gql`
-  query getCategories($type: String, $searchBy: String) {
-    categories(type: $type, searchBy: $searchBy) {
-      id
-      icon
-      name
-      slug
-      type
-    }
-  }
-`;
+
+ 
 const CREATE_CATEGORY = gql`
-  mutation createCategory($category: AddCategoryInput!) {
-    createCategory(category: $category) {
-      id
-      name
-      type
-      icon
-      # creation_date
-      slug
-      # number_of_product
+   mutation insert_categorias($name: String!, $value: String!,$clientid: String!,$imageURL: String!) {
+    insert_categorias(
+            objects: [
+                {
+                  name: $name,
+                  value: $value,
+                  clientid: $clientid,
+                  imageURL: $imageURL                  
+                }
+              ]
+          ){
+            affected_rows
+          }
     }
-  }
+
 `;
 
-const options = [
-  { value: 'grocery', name: 'Grocery', id: '1' },
-  { value: 'women-cloths', name: 'Women Cloths', id: '2' },
-  { value: 'bags', name: 'Bags', id: '3' },
-  { value: 'makeup', name: 'Makeup', id: '4' },
-];
 type Props = any;
-
+const cid =  config().SUBSCRIPTION_ID;
 const AddCategory: React.FC<Props> = (props) => {
   const dispatch = useDrawerDispatch();
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
   ]);
-  const { register, handleSubmit, setValue } = useForm();
-  const [category, setCategory] = useState([]);
+  const { register, handleSubmit, setValue } = useForm(); 
+  const [imageURL, setImageURL] = useState(null);    
+
   React.useEffect(() => {
+    register({ name: 'clientid' });
     register({ name: 'parent' });
     register({ name: 'image' });
   }, [register]);
-  const [createCategory] = useMutation(CREATE_CATEGORY, {
-    update(cache, { data: { createCategory } }) {
-      const { categories } = cache.readQuery({
-        query: GET_CATEGORIES,
-      });
 
-      cache.writeQuery({
-        query: GET_CATEGORIES,
-        data: { categories: categories.concat([createCategory]) },
-      });
-    },
-  });
+  const [insert_categorias, {error}] = useMutation(CREATE_CATEGORY );
 
-  const onSubmit = ({ name, slug, parent, image }) => {
-    const newCategory = {
-      id: uuidv4(),
-      name: name,
-      type: parent[0].value,
-      slug: slug,
-      icon: image,
-      creation_date: new Date(),
-    };
-    createCategory({
-      variables: { category: newCategory },
-    });
-    closeDrawer();
-    console.log(newCategory, 'newCategory');
-  };
-  const handleChange = ({ value }) => {
-    setValue('parent', value);
-    setCategory(value);
-  };
-  const handleUploader = (files) => {
-    setValue('image', files[0].path);
-  };
 
+  const onFileChange = async (e) => {
+    const file = e.target.files[0];
+    if(file){
+      const storageRef = app.storage().ref();
+      const fileRef = storageRef.child(file.name);
+      await fileRef.put(file)
+      console.log("Uploaded file " , file.name);
+      console.log(JSON.stringify(await fileRef.getDownloadURL()));
+      setImageURL(await fileRef.getDownloadURL());            
+    }
+   } 
+
+   const onSubmit = (data) => { 
+    const category = {
+      clientid: cid,
+      value: data.value,
+      name: data.name,
+      image: imageURL  
+    };    
+    console.log(category, 'actualizando Category');
+
+    insert_categorias({
+      variables: { 
+                  clientid: category.clientid,
+                  value: category.value,
+                  name: category.name,                   
+                  imageURL: category.image
+                }
+    }); 
+    closeDrawer(); 
+  };
+ 
   return (
     <>
       <DrawerTitleWrapper>
-        <DrawerTitle>Add Category</DrawerTitle>
+        <DrawerTitle>Agregar Categoría</DrawerTitle>
       </DrawerTitleWrapper>
 
       <Form onSubmit={handleSubmit(onSubmit)} style={{ height: '100%' }}>
@@ -119,12 +111,12 @@ const AddCategory: React.FC<Props> = (props) => {
             />
           )}
         >
-          <Row>
+           <Row>
             <Col lg={4}>
-              <FieldDetails>Upload your Category image here</FieldDetails>
+              <FieldDetails>Sube la Imagen de tu producto aquí!</FieldDetails>
             </Col>
             <Col lg={8}>
-              <DrawerBox
+           <DrawerBox
                 overrides={{
                   Block: {
                     style: {
@@ -139,98 +131,47 @@ const AddCategory: React.FC<Props> = (props) => {
                     },
                   },
                 }}
-              >
-                <Uploader onChange={handleUploader} />
-              </DrawerBox>
+              > 
+              
+             <input className="charge-image" type="file" onChange={onFileChange} />
+             <img width="100" height="100" src={imageURL}/>
+             </DrawerBox> 
             </Col>
           </Row>
-
           <Row>
             <Col lg={4}>
               <FieldDetails>
-                Add your category description and necessary informations from
-                here
+                Agregue la descripción de su category y la información necesaria desde aquí
               </FieldDetails>
             </Col>
 
             <Col lg={8}>
               <DrawerBox>
+
                 <FormFields>
-                  <FormLabel>Category Name</FormLabel>
-                  <Input
-                    inputRef={register({ required: true, maxLength: 20 })}
+                  <FormLabel>Código</FormLabel>
+                  <Input type="text"  inputRef={register} name="value" />
+                  
+                </FormFields>
+                <FormFields>
+                  <FormLabel>Client ID</FormLabel>
+                  <Input type="text" disabled  inputRef={register} name="clientid" value={cid}/>
+                </FormFields>
+
+
+                <FormFields>
+                  <FormLabel>Descripción</FormLabel>
+                  <Input type="text"
+                    inputRef={register} /* ({ required: true, maxLength: 20 })} */
                     name="name"
                   />
                 </FormFields>
+              
 
-                <FormFields>
-                  <FormLabel>Slug</FormLabel>
-                  <Input
-                    inputRef={register({ pattern: /^[A-Za-z]+$/i })}
-                    name="slug"
-                  />
-                </FormFields>
-
-                <FormFields>
-                  <FormLabel>Parent</FormLabel>
-                  <Select
-                    options={options}
-                    labelKey="name"
-                    valueKey="value"
-                    placeholder="Ex: Choose parent category"
-                    value={category}
-                    searchable={false}
-                    onChange={handleChange}
-                    overrides={{
-                      Placeholder: {
-                        style: ({ $theme }) => {
-                          return {
-                            ...$theme.typography.fontBold14,
-                            color: $theme.colors.textNormal,
-                          };
-                        },
-                      },
-                      DropdownListItem: {
-                        style: ({ $theme }) => {
-                          return {
-                            ...$theme.typography.fontBold14,
-                            color: $theme.colors.textNormal,
-                          };
-                        },
-                      },
-                      OptionContent: {
-                        style: ({ $theme, $selected }) => {
-                          return {
-                            ...$theme.typography.fontBold14,
-                            color: $selected
-                              ? $theme.colors.textDark
-                              : $theme.colors.textNormal,
-                          };
-                        },
-                      },
-                      SingleValue: {
-                        style: ({ $theme }) => {
-                          return {
-                            ...$theme.typography.fontBold14,
-                            color: $theme.colors.textNormal,
-                          };
-                        },
-                      },
-                      Popover: {
-                        props: {
-                          overrides: {
-                            Body: {
-                              style: { zIndex: 5 },
-                            },
-                          },
-                        },
-                      },
-                    }}
-                  />
-                </FormFields>
               </DrawerBox>
             </Col>
           </Row>
+         
         </Scrollbars>
 
         <ButtonGroup>
@@ -251,7 +192,7 @@ const AddCategory: React.FC<Props> = (props) => {
               },
             }}
           >
-            Cancel
+            Cancelar
           </Button>
 
           <Button
@@ -268,7 +209,7 @@ const AddCategory: React.FC<Props> = (props) => {
               },
             }}
           >
-            Create Category
+            Guardar
           </Button>
         </ButtonGroup>
       </Form>

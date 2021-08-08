@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
-import { styled, withStyle } from 'baseui';
-import Button from 'components/Button/Button';
+import { styled, withStyle } from 'baseui'; 
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input';
 import Select from 'components/Select/Select';
-import { useQuery, gql } from '@apollo/client';
-import { Header, Heading } from 'components/Wrapper.style';
+import { useQuery, useSubscription, gql } from '@apollo/client';
+import { Wrapper,Header, Heading } from 'components/Wrapper.style';
 import Fade from 'react-reveal/Fade';
 import ProductCard from 'components/ProductCard/ProductCard';
+import ProductButton from 'components/ProductCard/ProductButton';
 import NoResult from 'components/NoResult/NoResult';
-import { CURRENCY } from 'settings/constants';
-import Placeholder from 'components/Placeholder/Placeholder';
+import { CURRENCY } from 'settings/constants'; 
+import Placeholder from 'components/Placeholder/Placeholder'; 
+import {
+  TableWrapper,
+  StyledTable,
+  StyledHeadCell,
+  StyledBodyCell,
+} from './../Customers/Customers.style';
+import dayjs from 'dayjs';
 
 export const ProductsRow = styled('div', ({ $theme }) => ({
   display: 'flex',
@@ -60,213 +67,425 @@ export const LoaderItem = styled('div', () => ({
   marginBottom: '30px',
 }));
 
-const GET_PRODUCTS = gql`
-  query getProducts(
-    $type: String
-    $sortByPrice: String
-    $searchText: String
-    $offset: Int
-  ) {
-    products(
-      type: $type
-      sortByPrice: $sortByPrice
-      searchText: $searchText
-      offset: $offset
-    ) {
-      items {
-        id
-        name
-        description
-        image
-        type
-        price
-        unit
-        salePrice
-        discountInPercent
-      }
-      totalCount
-      hasMore
+
+
+
+
+const GET_CATEGORIAS = gql`
+   query  ($clientid: String!) {
+    categorias (where: {clientid: {_eq: $clientid}}) {
+      id
+      name 
+      value
     }
-  }
+  }  
 `;
 
-const typeSelectOptions = [
-  { value: 'grocery', label: 'Grocery' },
-  { value: 'women-cloths', label: 'Women Cloths' },
-  { value: 'bags', label: 'Bags' },
-  { value: 'makeup', label: 'Makeup' },
-];
-const priceSelectOptions = [
-  { value: 'highestToLowest', label: 'Highest To Lowest' },
-  { value: 'lowestToHighest', label: 'Lowest To Highest' },
-];
+// CASO SIN FILTRO
 
-export default function Products() {
-  const { data, error, refetch, fetchMore } = useQuery(GET_PRODUCTS);
-  const [loadingMore, toggleLoading] = useState(false);
-  const [type, setType] = useState([]);
-  const [priceOrder, setPriceOrder] = useState([]);
-  const [search, setSearch] = useState([]);
-
-  if (error) {
-    return <div>Error! {error.message}</div>;
+ 
+// clientid: {_eq: $clientid}}}, order_by: {precio_venta: $sort}) {
+const GET_PRODUCTS_X_CATEGORIA = gql`
+subscription s1($clientid: String!, $categoria: String!, $searchText: String!) {
+  producto(where: {clientid: {_eq: $clientid}, _and: {categorias: {name: {_eq: $categoria}}, _and: {nombre: {_like: $searchText}}}}) {
+    id
+    clientid
+    nombre
+    descripcion
+    sku
+    precio
+    cantidad
+    unidad
+    imageURL
+    categoria
+    categorias {
+      name
+      value
+    }
+    descuento
+    precio_venta
+    fecha_creacion
   }
-  function loadMore() {
+}
+`;
+
+
+
+const ImageWrapper = styled('div', ({ $theme }) => ({
+  width: '88px',
+  height: '88px',
+  overflow: 'hidden',
+  display: 'inline-block',
+  borderTopLeftRadius: '0px',
+  borderTopRightRadius: '0px',
+  borderBottomRightRadius: '0px',
+  borderBottomLeftRadius: '0px',
+  backgroundColor: $theme.colors.backgroundF7,
+}));
+
+const Image = styled('img', () => ({
+  width: '100%',
+  height: 'auto',
+}));
+
+
+let typeSelectOptions = [ 
+];
+
+let productos = [ 
+];
+const selectorView = [
+  { value: true, label: 'Vista Imagen' },
+  { value: false, label: 'Vista Detalle' },
+];
+
+export default function Products({clientid}) {
+  
+
+  const [loadingMore, toggleLoading] = useState(false);
+  // tipo de producto / categoria
+  const [type, setType] = useState([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isView, setIsView] = useState(true);
+  const [textoView, setTextoView] = useState('Vista Imagen');
+ 
+  
+  // order by asc / desc
+  const [priceOrder, setPriceOrder] = useState([{ value: 'desc', label: 'Más alta a más baja' }]);
+  // seach text
+  const [search, setSearch] = useState(''); 
+
+  
+  // lista de productos totales x clientid
+  const { data:data1, error:error1 } = useSubscription(GET_PRODUCTS_X_CATEGORIA,
+    {
+      variables: {
+        clientid: clientid, 
+        categoria: type.length > 0 ? type[0].value:'',
+        searchText: '%'+search+'%'  
+        
+      }
+    });
+ 
+
+  // lista de categorias x clientid
+  const { data:data2, error:error2 } = useQuery(GET_CATEGORIAS,
+    {
+      variables: {clientid}
+    });
+
+  // lista de productos x categoria x clientid + ordenados asc desc price  
+  
+ 
+  if (error1){
+    return <div>Error! {error1.message} </div>;
+  }
+  if (error2) {
+    return <div>,Error! {error2.message} </div>;
+  }
+/*   if (error3) {
+    return <div>,Error! {error3.message} </div>;
+  } */
+  /* function loadMore() {
     toggleLoading(true);
     fetchMore({
       variables: {
-        offset: data.products.items.length,
+        offset: data1.producto.length,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         toggleLoading(false);
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          products: {
-            __typename: prev.products.__typename,
-            items: [...prev.products.items, ...fetchMoreResult.products.items],
-            hasMore: fetchMoreResult.products.hasMore,
+          producto: {
+            // _typename: prev.producto._typename,
+            // items: [...prev.producto.items, ...fetchMoreResult.producto.items],
+            // hasMore: fetchMoreResult.producto.hasMore,
           },
         });
       },
     });
-  }
-  function handlePriceSort({ value }) {
+  } */
+  /* function handlePriceSort({ value }) {
     setPriceOrder(value);
     if (value.length) {
-      refetch({
+      refetch3({
         sortByPrice: value[0].value,
       });
     } else {
-      refetch({
+      refetch3({
         sortByPrice: null,
       });
     }
   }
-  function handleCategoryType({ value }) {
+  */
+  function handleCategoryType({ value }) { 
     setType(value);
-    if (value.length) {
-      refetch({
-        type: value[0].value,
-      });
-    } else {
-      refetch({
-        type: null,
-      });
+  }
+  
+  function handleSearch(event) {
+
+    const value = event.currentTarget.value;
+
+    console.log(type, search )
+
+    setSearch(value); 
+  }
+
+  function handleSelector() {
+   
+    setIsView(!isView); 
+
+    if(!isView){
+      setTextoView('Vista Imagen')
+    }else{
+      setTextoView('Vista Detalle')
     }
   }
-  function handleSearch(event) {
-    const value = event.currentTarget.value;
-    setSearch(value);
-    refetch({ searchText: value });
-  }
 
+  function Detail(){
   return (
-    <Grid fluid={true}>
-      <Row>
-        <Col md={12}>
-          <Header style={{ marginBottom: 15 }}>
-            <Col md={2} xs={12}>
-              <Heading>Products</Heading>
-            </Col>
+    <Grid fluid={true} >
+    <Row>
+      <Col md={12}>
+      <Header style={{ marginBottom: 15 }}>
+          <Col md={2} xs={12}>
+            <Heading>Productos</Heading>
+          </Col>
 
-            <Col md={10} xs={12}>
-              <Row>
-                <Col md={3} xs={12}>
-                  <Select
-                    options={typeSelectOptions}
-                    labelKey="label"
-                    valueKey="value"
-                    placeholder="Category Type"
-                    value={type}
-                    searchable={false}
-                    onChange={handleCategoryType}
-                  />
-                </Col>
-
-                <Col md={3} xs={12}>
-                  <Select
-                    options={priceSelectOptions}
-                    labelKey="label"
-                    valueKey="value"
-                    value={priceOrder}
-                    placeholder="Price"
-                    searchable={false}
-                    onChange={handlePriceSort}
-                  />
-                </Col>
-
-                <Col md={6} xs={12}>
-                  <Input
-                    value={search}
-                    placeholder="Ex: Search By Name"
-                    onChange={handleSearch}
-                    clearable
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </Header>
-
-          <Row>
-            {data ? (
-              data.products && data.products.items.length !== 0 ? (
-                data.products.items.map((item: any, index: number) => (
-                  <Col
-                    md={4}
-                    lg={3}
-                    sm={6}
-                    xs={12}
-                    key={index}
-                    style={{ margin: '15px 0' }}
-                  >
-                    <Fade bottom duration={800} delay={index * 10}>
-                      <ProductCard
-                        title={item.name}
-                        weight={item.unit}
-                        image={item.image}
-                        currency={CURRENCY}
-                        price={item.price}
-                        salePrice={item.salePrice}
-                        discountInPercent={item.discountInPercent}
-                        data={item}
-                      />
-                    </Fade>
-                  </Col>
-                ))
-              ) : (
-                <NoResult />
-              )
-            ) : (
-              <LoaderWrapper>
-                <LoaderItem>
-                  <Placeholder />
-                </LoaderItem>
-                <LoaderItem>
-                  <Placeholder />
-                </LoaderItem>
-                <LoaderItem>
-                  <Placeholder />
-                </LoaderItem>
-                <LoaderItem>
-                  <Placeholder />
-                </LoaderItem>
-              </LoaderWrapper>
-            )}
-          </Row>
-          {data && data.products && data.products.hasMore && (
+          <Col md={10} xs={12}>
             <Row>
-              <Col
-                md={12}
-                style={{ display: 'flex', justifyContent: 'center' }}
-              >
-                <Button onClick={loadMore} isLoading={loadingMore}>
-                  Load More
-                </Button>
+              <Col md={3} xs={12}>
+                <Select
+                  options={data2 && data2.categorias}
+                  labelKey="label"
+                  valueKey="name"
+                  placeholder="Tipo Categoría"
+                  searchable={true}
+                  onChange={handleCategoryType} 
+                />
+              </Col>
+
+              <Col md={3} xs={12}>
+                <Select
+                  options={selectorView}
+                  labelKey="label"
+                  valueKey="value"
+                  placeholder={textoView}
+                  searchable={false}
+                  onChange={handleSelector}
+                />
+              </Col>
+
+              <Col md={6} xs={12}>
+                <Input
+                   placeholder="Ex: Buscar por nombre o descripción"
+                   onChange={handleSearch}
+                 
+                />
               </Col>
             </Row>
+          </Col>
+        </Header>
+        <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)' }}>
+            <TableWrapper>
+              <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(140px, 70px) minmax(140px, 70px) minmax(200px, auto) minmax(150px, auto) minmax(150px, max-content) minmax(150px, auto) minmax(150px, auto)">
+                <StyledHeadCell>ID</StyledHeadCell>
+                <StyledHeadCell>SKU</StyledHeadCell>
+                <StyledHeadCell>Imagen</StyledHeadCell>
+                <StyledHeadCell>Nombre</StyledHeadCell>
+                <StyledHeadCell>Categoría</StyledHeadCell>
+                <StyledHeadCell>Precio</StyledHeadCell>
+                <StyledHeadCell>Descuento</StyledHeadCell>
+                <StyledHeadCell>Acción</StyledHeadCell>
+
+                {data1 && data1.producto ? (
+                  data1.producto.length ? (
+                    data1.producto.map((item: any, index: number) => (
+                        <React.Fragment key={index}>
+                        
+                           <StyledBodyCell>{item.id}</StyledBodyCell>
+                           <StyledBodyCell>{item.sku}</StyledBodyCell>
+                          <StyledBodyCell>
+                            <ImageWrapper>
+                              <Image src={item.imageURL} alt={item.nombre} />
+                            </ImageWrapper>
+                          </StyledBodyCell>
+                          <StyledBodyCell>{item.nombre}</StyledBodyCell>
+                          <StyledBodyCell>{item.categorias[0].name}</StyledBodyCell>
+                          <StyledBodyCell>${item.precio}</StyledBodyCell>
+                          <StyledBodyCell>${item.descuento}</StyledBodyCell>
+                          <StyledBodyCell>
+                              <ProductButton
+                                  orderId={item.id}
+                                  clientid={item.clientid}
+                                  category={item.categorias[0].value}
+                                  title={item.nombre}
+                                  descripcion={item.descripcion}
+                                  weight={item.unidad}
+                                  image={item.imageURL}
+                                  currency={CURRENCY}
+                                  price={item.precio}
+                                  salePrice={item.precio_venta}
+                                  discountInPercent={item.descuento} 
+                                  data={item}
+                            />
+                          </StyledBodyCell>  
+                        </React.Fragment>
+                    ))
+                  ) : (
+                    <NoResult
+                      hideButton={false}
+                      style={{
+                        gridColumnStart: '1',
+                        gridColumnEnd: 'one',
+                      }}
+                    />
+                  )
+                ) : null}
+              </StyledTable>
+            </TableWrapper>
+          </Wrapper>
+
+          </Col>
+          </Row>
+          </Grid>
+      );
+  }
+
+  function Full(){
+
+     return ( 
+    <Grid fluid={true}>
+    <Row>
+      <Col md={12}>
+        <Header style={{ marginBottom: 15 }}>
+          <Col md={2} xs={12}>
+            <Heading>Productos</Heading>
+          </Col>
+
+          <Col md={10} xs={12}>
+            <Row>
+              <Col md={3} xs={12}>
+                <Select
+                  options={data2 && data2.categorias}
+                  labelKey="name"
+                  valueKey="value"
+                  placeholder="Tipo Categoría"
+                  value={type}
+                  searchable={false}
+                  onChange={handleCategoryType} 
+                />
+              </Col>
+
+              <Col md={3} xs={12}>
+                <Select
+                  options={selectorView}
+                  labelKey="label"
+                  valueKey="value"
+                  placeholder={textoView}
+                  searchable={false}
+                  onChange={handleSelector}
+                />
+              </Col>
+
+              <Col md={6} xs={12}>
+                <Input
+                  value={search}
+                  placeholder="Ex: Buscar por nombre"
+                   onChange={handleSearch}
+                  clearable
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Header>
+
+     <Row>
+          {data1? (
+            data1.producto.length !== 0 ? (
+              data1.producto.map((item: any, index: number) => (
+               
+                <Col
+                  md={4}
+                  lg={3}
+                  sm={6}
+                  xs={12}
+                  key={index}
+                  style={{ margin: '15px 0' }}
+                >
+                   
+                  <Fade bottom duration={800} delay={index * 10}>
+                    <ProductCard
+                      orderId={item.id}
+                      sku={item.sku}
+                      clientid={item.clientid}
+                      category={item.categorias[0].value}
+                      title={item.nombre}
+                      descripcion={item.descripcion}
+                      weight={item.unidad}
+                      image={item.imageURL}
+                      currency={CURRENCY}
+                      price={item.precio}
+                      salePrice={item.precio_venta}
+                      discountInPercent={item.descuento} 
+                      data={item}
+                    />
+                  </Fade>
+                </Col>
+              ))
+            ) : (
+              <NoResult />
+            )
+          ) : (
+            <LoaderWrapper>
+              <LoaderItem>
+                <Placeholder />
+              </LoaderItem>
+              <LoaderItem>
+                <Placeholder />
+              </LoaderItem>
+              <LoaderItem>
+                <Placeholder />
+              </LoaderItem>
+              <LoaderItem>
+                <Placeholder />
+              </LoaderItem>
+            </LoaderWrapper>
           )}
-        </Col>
-      </Row>
-    </Grid>
+        </Row>  
+      {/*   {data1 !== null && data1.producto !== null && data1.products && data1.products.hasMore && (
+          <Row>
+            <Col
+              md={12}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+               <Button onClick={loadMore} isLoading={loadingMore}>
+                Cargar Más...
+              </Button>               </Col>
+          </Row>
+        )} */}
+      </Col>
+    </Row>
+  </Grid>
+  
+    );
+  } 
+
+  function DisplayProduct(){
+
+   if(isView){
+      return <Full />
+   }else
+    {
+     return  <Detail />
+    }
+  }
+  return (
+   <>
+     
+        <DisplayProduct/>
+
+   </>
+
   );
 }
