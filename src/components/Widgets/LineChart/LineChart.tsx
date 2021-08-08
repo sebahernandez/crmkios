@@ -100,7 +100,7 @@ const LineChart = ({
         <BoxTitle title={widgetTitle} />
       </BoxTitleWrapper>
 
-      <BoxContent style={{ display: 'block' }}>
+      <BoxContent style={{ display: 'block', boxShadow: '0px 10px 10px -6px #dedede', }}>
         <Chart
           options={options.options}
           series={options.series}

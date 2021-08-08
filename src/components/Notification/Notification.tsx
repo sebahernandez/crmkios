@@ -17,8 +17,8 @@ export default function Notification({
   return (
     <div>
       <Header>
-        <Heading>Notification</Heading>
-        <ClearAll onClick={onClear}>Clear all</ClearAll>
+        <Heading>Notificaciones</Heading>
+        <ClearAll onClick={onClear}>Limpiar todo</ClearAll>
       </Header>
       <Body>
         {data.map((item, index) => (
@@ -26,7 +26,7 @@ export default function Notification({
         ))}
       </Body>
       <Footer>
-        <FeedsButton onClick={feedBtnClick}>More Feeds</FeedsButton>
+        <FeedsButton onClick={feedBtnClick}>Ver Más</FeedsButton>
       </Footer>
     </div>
   );

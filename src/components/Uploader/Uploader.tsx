@@ -70,7 +70,7 @@ function Uploader({ onChange, imageURL }: any) {
   );
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
-    multiple: false,
+    multiple: true,
     onDrop: useCallback(
       (acceptedFiles) => {
         setFiles(
@@ -108,7 +108,7 @@ function Uploader({ onChange, imageURL }: any) {
         <input {...getInputProps()} />
         <UploadIcon />
         <Text>
-          <TextHighlighted>Drag/Upload</TextHighlighted> your image here.
+          <TextHighlighted>Arrastra/Sube</TextHighlighted> tu imagen aquí.
         </Text>
       </Container>
       {thumbs && <ThumbsContainer>{thumbs}</ThumbsContainer>}

@@ -18,27 +18,35 @@ import { useDrawerDispatch } from 'context/DrawerContext';
 
 type ProductCardProps = {
   title: string;
+  sku: string;
+  descripcion: string;
   image: any;
   weight?: string;
   currency?: string;
   description?: string;
   price: number;
+  category: string;
   salePrice?: number;
   orderId?: number;
   discountInPercent?: number;
+  clientid: string; 
   data: any;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({
   title,
+  sku,
+  descripcion,
   image,
   weight,
   price,
+  category,
   salePrice,
   discountInPercent,
   currency,
-  data,
   orderId,
+  clientid, 
+  data,
   ...props
 }) => {
   const dispatch = useDrawerDispatch();
@@ -59,17 +67,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
       onClick={openDrawer}
     >
       <ProductImageWrapper>
+  
         <Image url={image} className="product-image" />
         {discountInPercent && discountInPercent !== 0 ? (
           <>
-            <SaleTag>Sale</SaleTag>
-            <DiscountPercent>{discountInPercent}% Off</DiscountPercent>
+            <SaleTag>En Venta</SaleTag>
+            <DiscountPercent>{discountInPercent}% Descuento</DiscountPercent>
           </>
         ) : null}
       </ProductImageWrapper>
       <ProductInfo>
         <ProductTitle>{title}</ProductTitle>
-        <ProductWeight>{weight}</ProductWeight>
+        <ProductTitle>{descripcion}</ProductTitle>
+        <ProductWeight>{category}</ProductWeight>
         <ProductMeta>
           <ProductPriceWrapper>
             <ProductPrice>
@@ -85,7 +95,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             ) : null}
           </ProductPriceWrapper>
 
-          <OrderID>{orderId}</OrderID>
+          <OrderID>SKU: {sku}</OrderID>
         </ProductMeta>
       </ProductInfo>
     </ProductCardWrapper>

@@ -60,8 +60,8 @@ export const DrawerIcon = styled('div', ({ $theme }) => ({
 export const LogoImage = styled('img', () => ({
   display: 'block',
   backfaceVisibility: 'hidden',
-  maxWidth: '150px',
-}));
+  maxWidth: '80px',
+})); 
 
 export const TopbarRightSide = styled('div', () => ({
   display: 'flex',
@@ -69,11 +69,11 @@ export const TopbarRightSide = styled('div', () => ({
 }));
 
 export const ProfileImg = styled('div', () => ({
-  width: '40px',
-  height: '40px',
+  width: '60px',
+  height: '60px',
   display: 'flex',
   borderRadius: '50%',
-  border: '2px solid #ffffff',
+  border: '4px solid #ccc',
   overflow: 'hidden',
   cursor: 'pointer',
   flexShrink: '0',

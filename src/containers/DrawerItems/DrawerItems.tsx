@@ -7,15 +7,19 @@ import { useDrawerState, useDrawerDispatch } from 'context/DrawerContext';
 /** Drawer Components */
 import ProductForm from '../ProductForm/ProductForm';
 import ProductUpdateForm from '../ProductForm/ProductUpdateForm';
+import CuponUpdateForm from '../CampaingForm/CampaignUpdateForm';
 import CampaingForm from '../CampaingForm/CampaingForm';
 import CategoryForm from '../CategoryForm/CategoryForm';
 import StaffMemberForm from '../StaffMemberForm/StaffMemberForm';
 import Sidebar from '../Layout/Sidebar/Sidebar';
+import CategoryUpdateForm from 'containers/CategoryForm/CategoryUpdateForm';
 
 /** Components Name Constants */
 const DRAWER_COMPONENTS = {
   PRODUCT_FORM: ProductForm,
   PRODUCT_UPDATE_FORM: ProductUpdateForm,
+  CATEGORY_UPDATE_FORM: CategoryUpdateForm,
+  CUPON_UPDATE_FORM: CuponUpdateForm,
   CAMPAING_FORM: CampaingForm,
   CATEGORY_FORM: CategoryForm,
   STAFF_MEMBER_FORM: StaffMemberForm,

@@ -1,16 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import dayjs from 'dayjs';
-import { withStyle } from 'baseui';
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
-import { useDrawerDispatch } from 'context/DrawerContext';
-import Select from 'components/Select/Select';
+import { useDrawerDispatch } from 'context/DrawerContext'; 
+import { styled, withStyle } from 'baseui';
 import Input from 'components/Input/Input';
-import Button from 'components/Button/Button';
-
-import { Plus } from 'assets/icons/PlusMinus';
-
-import { useQuery, gql } from '@apollo/client';
-
+import Button from 'components/Button/Button'; 
+import { Plus } from 'assets/icons/PlusMinus'; 
+import { useQuery, gql } from '@apollo/client'; 
 import { Wrapper, Header, Heading } from 'components/Wrapper.style';
 
 import {
@@ -22,17 +18,24 @@ import {
 import NoResult from 'components/NoResult/NoResult';
 
 const GET_STAFFS = gql`
-  query getStaffs($role: String, $searchBy: String) {
-    staffs(role: $role, searchBy: $searchBy) {
+  query getEmpleados($clientid: String!,$searchText: String! ) {
+    empleado (where: {clientid: {_eq: $clientid}, nombre: {_like: $searchText} }) {
       id
-      name
+      nombre
+      paterno
+      materno
+      rol
+      telefono
       email
-      contact_number
       creation_date
-      role
+      estado
+      image_url
+      clientid
     }
   }
 `;
+
+
 
 const Col = withStyle(Column, () => ({
   '@media only screen and (max-width: 767px)': {
@@ -50,14 +53,35 @@ const Row = withStyle(Rows, () => ({
   },
 }));
 
+
+const ImageWrapper = styled('div', ({ $theme }) => ({
+  width: '38px',
+  height: '38px',
+  overflow: 'hidden',
+  display: 'inline-block',
+  borderTopLeftRadius: '20px',
+  borderTopRightRadius: '20px',
+  borderBottomRightRadius: '20px',
+  borderBottomLeftRadius: '20px',
+  backgroundColor: $theme.colors.backgroundF7,
+}));
+
+const Image = styled('img', () => ({
+  width: '100%',
+  height: 'auto',
+}));
+
 const roleSelectOptions = [
-  { value: 'admin', label: 'Admin' },
-  { value: 'manager', label: 'Manager' },
-  { value: 'member', label: 'Member' },
-  { value: 'delivery boy', label: 'Delivery boy' },
+  { value: 'owner', label: 'Owner' },
+  { value: 'admin', label: 'Administrador' },
+  { value: 'manager', label: 'Jefe' },
+  { value: 'member', label: 'Empleado' },
+  { value: 'delivery boy', label: 'Delivery' },
 ];
 
-export default function StaffMembers() {
+
+
+export default function StaffMembers({clientid}) {
   const dispatch = useDrawerDispatch();
 
   const openDrawer = useCallback(
@@ -68,24 +92,23 @@ export default function StaffMembers() {
   const [role, setRole] = useState([]);
   const [search, setSearch] = useState('');
 
-  const { data, error, refetch } = useQuery(GET_STAFFS);
+  const { data, error, refetch } = useQuery(GET_STAFFS, {
+    variables: {
+      clientid: clientid,
+      searchText: '%'+search+'%'
+    }});
+
   if (error) {
     return <div>Error! {error.message}</div>;
   }
   function handleCategory({ value }) {
+   
     setRole(value);
-    if (value.length) {
-      refetch({ role: value[0].value, searchBy: search });
-    } else {
-      refetch({
-        role: null,
-      });
-    }
+     
   }
   function handleSearch(event) {
     const value = event.currentTarget.value;
-    setSearch(value);
-    refetch({ searchBy: value });
+    setSearch(value); 
   }
 
   return (
@@ -99,27 +122,16 @@ export default function StaffMembers() {
             }}
           >
             <Col md={3} xs={12}>
-              <Heading>Staff Members</Heading>
+              <Heading>Empleados</Heading>
             </Col>
 
             <Col md={9} xs={12}>
               <Row>
-                <Col md={3} xs={12}>
-                  <Select
-                    options={roleSelectOptions}
-                    labelKey="label"
-                    valueKey="value"
-                    placeholder="Role"
-                    value={role}
-                    searchable={false}
-                    onChange={handleCategory}
-                  />
-                </Col>
-
-                <Col md={5} xs={12}>
+                
+                <Col md={8} xs={12}>
                   <Input
                     value={search}
-                    placeholder="Ex: Quick Search By Name"
+                    placeholder="Ex:Búsqueda rápida por nombre"
                     onChange={handleSearch}
                     clearable
                   />
@@ -141,7 +153,7 @@ export default function StaffMembers() {
                       },
                     }}
                   >
-                    Add Members
+                    Agregar Empleado
                   </Button>
                 </Col>
               </Row>
@@ -150,28 +162,34 @@ export default function StaffMembers() {
 
           <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)' }}>
             <TableWrapper>
-              <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(270px, max-content) minmax(270px, max-content) minmax(150px, max-content) minmax(150px, auto) minmax(150px, auto)">
+              <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(120px, max-content)  minmax(270px, max-content) minmax(270px, max-content) minmax(150px, max-content) minmax(150px, auto) minmax(150px, auto)">
                 <StyledHeadCell>ID</StyledHeadCell>
-                <StyledHeadCell>Name</StyledHeadCell>
+                <StyledHeadCell>Imagen</StyledHeadCell>
+                <StyledHeadCell>Nombre</StyledHeadCell>
                 <StyledHeadCell>Email</StyledHeadCell>
-                <StyledHeadCell>Contact</StyledHeadCell>
-                <StyledHeadCell>Joining Date</StyledHeadCell>
-                <StyledHeadCell>Role</StyledHeadCell>
+                <StyledHeadCell>Contacto</StyledHeadCell>
+                <StyledHeadCell>Dia de ingreso</StyledHeadCell>
+                <StyledHeadCell>Rol</StyledHeadCell>
 
                 {data ? (
-                  data.staffs.length ? (
-                    data.staffs
+                  data.empleado.length ? (
+                    data.empleado
                       .map((item) => Object.values(item))
                       .map((row, index) => (
                         <React.Fragment key={index}>
-                          <StyledBodyCell>{row[1].slice(0, 6)}</StyledBodyCell>
-                          <StyledBodyCell>{row[2]}</StyledBodyCell>
-                          <StyledBodyCell>{row[3]}</StyledBodyCell>
-                          <StyledBodyCell>{row[4]}</StyledBodyCell>
+                          <StyledBodyCell>{row[1]}</StyledBodyCell>
                           <StyledBodyCell>
-                            {dayjs(row[5]).format('DD MMM YYYY')}
+                          <ImageWrapper>
+                              <Image src={row[10]} alt={row[2]} />
+                            </ImageWrapper>
                           </StyledBodyCell>
+                          <StyledBodyCell>{row[2] + ' ' +  row[3] + ' ' +  row[4]}</StyledBodyCell>
+                          <StyledBodyCell>{row[7]}</StyledBodyCell>
                           <StyledBodyCell>{row[6]}</StyledBodyCell>
+                          <StyledBodyCell>
+                            {dayjs(row[8]).format('DD MMM YYYY')}
+                          </StyledBodyCell>
+                          <StyledBodyCell>{row[5]}</StyledBodyCell>
                         </React.Fragment>
                       ))
                   ) : (

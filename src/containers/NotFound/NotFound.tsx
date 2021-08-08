@@ -15,7 +15,7 @@ type NoResultProps = {
 const NoResult: React.FC<NoResultProps> = ({ id, style }) => {
   return (
     <NoResultWrapper id={id} style={style}>
-      <NoResultMsg>Sorry, 404 Not found :(</NoResultMsg>
+      <NoResultMsg>Ups.., 404 Página no encontrada :(</NoResultMsg>
 
       <ImageWrapper>
         <Image src={NotFoundImage} alt="Not Found" />
