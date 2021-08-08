@@ -54,7 +54,7 @@ export default function Login() {
                 <LogoWrapper>
                   <LogoImage src={Logoimage} alt="pickbazar-admin" />
                 </LogoWrapper>
-                <FormTitle>Log in to admin</FormTitle>
+                <FormTitle>Log in to admin!</FormTitle>
               </FormFields>
 
               <FormFields>
