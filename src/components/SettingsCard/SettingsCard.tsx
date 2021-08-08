@@ -7,7 +7,6 @@ const Wrapper = styled('div', () => ({
   cursor: 'pointer',
   padding: '35px 20px',
   height: '100%',
-  boxShadow: '0px 10px 10px -6px #dedede',
 }));
 
 const IconBox = styled('div', ({ $theme }) => ({

@@ -5,23 +5,20 @@ import {
   StyledBodyCell as BaseStyledCell,
 } from 'baseui/table-grid';
 
-export const Status = styled('div', ({ $theme }) => ({
-  ...$theme.typography.fontBold14,
-  color: $theme.colors.textDark,
+export const ImageWrapper = styled('div', ({ $theme }) => ({
+  width: '40px',
+  height: '40px',
+  overflow: 'hidden',
   display: 'flex',
   alignItems: 'center',
-  lineHeight: '1',
-  textTransform: 'capitalize',
+  justifyContent: 'center',
+  borderRadius: '20px',
+  backgroundColor: $theme.colors.backgroundF7,
+}));
 
-  ':before': {
-    content: '""',
-    width: '10px',
-    height: '10px',
-    display: 'inline-block',
-    borderRadius: '10px',
-    backgroundColor: $theme.borders.borderE6,
-    marginRight: '10px',
-  },
+export const Icon = styled('span', () => ({
+  width: '100%',
+  height: 'auto',
 }));
 
 export const TableWrapper = styled('div', () => ({
@@ -48,25 +45,30 @@ export const StyledHeadCell = withStyle(BaseStyledHeadCell, () => ({
   borderBottomColor: 'rgba(0, 0, 0, 0.12)',
   borderLeftColor: 'rgba(0, 0, 0, 0.12)',
   alignSelf: 'start',
-  zIndex: 1,
 }));
 
-export const StyledBodyCell = withStyle(BaseStyledCell, () => ({
+export const StyledCell = withStyle(BaseStyledCell, () => ({
   fontFamily: "'Lato', sans-serif",
   fontWeight: 400,
   color: '#161F6A !important',
   alignSelf: 'center',
 }));
 
-export const ProgressWrapper = styled('div', () => ({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
+export const StyledHeadCellCenter = withStyle(BaseStyledHeadCell, () => ({
+  fontFamily: "'Lato', sans-serif",
+  fontWeight: 700,
+  color: '#161F6A !important',
+  alignItems: 'center',
+  boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
+  borderColor: 'rgba(0, 0, 0, 0.12)',
+  alignSelf: 'start',
+  justifyContent: 'center',
 }));
 
-export const ProgressText = styled('span', ({ $theme }) => ({
-  ...$theme.typography.font13,
-  fontFamily: $theme.typography.primaryFontFamily,
-  lineHeight: '1.2',
-  color: $theme.colors.textDark,
+export const StyledCellCenter = withStyle(BaseStyledCell, () => ({
+  fontFamily: "'Lato', sans-serif",
+  fontWeight: 400,
+  color: '#161F6A !important',
+  alignSelf: 'center',
+  justifyContent: 'center',
 }));

@@ -13,22 +13,22 @@ export const UserDetails: React.FC<UserDetailsProps> = () => {
   return (
     <UserDetailsWrapper className="user-details">
       <InfoCard className="info-card">
-        <InfoCardTitle>Cuenta Creada :</InfoCardTitle>
+        <InfoCardTitle>Created Account :</InfoCardTitle>
         <InfoCardDetails>9/10/2019</InfoCardDetails>
       </InfoCard>
       <InfoCard className="info-card">
-        <InfoCardTitle>Dirección :</InfoCardTitle>
+        <InfoCardTitle>User Address :</InfoCardTitle>
         <InfoCardDetails>
-          Santiago, 234, vitacura <InfoCardTag>Principal</InfoCardTag>
+          223, Raw Street, Rd-22, Newyork <InfoCardTag>Primary</InfoCardTag>
         </InfoCardDetails>
         <InfoCardDetails>223, Raw Street, Rd-22, Newyork</InfoCardDetails>
       </InfoCard>
       <InfoCard className="info-card">
-        <InfoCardTitle>Contacto :</InfoCardTitle>
+        <InfoCardTitle>Contact :</InfoCardTitle>
         <InfoCardDetails>
-          +566930216998 <InfoCardTag>Principal</InfoCardTag>
+          +8801752273008 <InfoCardTag>Primary</InfoCardTag>
         </InfoCardDetails>
-        <InfoCardDetails>+566930216998</InfoCardDetails>
+        <InfoCardDetails>+8801753373003</InfoCardDetails>
       </InfoCard>
     </UserDetailsWrapper>
   );

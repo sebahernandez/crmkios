@@ -3,6 +3,7 @@ import SettingsCard from 'components/SettingsCard/SettingsCard';
 import { useDrawerDispatch } from 'context/DrawerContext';
 import { STAFF_MEMBERS, SITE_SETTINGS } from 'settings/constants';
 import { withStyle } from 'baseui';
+
 import { SiteSettings } from 'assets/icons/SiteSettings';
 import { Members } from 'assets/icons/Members';
 import { OrderIcon } from 'assets/icons/OrderIcon';
@@ -21,12 +22,9 @@ const Col = withStyle(Column, () => ({
     },
   },
 }));
- 
 
-export default function Settings({clientid}) {
+export default function Settings() {
   let history = useHistory();
- 
-
 
   const dispatch = useDrawerDispatch();
 
@@ -54,19 +52,19 @@ export default function Settings({clientid}) {
   return (
     <Grid fluid={true}>
       <Row>
-      <Col md={6}>
+        <Col md={6}>
           <SettingsCard
-            icon={<SiteSettings />}
-            title="Configuraciones CRM"
-            subtitle="Ver y actualizar la configuración del CRM"
-            onClick={() => history.push(SITE_SETTINGS)}
+            icon={<Members />}
+            title="Staff Members"
+            subtitle="Manage your employees and their permission"
+            onClick={() => history.push(STAFF_MEMBERS)}
           />
         </Col>
         <Col md={6}>
           <SettingsCard
             icon={<SiteSettings />}
-            title="Configuraciones SHOP"
-            subtitle="Ver y actualizar la configuración del Shop "
+            title="Site Settings"
+            subtitle="View and update your site settings"
             onClick={() => history.push(SITE_SETTINGS)}
           />
         </Col>
@@ -75,23 +73,41 @@ export default function Settings({clientid}) {
       <Row>
         <Col md={6}>
           <SettingsCard
-            icon={<Members />}
-            title="Añadir Miembros"
-            subtitle="Añade tus miembros del equipo aquí"
-            onClick={openStaffForm}
+            icon={<ProductIcon width="56px" height="56px" />}
+            title="Add Products"
+            subtitle="Add products from here"
+            onClick={openProductForm}
           />
         </Col>
 
         <Col md={6}>
           <SettingsCard
-            icon={<Members />}
-            title="Añadir Roles y Perfiles"
-            subtitle="Añade Roles y Perfiles aquí"
-            onClick={openStaffForm}
+            icon={<SidebarCategoryIcon width="56px" height="56px" />}
+            title="Add Categories"
+            subtitle="Add product categories from here"
+            onClick={openCategoryForm}
           />
         </Col>
       </Row>
 
+      <Row>
+        <Col md={6}>
+          <SettingsCard
+            icon={<OrderIcon width="56px" height="56px" />}
+            title="Add Staff Members"
+            subtitle="Add your staff members from here"
+            onClick={openStaffForm}
+          />
+        </Col>
+        <Col md={6}>
+          <SettingsCard
+            icon={<CouponIcon width="56px" height="56px" />}
+            title="Add Coupons"
+            subtitle="Add coupons from here"
+            onClick={openCouponForm}
+          />
+        </Col>
+      </Row>
     </Grid>
   );
 }

@@ -5,7 +5,6 @@ import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
 import Select from 'components/Select/Select';
 import Input from 'components/Input/Input';
 
-import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 import { useQuery, gql } from '@apollo/client';
 import { Wrapper, Header, Heading } from 'components/Wrapper.style';
 import Checkbox from 'components/CheckBox/CheckBox';
@@ -19,18 +18,16 @@ import {
 import NoResult from 'components/NoResult/NoResult';
 
 const GET_ORDERS = gql`
-  query getOrders($clientid: String!,$searchText: String!) {
-    pedido (where: {clientid: {_eq: $clientid}, delivery_address: {_like: $searchText}}, order_by: {creation_date: desc}) {
+  query getOrders($status: String, $limit: Int, $searchText: String) {
+    orders(status: $status, limit: $limit, searchText: $searchText) {
       id
-      cliente
+      customer_id
       creation_date
       delivery_address
-      total
-      metodo_pago
-      contacto
-      estado
+      amount
+      payment_method
+      contact_number
       status
-      order
     }
   }
 `;
@@ -77,20 +74,18 @@ const Row = withStyle(Rows, () => ({
 }));
 
 const statusSelectOptions = [
-  { value: 'Todos', label: 'Todos' },
-  { value: 'Recibida', label: 'Recibida' },
-  { value: 'En Ruta', label: 'En Ruta' },
-  { value: 'Por Entregar', label: 'Por Entregar' },
-  { value: 'En Preparacion', label: 'En Preparacion' },
-  { value: 'Cancelado', label: 'Cancelado' },
+  { value: 'delivered', label: 'Delivered' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'processing', label: 'Processing' },
+  { value: 'failed', label: 'Failed' },
 ];
 const limitSelectOptions = [
-  { value: 7, label: 'últimos 7 pedidos' },
-  { value: 15, label: 'últimos15 pedidos' },
-  { value: 30, label: 'últimos 30 pedidos' },
+  { value: 7, label: 'Last 7 orders' },
+  { value: 15, label: 'Last 15 orders' },
+  { value: 30, label: 'Last 30 orders' },
 ];
 
-export default function Orders({clientid}) {
+export default function Orders() {
   const [checkedId, setCheckedId] = useState([]);
   const [checked, setChecked] = useState(false);
 
@@ -120,32 +115,44 @@ export default function Orders({clientid}) {
     },
   });
 
-  const [estado, setEstado] = useState([{ value: 'Entregado', label: 'Entregado' }]);
+  const [status, setStatus] = useState([]);
   const [limit, setLimit] = useState([]);
-  const [tag, setTag] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState([]);
 
-  const { data, error, refetch } = useQuery(GET_ORDERS, {
-    variables: {
-      clientid: sessionStorage.getItem('clientid'),
-      searchText: '%'+search+'%' 
-    },
-  });
-
+  const { data, error, refetch } = useQuery(GET_ORDERS);
   if (error) {
     return <div>Error! {error.message}</div>;
   }
 
- 
+  function handleStatus({ value }) {
+    setStatus(value);
+    if (value.length) {
+      refetch({
+        status: value[0].value,
+        limit: limit.length ? limit[0].value : null,
+      });
+    } else {
+      refetch({ status: null });
+    }
+  }
 
-  function handleLimite({ value }) {
+  function handleLimit({ value }) {
     setLimit(value);
-    
+    if (value.length) {
+      refetch({
+        status: status.length ? status[0].value : null,
+        limit: value[0].value,
+      });
+    } else {
+      refetch({
+        limit: null,
+      });
+    }
   }
   function handleSearch(event) {
     const { value } = event.currentTarget;
     setSearch(value);
-    
+    refetch({ searchText: value });
   }
   function onAllCheck(event) {
     if (event.target.checked) {
@@ -156,10 +163,7 @@ export default function Orders({clientid}) {
     }
     setChecked(event.target.checked);
   }
-  const handleMultiChange = ({ value }) => {
-    
-    setTag(value);
-  }
+
   function handleCheckbox(event) {
     const { name } = event.currentTarget;
     if (!checkedId.includes(name)) {
@@ -168,8 +172,6 @@ export default function Orders({clientid}) {
       setCheckedId((prevState) => prevState.filter((id) => id !== name));
     }
   }
- 
-
   return (
     <Grid fluid={true}>
       <Row>
@@ -181,29 +183,39 @@ export default function Orders({clientid}) {
             }}
           >
             <Col md={3} xs={12}>
-              <Heading>Pedidos</Heading>
+              <Heading>Orders</Heading>
             </Col>
 
             <Col md={9} xs={12}>
               <Row>
-                 
-{/* 
+                <Col md={3} xs={12}>
+                  <Select
+                    options={statusSelectOptions}
+                    labelKey="label"
+                    valueKey="value"
+                    placeholder="Status"
+                    value={status}
+                    searchable={false}
+                    onChange={handleStatus}
+                  />
+                </Col>
+
                 <Col md={3} xs={12}>
                   <Select
                     options={limitSelectOptions}
                     labelKey="label"
                     valueKey="value"
                     value={limit}
-                    placeholder="Límites de pedidos"
+                    placeholder="Order Limits"
                     searchable={false}
-                    onChange={handleLimite}
+                    onChange={handleLimit}
                   />
-                </Col> */}
+                </Col>
 
                 <Col md={6} xs={12}>
                   <Input
                     value={search}
-                    placeholder="Ex:Buscar por dirección"
+                    placeholder="Ex: Search By Address"
                     onChange={handleSearch}
                     clearable
                   />
@@ -214,36 +226,91 @@ export default function Orders({clientid}) {
 
           <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)' }}>
             <TableWrapper>
-              <StyledTable $gridTemplateColumns="minmax(150px, 50px)  minmax(200px, auto) minmax(100px, max-content) minmax(150px, auto) minmax(150px, auto) minmax(150px, auto) minmax(80px, auto)">
-                
-                <StyledHeadCell>Órden</StyledHeadCell>               
-                <StyledHeadCell>Dirección de entrega</StyledHeadCell>
-                <StyledHeadCell>Monto</StyledHeadCell>
-                <StyledHeadCell>Método de pago</StyledHeadCell>
-                <StyledHeadCell>Contacto</StyledHeadCell>
-                <StyledHeadCell>Estado</StyledHeadCell>
-                <StyledHeadCell>Hora</StyledHeadCell>                
+              <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(70px, 70px) minmax(150px, auto) minmax(150px, auto) minmax(200px, max-content) minmax(150px, auto) minmax(150px, auto) minmax(150px, auto) minmax(150px, auto)">
+                <StyledHeadCell>
+                  <Checkbox
+                    type="checkbox"
+                    value="checkAll"
+                    checked={checked}
+                    onChange={onAllCheck}
+                    overrides={{
+                      Checkmark: {
+                        style: {
+                          borderTopWidth: '2px',
+                          borderRightWidth: '2px',
+                          borderBottomWidth: '2px',
+                          borderLeftWidth: '2px',
+                          borderTopLeftRadius: '4px',
+                          borderTopRightRadius: '4px',
+                          borderBottomRightRadius: '4px',
+                          borderBottomLeftRadius: '4px',
+                        },
+                      },
+                    }}
+                  />
+                </StyledHeadCell>
+                <StyledHeadCell>ID</StyledHeadCell>
+                <StyledHeadCell>Customer ID</StyledHeadCell>
+                <StyledHeadCell>Time</StyledHeadCell>
+                <StyledHeadCell>Delivery Address</StyledHeadCell>
+                <StyledHeadCell>Amount</StyledHeadCell>
+                <StyledHeadCell>Payment Method</StyledHeadCell>
+                <StyledHeadCell>Contact</StyledHeadCell>
+                <StyledHeadCell>Status</StyledHeadCell>
 
-                {data && data.pedido ? (
-                  data.pedido.length ? (
-                    data.pedido
+                {data ? (
+                  data.orders.length ? (
+                    data.orders
                       .map((item) => Object.values(item))
                       .map((row, index) => (
                         <React.Fragment key={index}>
-                         
-                          <StyledCell >{row[10]}</StyledCell>
-                          <StyledCell>{row[4]}</StyledCell>
-                          <StyledCell style={{ align: 'right' }}>${row[5]}</StyledCell>
-                          <StyledCell style={{ justifyContent: 'center' }}>{row[6]}</StyledCell>
-                          <StyledCell>{row[7]}</StyledCell>
-                         
-                            <StyledCell style={{ justifyContent: 'center' }}>
-                            {row[8]} 
-                            </StyledCell>
-                            <StyledCell>
-                            {dayjs(row[3]).format('DD MMM YYYY HH:mm:ss')}
+                          <StyledCell>
+                            <Checkbox
+                              name={row[1]}
+                              checked={checkedId.includes(row[1])}
+                              onChange={handleCheckbox}
+                              overrides={{
+                                Checkmark: {
+                                  style: {
+                                    borderTopWidth: '2px',
+                                    borderRightWidth: '2px',
+                                    borderBottomWidth: '2px',
+                                    borderLeftWidth: '2px',
+                                    borderTopLeftRadius: '4px',
+                                    borderTopRightRadius: '4px',
+                                    borderBottomRightRadius: '4px',
+                                    borderBottomLeftRadius: '4px',
+                                  },
+                                },
+                              }}
+                            />
                           </StyledCell>
-                          
+                          <StyledCell>{row[1]}</StyledCell>
+                          <StyledCell>{row[2]}</StyledCell>
+                          <StyledCell>
+                            {dayjs(row[3]).format('DD MMM YYYY')}
+                          </StyledCell>
+                          <StyledCell>{row[4]}</StyledCell>
+                          <StyledCell>${row[5]}</StyledCell>
+                          <StyledCell>{row[6]}</StyledCell>
+                          <StyledCell>{row[7]}</StyledCell>
+                          <StyledCell style={{ justifyContent: 'center' }}>
+                            <Status
+                              className={
+                                row[8].toLowerCase() === 'delivered'
+                                  ? sent
+                                  : row[8].toLowerCase() === 'pending'
+                                  ? paid
+                                  : row[8].toLowerCase() === 'processing'
+                                  ? processing
+                                  : row[8].toLowerCase() === 'failed'
+                                  ? failed
+                                  : ''
+                              }
+                            >
+                              {row[8]}
+                            </Status>
+                          </StyledCell>
                         </React.Fragment>
                       ))
                   ) : (

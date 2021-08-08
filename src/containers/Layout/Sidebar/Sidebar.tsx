@@ -15,8 +15,6 @@ import {
   CUSTOMERS,
   COUPONS,
   SETTINGS,
-  COMMAND_ORDER,
-  SITE_HELP
 } from 'settings/constants';
 import { AuthContext } from 'context/auth';
 
@@ -27,8 +25,6 @@ import { OrderIcon } from 'assets/icons/OrderIcon';
 import { CustomerIcon } from 'assets/icons/CustomerIcon';
 import { CouponIcon } from 'assets/icons/CouponIcon';
 import { SettingIcon } from 'assets/icons/SettingIcon';
-import { OrderCommandIcon } from 'assets/icons/OrderCommandIcon';
-import { AyudaIcon } from 'assets/icons/AyudaIcon';
 import { LogoutIcon } from 'assets/icons/LogoutIcon';
 
 const sidebarMenus = [
@@ -39,52 +35,40 @@ const sidebarMenus = [
     icon: <DashboardIcon />,
   },
   {
-    name: 'Productos',
+    name: 'Products',
     path: PRODUCTS,
     exact: false,
     icon: <ProductIcon />,
   },
   {
-    name: 'Categorías',
+    name: 'Category',
     path: CATEGORY,
     exact: false,
     icon: <SidebarCategoryIcon />,
   },
   {
-    name: 'Pedidos',
+    name: 'Orders',
     path: ORDERS,
     exact: false,
     icon: <OrderIcon />,
   },
   {
-    name: 'Clientes',
+    name: 'Customers',
     path: CUSTOMERS,
     exact: false,
     icon: <CustomerIcon />,
   },
   {
-    name: 'Ofertas',
+    name: 'Coupons',
     path: COUPONS,
     exact: false,
     icon: <CouponIcon />,
   },
   {
-    name: 'Panel Pedidos',
-    path: COMMAND_ORDER,
-    exact: false,
-    icon: <OrderCommandIcon />,
-  },
-  {
-    name: 'Configuración',
+    name: 'Settings',
     path: SETTINGS,
     exact: false,
     icon: <SettingIcon />,
-  },
-  {
-    name: 'Ayuda',
-    path: SITE_HELP,
-    exact: false,
-    icon: <AyudaIcon />,
   },
 ];
 
@@ -117,17 +101,13 @@ export default withRouter(function Sidebar({
 
       <LogoutBtn
         onClick={() => {
-          sessionStorage.setItem('infoUser',null);
-          sessionStorage.setItem('clientid',null);
-          sessionStorage.clear();
-          window.sessionStorage.clear();
           signout();
         }}
       >
         <Svg>
           <LogoutIcon />
         </Svg>
-        Cerrar Sesión
+        Logout
       </LogoutBtn>
     </SidebarWrapper>
   );

@@ -16,15 +16,19 @@ import {
 import NoResult from 'components/NoResult/NoResult';
 
 const GET_CUSTOMERS = gql`
-  query getClientes($clientid: String!,$searchText: String!) {
-    cliente (where: {clientid: {_eq: $clientid}, nombre: {_like: $searchText} }) {
+  query getCustomers($searchBy: String, $sortBy: String) {
+    customers(searchBy: $searchBy, sortBy: $sortBy) {
       id
-      imageURL
-      nombre
-      contacto
-      cantidad_orden
-      total_orden
-      creacion_date
+      image
+      name
+      contacts {
+        id
+        type
+        number
+      }
+      total_order
+      total_order_amount
+      creation_date
     }
   }
 `;
@@ -63,36 +67,39 @@ const Image = styled('img', () => ({
 }));
 
 const sortByOptions = [
-  { value: 'highestToLowest', label: 'De mayor a menor' },
-  { value: 'lowestToHighest', label: 'De menor a mayor' },
+  { value: 'highestToLowest', label: 'Highest To Lowest' },
+  { value: 'lowestToHighest', label: 'Lowest To Highest' },
 ];
 
-export default function Customers({clientid}) {
-
+export default function Customers() {
+  const { data, error, refetch } = useQuery(GET_CUSTOMERS);
   const [stock, setStock] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState([]);
 
-
-  let { data:data1, error } = useQuery(GET_CUSTOMERS, {
-    variables: {
-      clientid: sessionStorage.getItem('clientid'),
-      searchText: '%'+search+'%',
-    },
-  });
   if (error) {
     return <div>Error! {error.message}</div>;
   }
 
   function handleSort({ value }) {
     setStock(value);
-    
+    if (value.length) {
+      refetch({
+        sortBy: value[0].value,
+      });
+    } else {
+      refetch({
+        sortBy: null,
+      });
+    }
   }
-  function handleSearch(event) { 
+  function handleSearch(event) {
     const value = event.currentTarget.value;
+    console.log(value, 'cus val');
 
     setSearch(value);
+    refetch({ searchBy: value });
   }
-  console.log(data1, 'data');
+  console.log(data, 'data');
 
   return (
     <Grid fluid={true}>
@@ -105,7 +112,7 @@ export default function Customers({clientid}) {
             }}
           >
             <Col md={3}>
-              <Heading>Clientes</Heading>
+              <Heading>Customers</Heading>
             </Col>
 
             <Col md={9}>
@@ -113,7 +120,7 @@ export default function Customers({clientid}) {
                 <Col md={9}>
                   <Input
                     value={search}
-                    placeholder="Buscar por nombre"
+                    placeholder="Ex: Search By Name"
                     onChange={handleSearch}
                     clearable
                   />
@@ -124,7 +131,7 @@ export default function Customers({clientid}) {
                     options={sortByOptions}
                     labelKey="label"
                     valueKey="value"
-                    placeholder="Total de la orden"
+                    placeholder="Order Amount"
                     value={stock}
                     searchable={false}
                     onChange={handleSort}
@@ -138,16 +145,18 @@ export default function Customers({clientid}) {
             <TableWrapper>
               <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(70px, 70px) minmax(200px, auto) minmax(150px, auto) minmax(150px, max-content) minmax(150px, auto) minmax(150px, auto)">
                 <StyledHeadCell>ID</StyledHeadCell>
-                <StyledHeadCell>Imagen</StyledHeadCell>
-                <StyledHeadCell>Nombre</StyledHeadCell>
-                <StyledHeadCell>Contactos</StyledHeadCell>
-                <StyledHeadCell>Cantidad Pedidos</StyledHeadCell>
-                <StyledHeadCell>Total</StyledHeadCell>
-                <StyledHeadCell>Ingreso</StyledHeadCell>
+                <StyledHeadCell>Image</StyledHeadCell>
+                <StyledHeadCell>Name</StyledHeadCell>
+                <StyledHeadCell>Contacts</StyledHeadCell>
+                <StyledHeadCell>Total Order</StyledHeadCell>
+                <StyledHeadCell>Total Amount</StyledHeadCell>
+                <StyledHeadCell>Joining Date</StyledHeadCell>
 
-                {data1 && data1.cliente ? (
-                  data1.cliente.length ? (
-                    data1.cliente.map((item) => Object.values(item)).map((row, index) => (
+                {data ? (
+                  data.customers.length ? (
+                    data.customers
+                      .map((item) => Object.values(item))
+                      .map((row, index) => (
                         <React.Fragment key={index}>
                           <StyledBodyCell>{row[1]}</StyledBodyCell>
                           <StyledBodyCell>
@@ -156,7 +165,7 @@ export default function Customers({clientid}) {
                             </ImageWrapper>
                           </StyledBodyCell>
                           <StyledBodyCell>{row[3]}</StyledBodyCell>
-                          <StyledBodyCell>{row[4]}</StyledBodyCell>
+                          <StyledBodyCell>{row[4][1].number}</StyledBodyCell>
                           <StyledBodyCell>{row[5]}</StyledBodyCell>
                           <StyledBodyCell>${row[6]}</StyledBodyCell>
                           <StyledBodyCell>

@@ -4,7 +4,7 @@ import Button from 'components/Button/Button';
 import Popover, { PLACEMENT } from 'components/Popover/Popover';
 import Notification from 'components/Notification/Notification';
 import { AuthContext } from 'context/auth';
-import { COMMAND_ORDER, STAFF_MEMBERS, SETTINGS } from 'settings/constants';
+import { STAFF_MEMBERS, SETTINGS } from 'settings/constants';
 import { NotificationIcon } from 'assets/icons/NotificationIcon';
 import { AlertDotIcon } from 'assets/icons/AlertDotIcon';
 import { ArrowLeftRound } from 'assets/icons/ArrowLeftRound';
@@ -25,7 +25,7 @@ import {
   CloseButton,
   DrawerWrapper,
 } from './Topbar.style';
-import Logoimage from 'assets/image/tuecommerce.png';
+import Logoimage from 'assets/image/PickBazar.png';
 import UserImage from 'assets/image/user.jpg';
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
@@ -39,7 +39,6 @@ const data = [
   },
 ];
 const Topbar = ({ refs }: any) => {
-  const [info, setInfo ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
   const dispatch = useDrawerDispatch();
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -48,19 +47,11 @@ const Topbar = ({ refs }: any) => {
     [dispatch]
   );
 
-  if(info===null){
-    window.location.href = '/login';
-    window.open('/login');
-  }
- 
- 
-
-
   return (
     <TopbarWrapper ref={refs}>
       <Logo>
         <Link to="/">
-          <LogoImage src={JSON.parse(sessionStorage.getItem('infoUser')).img_site_url}   />
+          <LogoImage src={Logoimage} alt="pickbazar-admin" />
         </Link>
       </Logo>
 
@@ -109,7 +100,7 @@ const Topbar = ({ refs }: any) => {
       </DrawerWrapper>
 
       <TopbarRightSide>
-        <Button onClick={openDrawer}>Agregar Producto</Button>
+        <Button onClick={openDrawer}>Add Products</Button>
 
         <Popover
           content={({ close }) => <Notification data={data} onClear={close} />}
@@ -140,28 +131,19 @@ const Topbar = ({ refs }: any) => {
         <Popover
           content={({ close }) => (
             <UserDropdowItem>
-              <NavLink to={COMMAND_ORDER} exact={false} onClick={close}>
-                Panel Pedidos
-              </NavLink>
               <NavLink to={STAFF_MEMBERS} exact={false} onClick={close}>
-                Equipo
+                Staff
               </NavLink>
               <NavLink to={SETTINGS} exact={false} onClick={close}>
-                Configuración
+                Settings
               </NavLink>
               <LogoutBtn
                 onClick={() => {
                   signout();
-
-                  sessionStorage.removeItem('infoUser');
-                  sessionStorage.setItem('infoUser',null);
-                  sessionStorage.setItem('clientid',null);
-                  sessionStorage.clear();
-                  window.sessionStorage.clear();
                   close();
                 }}
               >
-                Cerrar Sesión
+                Logout
               </LogoutBtn>
             </UserDropdowItem>
           )}
@@ -182,7 +164,7 @@ const Topbar = ({ refs }: any) => {
           }}
         >
           <ProfileImg>
-            <Image src={JSON.parse(sessionStorage.getItem('infoUser')).img_user_url} alt="user" />
+            <Image src={UserImage} alt="user" />
           </ProfileImg>
         </Popover>
       </TopbarRightSide>

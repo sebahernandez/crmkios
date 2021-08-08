@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { useMutation, gql,useQuery } from '@apollo/client';
 import { useForm } from 'react-hook-form';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useDrawerDispatch, useDrawerState } from 'context/DrawerContext';
 import Uploader from 'components/Uploader/Uploader';
 import Button, { KIND } from 'components/Button/Button';
@@ -11,7 +10,6 @@ import Input from 'components/Input/Input';
 import { Textarea } from 'components/Textarea/Textarea';
 import Select from 'components/Select/Select';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
-import { app } from '../../../src/base';
 
 import {
   Form,
@@ -21,182 +19,94 @@ import {
   ButtonGroup,
 } from '../DrawerItems/DrawerItems.style';
 
+const options = [
+  { value: 'Fruits & Vegetables', name: 'Fruits & Vegetables', id: '1' },
+  { value: 'Meat & Fish', name: 'Meat & Fish', id: '2' },
+  { value: 'Purse', name: 'Purse', id: '3' },
+  { value: 'Hand bags', name: 'Hand bags', id: '4' },
+  { value: 'Shoulder bags', name: 'Shoulder bags', id: '5' },
+  { value: 'Wallet', name: 'Wallet', id: '6' },
+  { value: 'Laptop bags', name: 'Laptop bags', id: '7' },
+  { value: 'Women Dress', name: 'Women Dress', id: '8' },
+  { value: 'Outer Wear', name: 'Outer Wear', id: '9' },
+  { value: 'Pants', name: 'Pants', id: '10' },
+];
 
-
-
-const GET_CATEGORIAS = gql`
-   query  ($clientid: String!) {
-    categorias (where: {clientid: {_eq: $clientid}}) {
-      id
-      clientid
-      name 
-      value
-    }
-  }  
-`;
-
-
-const UPDATE_PRODUCT = gql`
-  
-  mutation update_producto($id: Int!,$nombre: String!,$descripcion: String!, $sku: String!,$unidad: Int!, $precio: Int!, $precio_venta: Int!, $descuento: Int!,
-  $categoria: Int!, $cantidad: Int!, $imageURL: String!, $clientid: String! ) {
-    update_producto(where: {id: {_eq: $id}, clientid:{_eq: $clientid}  }
-            _set: {
-                    nombre: $nombre,
-                    descripcion: $descripcion,
-                    sku: $sku,
-                    unidad: $unidad,
-                    precio: $precio
-                    precio_venta: $precio_venta,
-                    descuento: $descuento,
-                    categoria: $categoria,
-                    cantidad: $cantidad,
-                    imageURL: $imageURL
-                  },
-          ){
-            affected_rows
-          }
-    }
-`;
-
-const DELETE_PRODUCT = gql`
-  
-  mutation delete_producto($id: Int!, $clientid: String!) {
-  delete_producto(
-      where: {id: {_eq:$id}, clientid:{_eq: $clientid} } 
-  ){
-      affected_rows
-  }
-  }
-
-`;
-
+const typeOptions = [
+  { value: 'grocery', name: 'Grocery', id: '1' },
+  { value: 'women-cloths', name: 'Women Cloths', id: '2' },
+  { value: 'bags', name: 'Bags', id: '3' },
+  { value: 'makeup', name: 'Makeup', id: '4' },
+];
 
 type Props = any;
 
-
-
-const ModifyProduct: React.FC<Props> = () => {
-
-  let options = [];
-
+const AddProduct: React.FC<Props> = () => {
   const dispatch = useDrawerDispatch();
-  const data1 = useDrawerState('data');
-  
+  const data = useDrawerState('data');
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
   ]);
-
   const { register, handleSubmit, setValue } = useForm({
-    defaultValues: data1,
+    defaultValues: data,
   });
-  const [orderId, setOrderId] = useState([{ value: data1.id }]);
-  const [clientid, setClientid] = useState([{ value: data1.clientid }]); 
-  const [tag, setTag] = useState([{ value: data1.categorias[0].value }]);
-  const [imageURL, setImageURL] = useState(data1.imageURL);  
-
-  
-
+  const [type, setType] = useState([{ value: data.type }]);
+  const [tag, setTag] = useState([]);
+  const [description, setDescription] = useState(data.description);
   React.useEffect(() => {
-    register({ name: 'orderId' });
-    register({ name: 'clientid' });
-    register({ name: 'categorias' });
-    register({ name: 'categoria' });
-    register({ name: 'imageURL', required: true }); 
+    register({ name: 'type' });
+    register({ name: 'categories' });
+    register({ name: 'image' });
+    register({ name: 'description' });
   }, [register]);
 
-  const [update_producto, {error}] = useMutation(UPDATE_PRODUCT );
-  const [delete_producto] = useMutation(DELETE_PRODUCT );
-
-
-
-  let LoadCategory = ( param ) => {
- 
-    const { loading, error, data } =  useQuery(GET_CATEGORIAS, {
-      variables: {clientid: param},
-    });
- 
-    if (loading) return null;
-    if (error) return `Error! ${error}`;
-  
-    return data
-    
-  }
-  options = LoadCategory(data1.clientid)
- 
- 
   const handleMultiChange = ({ value }) => {
-    if(value && value.length > 0)
-    {
-      setValue('categoria', value[0].id);
-    }  
+    setValue('categories', value);
     setTag(value);
   };
-  
-  const onFileChange = async (e) => {
-    const file = e.target.files[0];
-    if(file){
-      const storageRef = app.storage().ref();
-      const fileRef = storageRef.child(file.name);
-      await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
-      setImageURL(await fileRef.getDownloadURL());            
-    }
-   } 
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+    setValue('description', value);
+    setDescription(value);
+  };
 
-
+  const handleTypeChange = ({ value }) => {
+    setValue('type', value);
+    setType(value);
+  };
+  const handleUploader = (files) => {
+    setValue('image', files[0].path);
+  };
   const onSubmit = (data) => {
-     
-    const product = {
-      id: orderId,
-      clientid: clientid,
-      nombre: data.nombre,
-      descripcion: data.descripcion,
-      categoria: Number(data.categoria),
-      sku: data.sku,
-      cantidad: Number(data.cantidad),
-      imageURL: imageURL && imageURL.length !== 0 ? imageURL : '',
-      precio: Number(data.precio),
-      precio_venta: Number(data.precio_venta),
-      descuento: Number(data.descuento)     
-    };    
-    console.log(product, 'actualizando Producto');
-
-    update_producto({
-      variables: {id: orderId[0].value,
-                  clientid: clientid[0].value,
-                  nombre: product.nombre, 
-                  descripcion: product.descripcion,
-                  unidad: 1,
-                  sku: product.sku,
-                  precio: product.precio,
-                  precio_venta: product.precio_venta,
-                  cantidad: product.cantidad,
-                  descuento: product.descuento,
-                  categoria: product.categoria,
-                  imageURL: product.imageURL 
-                }
-    });
-    closeDrawer(); 
+    // const newProduct = {
+    //   id: uuidv4(),
+    //   name: data.name,
+    //   type: data.type[0].value,
+    //   description: data.description,
+    //   image: data.image,
+    //   price: Number(data.price),
+    //   unit: data.unit,
+    //   salePrice: Number(data.salePrice),
+    //   discountInPercent: Number(data.discountInPercent),
+    //   quantity: Number(data.quantity),
+    //   slug: data.name,
+    //   creation_date: new Date(),
+    // };
+    console.log(data, 'newProduct data');
+    closeDrawer();
   };
-
-  const darBaja = () => {
-   
-     delete_producto({
-       variables:{id: orderId[0].value,clientid: clientid[0].value}});
-    closeDrawer(); 
-  };
-
-
 
   return (
     <>
       <DrawerTitleWrapper>
-        <DrawerTitle>Modificar Producto</DrawerTitle>
+        <DrawerTitle>Update Product</DrawerTitle>
       </DrawerTitleWrapper>
 
-      <Form onSubmit={handleSubmit(onSubmit)} style={{ height: '100%' }}>
+      <Form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ height: '100%' }}
+        noValidate
+      >
         <Scrollbars
           autoHide
           renderView={(props) => (
@@ -212,12 +122,11 @@ const ModifyProduct: React.FC<Props> = () => {
         >
           <Row>
             <Col lg={4}>
-              <FieldDetails>Sube la Imagen de tu producto aquí!</FieldDetails>
+              <FieldDetails>Upload your Product image here</FieldDetails>
             </Col>
             <Col lg={8}>
               <DrawerBox>
-                <input  type="file" onChange={onFileChange} />
-                <img width="150" height="150" src={imageURL}/>
+                <Uploader onChange={handleUploader} imageURL={data.image} />
               </DrawerBox>
             </Col>
           </Row>
@@ -225,77 +134,126 @@ const ModifyProduct: React.FC<Props> = () => {
           <Row>
             <Col lg={4}>
               <FieldDetails>
-                Agregue la descripción de su producto y la información necesaria desde aquí
+                Add your Product description and necessary information from here
               </FieldDetails>
             </Col>
 
             <Col lg={8}>
               <DrawerBox>
-
                 <FormFields>
-                  <FormLabel>Código</FormLabel>
-                  <Input type="text" disabled  inputRef={register} name="id" />
-                </FormFields>
-                <FormFields>
-                  <FormLabel>Client ID</FormLabel>
-                  <Input type="text" disabled  inputRef={register} name="clientid" />
-                </FormFields>
-
-
-                <FormFields>
-                  <FormLabel>Nombre</FormLabel>
-                  <Input type="text"
-                    inputRef={register} /* ({ required: true, maxLength: 20 })} */
-                    name="nombre"
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    inputRef={register({ required: true, maxLength: 20 })}
+                    name="name"
                   />
                 </FormFields>
+
                 <FormFields>
-                  <FormLabel>Descripción</FormLabel>
-                  <Input type="text"
-                    inputRef={register} /* ({ required: true, maxLength: 20 })} */
-                    name="descripcion"
+                  <FormLabel>Description</FormLabel>
+                  <Textarea
+                    value={description}
+                    onChange={handleDescriptionChange}
                   />
-                </FormFields>
-                <FormFields>
-                  <FormLabel>SKU</FormLabel>
-                  <Input type="text" inputRef={register} name="sku" />
                 </FormFields>
 
                 <FormFields>
-                  <FormLabel>Precio Referencia</FormLabel>
+                  <FormLabel>Unit</FormLabel>
+                  <Input type="text" inputRef={register} name="unit" />
+                </FormFields>
+
+                <FormFields>
+                  <FormLabel>Price</FormLabel>
                   <Input
                     type="number"
-                    inputRef={register} /*({ required: true })}*/
-                    name="precio"
+                    inputRef={register({ required: true })}
+                    name="price"
                   />
                 </FormFields>
 
                 <FormFields>
-                  <FormLabel>Precio Venta</FormLabel>
-                  <Input type="number" inputRef={register} name="precio_venta" />
+                  <FormLabel>Sale Price</FormLabel>
+                  <Input type="number" inputRef={register} name="salePrice" />
                 </FormFields>
 
                 <FormFields>
-                  <FormLabel>% Descuento</FormLabel>
+                  <FormLabel>Discount In Percent</FormLabel>
                   <Input
                     type="number"
                     inputRef={register}
-                    name="descuento"
+                    name="discountInPercent"
                   />
                 </FormFields>
 
                 <FormFields>
-                  <FormLabel>Cantidad</FormLabel>
-                  <Input type="number" inputRef={register} name="cantidad" />
+                  <FormLabel>Product Quantity</FormLabel>
+                  <Input type="number" inputRef={register} name="quantity" />
                 </FormFields>
 
                 <FormFields>
-                  <FormLabel>Categorias</FormLabel>
+                  <FormLabel>Type</FormLabel>
+                  <Select
+                    options={typeOptions}
+                    labelKey="name"
+                    valueKey="value"
+                    placeholder="Product Type"
+                    value={type}
+                    searchable={false}
+                    onChange={handleTypeChange}
+                    overrides={{
+                      Placeholder: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      DropdownListItem: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      OptionContent: {
+                        style: ({ $theme, $selected }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $selected
+                              ? $theme.colors.textDark
+                              : $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      SingleValue: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      Popover: {
+                        props: {
+                          overrides: {
+                            Body: {
+                              style: { zIndex: 5 },
+                            },
+                          },
+                        },
+                      },
+                    }}
+                  />
+                </FormFields>
+
+                <FormFields>
+                  <FormLabel>Categories</FormLabel>
                   <Select
                     options={options}
                     labelKey="name"
                     valueKey="value"
-                    placeholder="seleccione"
+                    placeholder="Product Tag"
                     value={tag}
                     onChange={handleMultiChange}
                     overrides={{
@@ -325,38 +283,10 @@ const ModifyProduct: React.FC<Props> = () => {
                         },
                       },
                     }}
-                    // multi
+                    multi
                   />
                 </FormFields>
               </DrawerBox>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={4}>
-              <FieldDetails>Desea dar de Baja este Producto ?</FieldDetails>
-            </Col>
-            <Col lg={8}>
-            <DrawerBox>
-            <Button 
-             kind={KIND.minimal}
-             onClick={darBaja}
-            overrides={{
-              BaseButton: {
-                style: ({ $theme }) => ({
-                  width: '50%',
-                  borderTopLeftRadius: '3px',
-                  borderTopRightRadius: '3px',
-                  borderBottomRightRadius: '3px',
-                  borderBottomLeftRadius: '3px',
-                  marginRight: '15px',
-                  color: $theme.colors.red400,
-                }),
-              },
-            }}
-          >
-            Dar de Baja
-          </Button>
-          </DrawerBox>
             </Col>
           </Row>
         </Scrollbars>
@@ -379,7 +309,7 @@ const ModifyProduct: React.FC<Props> = () => {
               },
             }}
           >
-            Cancelar
+            Cancel
           </Button>
 
           <Button
@@ -396,7 +326,7 @@ const ModifyProduct: React.FC<Props> = () => {
               },
             }}
           >
-            Guardar
+            Update Product
           </Button>
         </ButtonGroup>
       </Form>
@@ -404,4 +334,4 @@ const ModifyProduct: React.FC<Props> = () => {
   );
 };
 
-export default ModifyProduct;
+export default AddProduct;

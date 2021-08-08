@@ -1,8 +1,8 @@
 import React from 'react';
 export const Cooking = ({
   color = 'currentColor',
-  width = '23px',
-  height = '23px',
+  width = '18px',
+  height = '18px',
 }) => {
   return (
     <svg

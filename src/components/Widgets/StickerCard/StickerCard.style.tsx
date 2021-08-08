@@ -7,8 +7,7 @@ export const Card = styled("div", () => ({
   flexDirection: "column",
   padding: "30px",
   borderRadius: "6px",
-  backgroundColor: "#ffffff",
-  boxShadow: '0px 10px 10px -6px #dedede',
+  backgroundColor: "#ffffff"
 }));
 
 export const TopInfo = styled("div", () => ({

@@ -123,11 +123,11 @@ export const ProductMeta = styled('div', ({ $theme }) => ({
 }));
 
 export const OrderID = styled('span', ({ $theme }) => ({
-  ...$theme.typography.font14,
-  color: $theme.colors.textNormal,
+  ...$theme.typography.fontBold14,
+  color: $theme.colors.textDark,
 
   '@media only screen and (max-width: 767px)': {
-    ...$theme.typography.font12,
+    ...$theme.typography.fontBold12,
   },
 }));
 

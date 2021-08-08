@@ -1,15 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
-import { useMutation, gql, useQuery } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import { useDrawerDispatch } from 'context/DrawerContext';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Input from 'components/Input/Input';
 import Select from 'components/Select/Select';
 import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
 import { Row, Col } from 'components/FlexBox/FlexBox';
-import { app } from '../../../src/base';
 import {
   Form,
   DrawerTitleWrapper,
@@ -20,34 +19,40 @@ import {
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 
 const GET_COUPONS = gql`
-  query listaCupones($clientid: String!) {
-    cupon(where: {clientid: {_eq: $clientid}}) {
-      clientid
-      code
-      creacion
-      cupones_usados
-      discount
-      estado
+  query getCoupons($status: String, $searchBy: String) {
+    coupons(status: $status, searchBy: $searchBy) {
       id
-      image
-      numero_cupon
-      titulo
+      title
+      code
+      number_of_used_coupon
+      number_of_coupon
+      expiration_date
+      creation_date
+      status
     }
   }
 `;
 const CREATE_COUPON = gql`
-  mutation MyMutation ($clientid: String!, $titulo: String!, $numero_cupon: Int!, $image: String!, $code: String!, $cupones_usados: Int!, $discount: Int!, $estado: String!) {
-    insert_cupon(objects: {clientid: $clientid, code: $code,   cupones_usados: $cupones_usados, discount: $discount, estado: $estado, image: $image, numero_cupon: $numero_cupon, titulo: $titulo}) {
-      returning {
-        id
-      }
-      affected_rows
+  mutation createCoupon($coupon: AddCouponInput!) {
+    createCoupon(coupon: $coupon) {
+      id
+      title
+      code
+      number_of_used_coupon
+      number_of_coupon
+      expiration_date
+      creation_date
+      status
     }
   }
 `;
 
- 
-
+const options = [
+  { value: 'grocery', name: 'Grocery', id: '1' },
+  { value: 'women-cloths', name: 'Women Cloths', id: '2' },
+  { value: 'bags', name: 'Bags', id: '3' },
+  { value: 'makeup', name: 'Makeup', id: '4' },
+];
 type Props = any;
 
 const AddCampaing: React.FC<Props> = (props) => {
@@ -56,62 +61,50 @@ const AddCampaing: React.FC<Props> = (props) => {
     dispatch,
   ]);
 
-  const [clientid, setClientid] = useState(sessionStorage.getItem('clientid')); 
-  const [image, setImage] = useState(''); 
   const { register, handleSubmit, setValue } = useForm();
-  const [categoria, setCategoria] = useState(null); 
-  React.useEffect(() => { 
-    register({ name: 'image', required: true });
+  const [category, setCategory] = useState([]);
+  React.useEffect(() => {
+    register({ name: 'category' });
   }, [register]);
-  const [createCoupon] = useMutation(CREATE_COUPON);
+  const [createCoupon] = useMutation(CREATE_COUPON, {
+    update(cache, { data: { createCoupon } }) {
+      const { coupons } = cache.readQuery({
+        query: GET_COUPONS,
+      });
 
-  const onFileChange = async (e) => {
-    const file = e.target.files[0];
-    if(file){
-      const storageRef = app.storage().ref();
-      const fileRef = storageRef.child(file.name);
-      await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
-      setImage(await fileRef.getDownloadURL());      
-    }
-   } 
+      cache.writeQuery({
+        query: GET_COUPONS,
+        data: { coupons: coupons.concat([createCoupon]) },
+      });
+    },
+  });
 
-   const onSubmit = (data) => {
-    const cupon = {
+  const onSubmit = (data) => {
+    const newCoupon = {
       id: uuidv4(),
-      clientid: clientid,
-      titulo: data.titulo,
+      title: data.name,
       code: data.code,
-      estado: '',
-      discount: Number(data.discount),
-      numero_cupon: Number(data.numero_cupon),
-      cupones_usados: Number(data.cupones_usados),
-      image: image && image.length !== 0 ? image : ''
+      category: category[0].value,
+      discount_in_percent: Number(data.discount_in_percent),
+      number_of_coupon: Number(data.number_of_coupon),
+      minimum_amount: Number(data.minimum_amount),
+      creation_date: new Date(),
     };
-    console.log(cupon,'>>>>>>>>>>>>>>>>>>>>>>>')
-    createCoupon({ 
-        variables: {id: cupon.id,
-          clientid: cupon.clientid,
-          titulo: cupon.titulo,
-          code: cupon.code,
-          estado: cupon.estado,
-          discount: cupon.discount,
-          numero_cupon: cupon.numero_cupon,
-          cupones_usados: cupon.cupones_usados,
-          image: cupon.image
-        } 
+    createCoupon({
+      variables: { coupon: newCoupon },
     });
     closeDrawer();
-    console.log(cupon, 'newCoupon');
+    console.log(newCoupon, 'newCoupon');
   };
- 
- 
+  const handleCategoryChange = ({ value }) => {
+    setValue('category', value);
+    setCategory(value);
+  };
 
   return (
     <>
       <DrawerTitleWrapper>
-        <DrawerTitle>Anadir Campaña</DrawerTitle>
+        <DrawerTitle>Add Campaign</DrawerTitle>
       </DrawerTitleWrapper>
 
       <Form onSubmit={handleSubmit(onSubmit)} style={{ height: '100%' }}>
@@ -128,77 +121,110 @@ const AddCampaing: React.FC<Props> = (props) => {
             />
           )}
         >
-
-          <Row>
-            <Col lg={4}>
-              <FieldDetails>Sube la Imagen de tu cupon aquí!</FieldDetails>
-            </Col>
-            <Col lg={8}>
-           <DrawerBox
-                overrides={{
-                  Block: {
-                    style: {
-                      width: '100%',
-                      height: 'auto',
-                      padding: '30px',
-                      borderRadius: '3px',
-                      backgroundColor: '#ffffff',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'left',
-                    },
-                  },
-                }}
-              > 
-              
-             <input className="charge-image" type="file" onChange={onFileChange}  />
-            <img style={{objectFit:'cover'}} width="100" height="100" src={image}/>
-             </DrawerBox> 
-            </Col>
-          </Row>
           <Row>
             <Col lg={4}>
               <FieldDetails>
-                Agregue la descripción de su cupón y la información necesaria desde aquí
+                Add your campaign description and necessary informations from
+                here
               </FieldDetails>
             </Col>
 
             <Col lg={8}>
               <DrawerBox>
-
                 <FormFields>
-                  <FormLabel>Código</FormLabel>
-                  <Input type="text"  inputRef={register} name="code" />
-                  
-                </FormFields>
-                <FormFields>
-                  <FormLabel>Client ID</FormLabel>
-                  <Input type="text" disabled  inputRef={register} name="clientid" value={clientid}/>
+                  <FormLabel>Campaign Name</FormLabel>
+                  <Input inputRef={register} name="name" />
                 </FormFields>
 
-
                 <FormFields>
-                  <FormLabel>Título</FormLabel>
-                  <Input type="text"
-                    inputRef={register} /* ({ required: true, maxLength: 20 })} */
-                    name="titulo"
+                  <FormLabel>Discount Percent</FormLabel>
+                  <Input
+                    type="number"
+                    inputRef={register({ required: true })}
+                    name="discount_in_percent"
                   />
                 </FormFields>
+
                 <FormFields>
-                  <FormLabel>Descuento(%)</FormLabel>
-                  <Input type="number" inputRef={register} name="discount" />
+                  <FormLabel>Discount Code</FormLabel>
+                  <Input inputRef={register({ required: true })} name="code" />
                 </FormFields>
 
                 <FormFields>
-                  <FormLabel>Número de Cupones</FormLabel>
-                  <Input type="number" inputRef={register} name="numero_cupon" />
+                  <FormLabel>Number of Coupon</FormLabel>
+                  <Input
+                    type="number"
+                    inputRef={register({ required: true })}
+                    name="number_of_coupon"
+                  />
                 </FormFields>
 
                 <FormFields>
-                  <FormLabel>Cupones Usados</FormLabel>
-                  <Input type="number" inputRef={register} name="cupones_usados" />
+                  <FormLabel>Category</FormLabel>
+                  <Select
+                    options={options}
+                    labelKey="name"
+                    valueKey="value"
+                    placeholder="Ex: Choose parent category"
+                    value={category}
+                    searchable={false}
+                    onChange={handleCategoryChange}
+                    overrides={{
+                      Placeholder: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      DropdownListItem: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      OptionContent: {
+                        style: ({ $theme, $selected }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $selected
+                              ? $theme.colors.textDark
+                              : $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      SingleValue: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold14,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      Popover: {
+                        props: {
+                          overrides: {
+                            Body: {
+                              style: { zIndex: 5 },
+                            },
+                          },
+                        },
+                      },
+                    }}
+                  />
                 </FormFields>
 
+                <FormFields>
+                  <FormLabel>Minimum Amount Required</FormLabel>
+                  <Input
+                    type="number"
+                    inputRef={register}
+                    name="minimum_amount"
+                  />
+                </FormFields>
               </DrawerBox>
             </Col>
           </Row>
@@ -222,7 +248,7 @@ const AddCampaing: React.FC<Props> = (props) => {
               },
             }}
           >
-            Cancelar
+            Cancel
           </Button>
 
           <Button
@@ -239,7 +265,7 @@ const AddCampaing: React.FC<Props> = (props) => {
               },
             }}
           >
-            Crear Campaña
+            Create Campaign
           </Button>
         </ButtonGroup>
       </Form>
