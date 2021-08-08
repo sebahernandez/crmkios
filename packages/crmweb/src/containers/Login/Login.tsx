@@ -108,9 +108,7 @@ export default function Login() {
 							auth()
 						})
 						}
-						<p className="forgot-password text-right">
-							Se me olvido la  <a href="#">contraseña?</a>
-						</p>
+						 
 					</FormWrapper>
 			</Wrapper>
         </>
