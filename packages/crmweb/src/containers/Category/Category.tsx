@@ -1,16 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { styled, withStyle, createThemedUseStyletron } from 'baseui';
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
-import { useDrawerDispatch } from 'context/DrawerContext';
-
-import Select from 'components/Select/Select';
+import { useDrawerDispatch } from 'context/DrawerContext'; 
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 
 import { Plus } from 'assets/icons/PlusMinus';
 import { useSubscription, gql } from '@apollo/client';
-import { Wrapper, Header, Heading } from 'components/Wrapper.style';
-import Checkbox from 'components/CheckBox/CheckBox';
+import { Wrapper, Header, Heading } from 'components/Wrapper.style'; 
 
 import {
   TableWrapper,
@@ -70,35 +67,14 @@ const Row = withStyle(Rows, () => ({
   },
 }));
 
-const statusSelectOptions = [
-  { value: 'active', label: 'Active' },
-  { value: 'revoked', label: 'Revoked' },
-];
-
 export default function Category({clientid}) {
-  const dispatch = useDrawerDispatch();
-  const [checkedId, setCheckedId] = useState([]);
-  const [checked, setChecked] = useState(false);
+  const dispatch = useDrawerDispatch(); 
 
   const openDrawer = useCallback(
     () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'CATEGORY_FORM' }),
     [dispatch]
   ); 
-  const [search, setSearch] = useState('');
-  const [useCss, theme] = themedUseStyletron();
-  const active = useCss({
-    ':before': {
-      content: '""',
-      backgroundColor: theme.colors.primary,
-    },
-  });
-  const revoked = useCss({
-    ':before': {
-      content: '""',
-      backgroundColor: theme.colors.red400,
-    },
-  });
-
+  const [search, setSearch] = useState('');  
   const {  error, data } =  useSubscription(GET_CATEGORIAS, {
       variables: {
         clientid: sessionStorage.getItem('clientid'),

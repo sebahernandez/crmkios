@@ -26,9 +26,7 @@ import {
   DrawerIcon,
   CloseButton,
   DrawerWrapper,
-} from './TopbarCommand.style';
-import Logoimage from 'assets/image/tuecommerce.png';
-import UserImage from 'assets/image/user.jpg';
+} from './TopbarCommand.style'; 
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
@@ -53,10 +51,7 @@ const TopbarCommand = ({ refs }: any) => {
   if(info===null){
     window.location.href = '/login';
     window.open('/login');
-  }
- 
- 
-
+  } 
 
   return (
     <TopbarWrapper ref={refs}>

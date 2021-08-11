@@ -30,11 +30,11 @@ const GET_SUSCRIPTOR = gql`
 export default function Login() {
 	const [usuario, SetUsuario] = useState('');
 	const [password, SetPassword] = useState('');
-	const { authenticate, isAuthenticated } = useContext(AuthContext);
+	const { authenticate } = useContext(AuthContext);
 	let history = useHistory();
 	let location = useLocation();
 	let { from } = (location.state as any) || { from: { pathname: DASHBOARD } };
-	const [loadAuthorInfo, { called, loading, data: authorInfo }] = useLazyQuery(
+	const [loadAuthorInfo, { data: authorInfo }] = useLazyQuery(
 		GET_SUSCRIPTOR, {
 		variables: { usuario, password }
 	});

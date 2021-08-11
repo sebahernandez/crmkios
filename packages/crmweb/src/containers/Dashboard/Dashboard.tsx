@@ -203,24 +203,7 @@ function Dashboard({clientid}) {
   var [totalReembolsos, setTotalReembolsos] = useState(0);
   var [totalIngresoReembolsos, setTotalIngresoReembolsos] = useState(0);
   var [flagTotalEntrega, setFlagTotalEntrega] = useState('down');
-
-  const cm = []; 
-  var state = {
-        ts : 0,
-        tm : 0,
-        totalOrdenes:0,
-        totalIngresos:0,
-        clienteNuevo: 0,
-        totalEntrega: 0,
-        totalReembolsos: 0,
-        totalIngresoReembolsos: 0,
-        categoriesMeses: [],
-        serieVisitas: null,
-        serieDia,
-        serieDiaTotal,
-        serieTotalAnual
-  } 
-
+  
  
 
   useEffect(() => {
@@ -252,7 +235,7 @@ function Dashboard({clientid}) {
 
   async function cargaObjetivos() {
     
-    var semana = await client.query({
+    await client.query({
           query: GET_OBJETIVOS,
           variables: {cid: clientid}
       })
@@ -264,7 +247,8 @@ function Dashboard({clientid}) {
     .catch(err => {
       console.log(err);
     }); 
-    var mes = await client.query({
+    
+    await client.query({
       query: GET_OBJETIVOS,
       variables: {cid: clientid}
     })

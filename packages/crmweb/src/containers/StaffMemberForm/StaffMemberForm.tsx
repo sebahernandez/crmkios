@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-import { useForm } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
+import { useForm } from 'react-hook-form'; 
 import { useMutation, gql } from '@apollo/client';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDrawerDispatch } from 'context/DrawerContext';
@@ -82,11 +81,10 @@ const StaffMemberForm: React.FC<Props> = (props) => {
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
   ]);
-  const [clientid, setClientid] = useState(sessionStorage.getItem('clientid')); 
+  const [clientid] = useState(sessionStorage.getItem('clientid')); 
   const { register, handleSubmit, setValue } = useForm( );
   const [rol, setRol] = React.useState(undefined);
-  const [estado, setEstado] = React.useState(undefined);
-  const [telefoono, setTelefono] = React.useState(undefined);
+  const [estado, setEstado] = React.useState(undefined); 
   const [country, setCountry] = React.useState(undefined);
   const [imageURL, setImageURL] = useState(null); 
   const [checked, setChecked] = React.useState(true);

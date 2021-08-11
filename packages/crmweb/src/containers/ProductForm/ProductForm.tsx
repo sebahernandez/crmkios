@@ -66,9 +66,9 @@ const AddProduct: React.FC<Props> = (props) => {
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
   ]);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit } = useForm();
   const [tag, setTag] = useState([]);
-  const [clientid, setClientid] = useState(sessionStorage.getItem('clientid')); 
+  const [clientid] = useState(sessionStorage.getItem('clientid')); 
   const [imageURL, setImageURL] = useState(null); 
   const [categoria, setCategoria] = useState(null); 
   

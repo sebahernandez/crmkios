@@ -16,8 +16,7 @@ import {
   StyledTable,
   StyledHeadCell,
   StyledBodyCell,
-} from './../Customers/Customers.style';
-import dayjs from 'dayjs';
+} from './../Customers/Customers.style'; 
 
 export const ProductsRow = styled('div', ({ $theme }) => ({
   display: 'flex',
@@ -126,14 +125,7 @@ const ImageWrapper = styled('div', ({ $theme }) => ({
 const Image = styled('img', () => ({
   width: '100%',
   height: 'auto',
-}));
-
-
-let typeSelectOptions = [ 
-];
-
-let productos = [ 
-];
+})); 
 const selectorView = [
   { value: true, label: 'Vista Imagen' },
   { value: false, label: 'Vista Detalle' },
@@ -141,17 +133,12 @@ const selectorView = [
 
 export default function Products({clientid}) {
   
-
-  const [loadingMore, toggleLoading] = useState(false);
+ 
   // tipo de producto / categoria
-  const [type, setType] = useState([]);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [type, setType] = useState([]); 
   const [isView, setIsView] = useState(true);
   const [textoView, setTextoView] = useState('Vista Imagen');
- 
-  
-  // order by asc / desc
-  const [priceOrder, setPriceOrder] = useState([{ value: 'desc', label: 'Más alta a más baja' }]);
+
   // seach text
   const [search, setSearch] = useState(''); 
 

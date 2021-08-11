@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import { styled, withStyle, createThemedUseStyletron } from 'baseui';
+import { withStyle, createThemedUseStyletron } from 'baseui';
 import dayjs from 'dayjs';
-import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
-import Select from 'components/Select/Select';
-import Input from 'components/Input/Input';
-
-import { FormFields, FormLabel } from 'components/FormFields/FormFields';
+import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox'; 
+import Input from 'components/Input/Input'; 
 import { useQuery, gql } from '@apollo/client';
-import { Wrapper, Header, Heading } from 'components/Wrapper.style';
-import Checkbox from 'components/CheckBox/CheckBox';
+import { Wrapper, Header, Heading } from 'components/Wrapper.style'; 
 
 import {
   TableWrapper,
@@ -35,31 +31,6 @@ const GET_ORDERS = gql`
   }
 `;
 
-type CustomThemeT = { red400: string; textNormal: string; colors: any };
-const themedUseStyletron = createThemedUseStyletron<CustomThemeT>();
-
-const Status = styled('div', ({ $theme }) => ({
-  ...$theme.typography.fontBold14,
-  color: $theme.colors.textDark,
-  display: 'flex',
-  alignItems: 'center',
-  lineHeight: '1',
-  textTransform: 'capitalize',
-
-  ':before': {
-    content: '""',
-    width: '10px',
-    height: '10px',
-    display: 'inline-block',
-    borderTopLeftRadius: '10px',
-    borderTopRightRadius: '10px',
-    borderBottomRightRadius: '10px',
-    borderBottomLeftRadius: '10px',
-    backgroundColor: $theme.borders.borderE6,
-    marginRight: '10px',
-  },
-}));
-
 const Col = withStyle(Column, () => ({
   '@media only screen and (max-width: 767px)': {
     marginBottom: '20px',
@@ -75,57 +46,13 @@ const Row = withStyle(Rows, () => ({
     alignItems: 'center',
   },
 }));
+ 
 
-const statusSelectOptions = [
-  { value: 'Todos', label: 'Todos' },
-  { value: 'Recibida', label: 'Recibida' },
-  { value: 'En Ruta', label: 'En Ruta' },
-  { value: 'Por Entregar', label: 'Por Entregar' },
-  { value: 'En Preparacion', label: 'En Preparacion' },
-  { value: 'Cancelado', label: 'Cancelado' },
-];
-const limitSelectOptions = [
-  { value: 7, label: 'últimos 7 pedidos' },
-  { value: 15, label: 'últimos15 pedidos' },
-  { value: 30, label: 'últimos 30 pedidos' },
-];
+export default function Orders({clientid}) { 
 
-export default function Orders({clientid}) {
-  const [checkedId, setCheckedId] = useState([]);
-  const [checked, setChecked] = useState(false);
-
-  const [useCss, theme] = themedUseStyletron();
-  const sent = useCss({
-    ':before': {
-      content: '""',
-      backgroundColor: theme.colors.primary,
-    },
-  });
-  const failed = useCss({
-    ':before': {
-      content: '""',
-      backgroundColor: theme.colors.red400,
-    },
-  });
-  const processing = useCss({
-    ':before': {
-      content: '""',
-      backgroundColor: theme.colors.textNormal,
-    },
-  });
-  const paid = useCss({
-    ':before': {
-      content: '""',
-      backgroundColor: theme.colors.blue400,
-    },
-  });
-
-  const [estado, setEstado] = useState([{ value: 'Entregado', label: 'Entregado' }]);
-  const [limit, setLimit] = useState([]);
-  const [tag, setTag] = useState([]);
   const [search, setSearch] = useState('');
 
-  const { data, error, refetch } = useQuery(GET_ORDERS, {
+  const { data, error } = useQuery(GET_ORDERS, {
     variables: {
       clientid: sessionStorage.getItem('clientid'),
       searchText: '%'+search+'%' 
@@ -135,39 +62,13 @@ export default function Orders({clientid}) {
   if (error) {
     return <div>Error! {error.message}</div>;
   }
-
- 
-
-  function handleLimite({ value }) {
-    setLimit(value);
-    
-  }
+  
   function handleSearch(event) {
     const { value } = event.currentTarget;
     setSearch(value);
     
   }
-  function onAllCheck(event) {
-    if (event.target.checked) {
-      const idx = data && data.orders.map((order) => order.id);
-      setCheckedId(idx);
-    } else {
-      setCheckedId([]);
-    }
-    setChecked(event.target.checked);
-  }
-  const handleMultiChange = ({ value }) => {
-    
-    setTag(value);
-  }
-  function handleCheckbox(event) {
-    const { name } = event.currentTarget;
-    if (!checkedId.includes(name)) {
-      setCheckedId((prevState) => [...prevState, name]);
-    } else {
-      setCheckedId((prevState) => prevState.filter((id) => id !== name));
-    }
-  }
+ 
  
 
   return (

@@ -1,13 +1,6 @@
-import React, { useCallback } from 'react';
-import SettingsCard from 'components/SettingsCard/SettingsCard';
-import { withStyle } from 'baseui';
-
-import { SiteSettings } from 'assets/icons/SiteSettings';
-import { HelpIcon } from 'assets/icons/HelpIcon';
-import { OrderIcon } from 'assets/icons/OrderIcon';
-import { CouponIcon } from 'assets/icons/CouponIcon';
-import { SidebarCategoryIcon } from 'assets/icons/SidebarCategoryIcon';
-import { ProductIcon } from 'assets/icons/ProductIcon';
+ import SettingsCard from 'components/SettingsCard/SettingsCard';
+import { withStyle } from 'baseui'; 
+import { HelpIcon } from 'assets/icons/HelpIcon'; 
 import { Grid, Row, Col as Column } from 'components/FlexBox/FlexBox';
 
 const Col = withStyle(Column, () => ({

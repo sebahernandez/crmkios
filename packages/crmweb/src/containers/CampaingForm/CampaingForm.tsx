@@ -1,11 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
-import { useMutation, gql, useQuery } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import { useDrawerDispatch } from 'context/DrawerContext';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Input from 'components/Input/Input';
-import Select from 'components/Select/Select';
+import Input from 'components/Input/Input'; 
 import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
 import { Row, Col } from 'components/FlexBox/FlexBox';
@@ -18,23 +17,7 @@ import {
   ButtonGroup,
 } from '../DrawerItems/DrawerItems.style';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
-
-const GET_COUPONS = gql`
-  query listaCupones($clientid: String!) {
-    cupon(where: {clientid: {_eq: $clientid}}) {
-      clientid
-      code
-      creacion
-      cupones_usados
-      discount
-      estado
-      id
-      image
-      numero_cupon
-      titulo
-    }
-  }
-`;
+ 
 const CREATE_COUPON = gql`
   mutation MyMutation ($clientid: String!, $titulo: String!, $numero_cupon: Int!, $image: String!, $code: String!, $cupones_usados: Int!, $discount: Int!, $estado: String!) {
     insert_cupon(objects: {clientid: $clientid, code: $code,   cupones_usados: $cupones_usados, discount: $discount, estado: $estado, image: $image, numero_cupon: $numero_cupon, titulo: $titulo}) {
@@ -56,10 +39,9 @@ const AddCampaing: React.FC<Props> = (props) => {
     dispatch,
   ]);
 
-  const [clientid, setClientid] = useState(sessionStorage.getItem('clientid')); 
+  const [clientid] = useState(sessionStorage.getItem('clientid')); 
   const [image, setImage] = useState(''); 
-  const { register, handleSubmit, setValue } = useForm();
-  const [categoria, setCategoria] = useState(null); 
+  const { register, handleSubmit } = useForm(); 
   React.useEffect(() => { 
     register({ name: 'image', required: true });
   }, [register]);

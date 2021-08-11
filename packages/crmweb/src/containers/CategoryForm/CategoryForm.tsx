@@ -1,10 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
+import { useForm } from 'react-hook-form'; 
 import { useMutation, gql } from '@apollo/client';
 import { useDrawerDispatch } from 'context/DrawerContext';
-import { Scrollbars } from 'react-custom-scrollbars';
-import Uploader from 'components/Uploader/Uploader';
+import { Scrollbars } from 'react-custom-scrollbars'; 
 import Input from 'components/Input/Input';
 import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
@@ -47,7 +45,7 @@ const AddCategory: React.FC<Props> = (props) => {
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
   ]);
-  const { register, handleSubmit, setValue } = useForm(); 
+  const { register, handleSubmit } = useForm(); 
   const [imageURL, setImageURL] = useState(null);    
 
   React.useEffect(() => {

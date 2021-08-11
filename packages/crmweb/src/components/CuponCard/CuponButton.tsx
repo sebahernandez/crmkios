@@ -1,20 +1,5 @@
 import React from 'react';
-import Button from 'components/Button/Button';
-import {
-  ProductCardWrapper,
-  ProductImageWrapper,
-  ProductInfo,
-  SaleTag,
-  DiscountPercent,
-  Image,
-  ProductTitle,
-  ProductWeight,
-  ProductMeta,
-  OrderID,
-  ProductPriceWrapper,
-  ProductPrice,
-  DiscountedPrice,
-} from './CuponCard.style';
+import Button from 'components/Button/Button'; 
 import { useDrawerDispatch } from 'context/DrawerContext';
 
 type CuponCardProps = {

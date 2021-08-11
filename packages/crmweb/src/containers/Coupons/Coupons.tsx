@@ -1,4 +1,4 @@
-import React, { useCallback,useState,useEffect } from 'react';
+import React, { useCallback,useState } from 'react';
 import { styled, withStyle } from 'baseui'; 
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input'; 
@@ -16,9 +16,7 @@ import {
   StyledTable,
   StyledHeadCell,
   StyledBodyCell,
-} from '../Customers/Customers.style';
-import dayjs from 'dayjs';
-import { NavItem } from 'react-bootstrap';
+} from '../Customers/Customers.style'; 
 
 
 
@@ -106,22 +104,12 @@ const GET_COUPONS = gql`
 `;
 
 export default function Coupons({clientid}) {
-  const dispatch = useDrawerDispatch();
-  const [loadingMore, toggleLoading] = useState(false);
-  // tipo de producto / categoria
-  const [type, setType] = useState([]);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isView, setIsView] = useState(true);
-  const [textoView, setTextoView] = useState('Vista Imagen');
-
+  const dispatch = useDrawerDispatch(); 
   const openDrawer = useCallback(
     () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'CAMPAING_FORM' }),
     [dispatch]
   );
-  // order by asc / desc
-  const [priceOrder, setPriceOrder] = useState([{ value: 'desc', label: 'Más alta a más baja' }]);
-  // seach text
-  const [search, setSearch] = useState(''); 
+   const [search, setSearch] = useState(''); 
 
   
   const { data,error } = useSubscription(GET_COUPONS,{
@@ -129,28 +117,13 @@ export default function Coupons({clientid}) {
                  searchText: '%'+search+'%'
                 }
   });
-
-
-  function handleCategoryType({ value }) {
-   
-    setType(value);
-  }
-  
+ 
   function handleSearch(event) {
     const value = event.currentTarget.value;
     setSearch(value); 
   }
 
-  function handleSelector() {
    
-    setIsView(!isView); 
-
-    if(!isView){
-      setTextoView('Vista Imagen')
-    }else{
-      setTextoView('Vista Detalle')
-    }
-  }
 
   function Detail(){
 

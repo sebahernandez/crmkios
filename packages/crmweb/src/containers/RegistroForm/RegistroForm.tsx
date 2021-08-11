@@ -1,36 +1,21 @@
 import React, { useState } from 'react';
 import { styled, withStyle } from 'baseui';
 import { useForm } from 'react-hook-form'; 
-import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
-import { useMutation, useQuery, gql } from '@apollo/client';
+import { Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
+import { useMutation, gql } from '@apollo/client';
 import Header from "./Header";
 import Footer from "./Footer"; 
-import { FormFields, FormLabel,FormTitle } from 'components/FormFields/FormFields'; 
+import { FormFields, FormLabel } from 'components/FormFields/FormFields'; 
 import  emailjs from 'emailjs-com';  
 import "./Registro.css";
-
- 
-import PropTypes from 'prop-types';
-
-import {  FormWrapper, LogoImage, LogoWrapper } from './Registro.style'; 
-import { Redirect, useHistory, useLocation } from 'react-router';
-import Logoimage from 'assets/image/tuecommerce.png';
-import '../../settings/constants';
-import { DASHBOARD } from '../../settings/constants';
-import { AuthContext } from 'context/auth'; 
-import { Alert, Modal } from 'react-bootstrap';
-
-
+import {  FormWrapper } from './Registro.style';  
+import '../../settings/constants'; 
+import { Modal } from 'react-bootstrap';
 import {
-  Form,
-  DrawerTitleWrapper,
-  DrawerTitle,  
-  FieldDetails,
-  ButtonGroup,
+  Form
 } from '../DrawerItems/DrawerItems.style';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
- 
 
 export const ProductsRow = styled('div', ({ $theme }) => ({
   display: 'flex',
@@ -120,8 +105,8 @@ export default function RegistroForm() {
    
   const [insert_suscripciones, {error}] = useMutation(CREATE_REGISTRO ); 
 	const [usuario, SetUsuario] = useState('');
-	const [clave, SetClave] = useState('1234');
-  const [estado, SetEstado] = useState('registro');
+	const [clave] = useState('1234');
+  const [estado] = useState('registro');
   const [nombre, SetNombre] = useState('');
   const [apellido, SetApellido] = useState('');
   const [telefono, SetTelefono] = useState('');
@@ -131,8 +116,7 @@ export default function RegistroForm() {
   const handleClose = () =>{ 
     setShow(false); 
      window.location.href = '/login';
-  }
-  const handleShow = () => setShow(true);
+  } 
 
   const setup = {
     service_id: 'service_ruymjpw',
@@ -155,13 +139,13 @@ export default function RegistroForm() {
     for (var i = 0; i < 5; i++)
       text1 += possible.charAt(Math.floor(Math.random() * possible.length));
 
-    for (var i = 0; i < 5; i++)
+    for ( i = 0; i < 5; i++)
       text2 += possible.charAt(Math.floor(Math.random() * possible.length));
       
-    for (var i = 0; i < 5; i++)
+    for ( i = 0; i < 5; i++)
       text3 += possible.charAt(Math.floor(Math.random() * possible.length));
  
-    for (var i = 0; i < 5; i++)
+    for ( i = 0; i < 5; i++)
       text4 += possible.charAt(Math.floor(Math.random() * possible.length));
  
     text5=text1+'-'+text2+'-'+text3+'-'+text4;

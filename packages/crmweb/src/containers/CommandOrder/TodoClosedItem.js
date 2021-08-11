@@ -1,9 +1,6 @@
-import React, { useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { FETCH_PRIVATE_ORDER } from './TodoPrivateList';
-import Moment from 'react-moment';
-import config from 'settings/config';
-import { now } from 'moment-timezone';
+import { FETCH_PRIVATE_ORDER } from './TodoPrivateList'; 
+import config from 'settings/config'; 
 import { Wallet } from 'assets/icons/Wallet';
 
 const TodoClosedItem = ({ index, pedido }) => {
@@ -13,47 +10,12 @@ const TodoClosedItem = ({ index, pedido }) => {
   let isDelivery = pedido.is_delivery;
   let isClosed = pedido.is_closed;
   let isCancelled = pedido.is_cancelled;
-  let status = '';
-  let statuslabel = '';
+  let status = ''; 
 
   const cid = config().SUBSCRIPTION_ID;
-  const REMOVE_ORDER = gql`
-    mutation removeTodo($id: Int!, $clientid: String!) {
-      delete_pedido(where: { id: { _eq: $id }, clientid: { _eq: $clientid } }) {
-        affected_rows
-      }
-    }
-  `;
-
-  const [removePedidoMutation] = useMutation(REMOVE_ORDER);
-
-  const removePedido = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    removePedidoMutation({
-      variables: {
-        id: pedido.id,
-        clientid: cid,
-      },
-      optimisticResponse: true,
-      update: (cache) => {
-        const existingPedidos = cache.readQuery({
-          query: FETCH_PRIVATE_ORDER,
-          variables: {
-            clientid: cid,
-          },
-        });
-        const newPedidos = existingPedidos.pedido.filter(
-          (t) => t.id !== pedido.id
-        );
-        cache.writeQuery({
-          query: FETCH_PRIVATE_ORDER,
-          data: { pedido: newPedidos },
-        });
-      },
-    });
-  };
-
+ 
+ 
+ 
   const TOGGLE_ORDER_MUTATION = gql`
     mutation togglePedido(
       $estado: String
@@ -167,34 +129,29 @@ const TodoClosedItem = ({ index, pedido }) => {
 
   if (pedido.is_closed) {
     status = 'closed';
-    statuslabel = ' ( Cerrada ) ';
+    
   } else if (pedido.is_cancelled) {
     status = 'cancelled';
-    statuslabel = ' ( Cancelada ) ';
+    
   } else {
     if (pedido.is_delivery) {
       status = 'delivery';
-      statuslabel = ' ( Entregando ) ';
+    
     } else {
       if (pedido.is_process) {
         status = 'process';
-        statuslabel = ' ( En Preparacion ) ';
+       
       } else {
         if (pedido.is_received) {
           status = 'received';
-          statuslabel = ' ( Recibida ) ';
+        
         } else {
           status = '';
-          statuslabel = ' ( Nueva ) ';
+        
         }
       }
     }
-  }
-
-  const fecha = () => {
-    return pedido.order_date;
-  };
-
+  } 
   return (
     <li>
       <div className="view">

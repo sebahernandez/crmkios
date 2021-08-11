@@ -42,7 +42,7 @@ const SiteSettingsForm: React.FC<Props> = (clientid) => {
   const [category, setCategory] = useState([]);
   const [description, setDescription] = React.useState('');
 
-  const { data:data1, error} = useQuery(GET_SETTING,
+  const { data:data1} = useQuery(GET_SETTING,
     {
       variables: {
         clientid: sessionStorage.getItem('clientid')

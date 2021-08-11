@@ -24,9 +24,7 @@ import {
   DrawerIcon,
   CloseButton,
   DrawerWrapper,
-} from './Topbar.style';
-import Logoimage from 'assets/image/tuecommerce.png';
-import UserImage from 'assets/image/user.jpg';
+} from './Topbar.style'; 
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
@@ -39,7 +37,7 @@ const data = [
   },
 ];
 const Topbar = ({ refs }: any) => {
-  const [info, setInfo ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
+  const [info ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
   const dispatch = useDrawerDispatch();
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

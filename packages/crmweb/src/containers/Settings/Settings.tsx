@@ -1,14 +1,10 @@
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import SettingsCard from 'components/SettingsCard/SettingsCard';
 import { useDrawerDispatch } from 'context/DrawerContext';
-import { STAFF_MEMBERS, SITE_SETTINGS } from 'settings/constants';
+import { SITE_SETTINGS } from 'settings/constants';
 import { withStyle } from 'baseui';
 import { SiteSettings } from 'assets/icons/SiteSettings';
-import { Members } from 'assets/icons/Members';
-import { OrderIcon } from 'assets/icons/OrderIcon';
-import { CouponIcon } from 'assets/icons/CouponIcon';
-import { SidebarCategoryIcon } from 'assets/icons/SidebarCategoryIcon';
-import { ProductIcon } from 'assets/icons/ProductIcon';
+import { Members } from 'assets/icons/Members';  
 import { Grid, Row, Col as Column } from 'components/FlexBox/FlexBox';
 import { useHistory } from 'react-router-dom';
 

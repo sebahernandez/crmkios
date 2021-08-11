@@ -1,6 +1,5 @@
-import React, { useState, Fragment } from 'react';
-import { useQuery, useSubscription, useMutation, gql } from '@apollo/client';
-import TodoItem from './TodoItem';
+import { Fragment } from 'react';
+import { useSubscription, gql } from '@apollo/client';
 import config from 'settings/config';
 import TodoClosedItem from './TodoClosedItem';
 
@@ -27,27 +26,9 @@ export const FETCH_CLOSED_ORDER = gql`
     }
   }
 `;
+ 
 
-// Remove all the todos that are completed
-const CLEAR_CLOSED = gql`
-  mutation clearCompleted($clientid: String!) {
-    delete_pedido(
-      where: {
-        is_closed: { _eq: true }
-        _and: { clientid: { _eq: $clientid } }
-      }
-    ) {
-      affected_rows
-    }
-  }
-`;
-
-const TodoClosedList = (props) => {
-  const [state, setState] = useState({
-    filter: 'active',
-    clearInProgress: false,
-    pedidos: [],
-  });
+const TodoClosedList = (props) => { 
 
   const { pedidos } = props;
 

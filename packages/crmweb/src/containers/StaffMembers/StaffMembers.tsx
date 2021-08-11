@@ -1,16 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import dayjs from 'dayjs';
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
-import { useDrawerDispatch } from 'context/DrawerContext';
-import Select from 'components/Select/Select';
+import { useDrawerDispatch } from 'context/DrawerContext'; 
 import { styled, withStyle } from 'baseui';
 import Input from 'components/Input/Input';
-import Button from 'components/Button/Button';
-
-import { Plus } from 'assets/icons/PlusMinus';
-
-import { useQuery, gql } from '@apollo/client';
-
+import Button from 'components/Button/Button'; 
+import { Plus } from 'assets/icons/PlusMinus'; 
+import { useQuery, gql } from '@apollo/client'; 
 import { Wrapper, Header, Heading } from 'components/Wrapper.style';
 
 import {
@@ -74,14 +70,7 @@ const Image = styled('img', () => ({
   width: '100%',
   height: 'auto',
 }));
-
-const roleSelectOptions = [
-  { value: 'owner', label: 'Owner' },
-  { value: 'admin', label: 'Administrador' },
-  { value: 'manager', label: 'Jefe' },
-  { value: 'member', label: 'Empleado' },
-  { value: 'delivery boy', label: 'Delivery' },
-];
+ 
 
 
 
@@ -92,11 +81,10 @@ export default function StaffMembers({clientid}) {
     () =>
       dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'STAFF_MEMBER_FORM' }),
     [dispatch]
-  );
-  const [role, setRole] = useState([]);
+  ); 
   const [search, setSearch] = useState('');
 
-  const { data, error, refetch } = useQuery(GET_STAFFS, {
+  const { data, error } = useQuery(GET_STAFFS, {
     variables: {
       clientid: clientid,
       searchText: '%'+search+'%'
@@ -104,12 +92,7 @@ export default function StaffMembers({clientid}) {
 
   if (error) {
     return <div>Error! {error.message}</div>;
-  }
-  function handleCategory({ value }) {
-   
-    setRole(value);
-     
-  }
+  } 
   function handleSearch(event) {
     const value = event.currentTarget.value;
     setSearch(value); 
