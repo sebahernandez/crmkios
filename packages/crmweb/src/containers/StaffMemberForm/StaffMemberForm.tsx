@@ -21,20 +21,7 @@ import {
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 import { app } from '../../../src/base';
 
-
-//($role: String, $searchBy: String)
-const GET_STAFFS = gql`
-  query getStaffs {
-    staffs {
-      id
-      name
-      email
-      contact_number
-      creation_date
-      role
-    }
-  }
-`;
+ 
 
 const CREATE_STAFF = gql`
   
@@ -82,7 +69,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
     dispatch,
   ]);
   const [clientid] = useState(sessionStorage.getItem('clientid')); 
-  const { register, handleSubmit, setValue } = useForm( );
+  const { register, handleSubmit } = useForm( );
   const [rol, setRol] = React.useState(undefined);
   const [estado, setEstado] = React.useState(undefined); 
   const [country, setCountry] = React.useState(undefined);
@@ -92,7 +79,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
 
  
 
-  const [insert_empleado, {error}] = useMutation(CREATE_STAFF );
+  const [insert_empleado] = useMutation(CREATE_STAFF );
 
 
   React.useEffect(() => {

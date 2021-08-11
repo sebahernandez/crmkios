@@ -42,11 +42,7 @@ export const Col = withStyle(Column, () => ({
   },
 }));
 
-const Row = withStyle(Rows, () => ({
-  '@media only screen and (min-width: 768px) and (max-width: 991px)': {
-    alignItems: 'center',
-  },
-}));
+ 
 
 export const ProductCardWrapper = styled('div', () => ({
   height: '100%',
@@ -103,14 +99,14 @@ const CREATE_REGISTRO = gql`
 export default function RegistroForm() {
   
    
-  const [insert_suscripciones, {error}] = useMutation(CREATE_REGISTRO ); 
+  const [insert_suscripciones ] = useMutation(CREATE_REGISTRO ); 
 	const [usuario, SetUsuario] = useState('');
 	const [clave] = useState('1234');
   const [estado] = useState('registro');
   const [nombre, SetNombre] = useState('');
   const [apellido, SetApellido] = useState('');
   const [telefono, SetTelefono] = useState('');
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit  } = useForm();
 
   const [show, setShow] = useState(false);
   const handleClose = () =>{ 

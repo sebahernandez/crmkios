@@ -50,6 +50,7 @@ function PrivateRoute({ children, ...rest }) {
       {...rest}
       render={({ location }) =>
         isAuthenticated ? (
+          
           children
         ) : (
           <Redirect

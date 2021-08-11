@@ -1,6 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from 'components/Button/Button';
+import React, {  useState } from 'react';
+import { Link } from 'react-router-dom'; 
 import Popover, { PLACEMENT } from 'components/Popover/Popover';
 import Notification from 'components/Notification/Notification';
 import { AuthContext } from 'context/auth';
@@ -39,14 +38,10 @@ const data = [
   },
 ];
 const TopbarCommand = ({ refs }: any) => {
-  const [info, setInfo ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
-  const dispatch = useDrawerDispatch();
+  const [info ] = useState(JSON.parse(sessionStorage.getItem('infoUser')))  
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const openDrawer = useCallback(
-    () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'PRODUCT_FORM' }),
-    [dispatch]
-  );
+ 
 
   if(info===null){
     window.location.href = '/login';

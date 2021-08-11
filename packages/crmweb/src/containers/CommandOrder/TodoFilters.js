@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
 import { NotificationIcon } from 'assets/icons/NotificationIcon';
 import { Cooking } from 'assets/icons/Cooking';
 import { DeliveryIcon } from 'assets/icons/DeliveryIcon';

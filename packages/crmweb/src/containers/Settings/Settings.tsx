@@ -31,21 +31,7 @@ export default function Settings({clientid}) {
       dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'STAFF_MEMBER_FORM' }),
     [dispatch]
   );
-
-  const openCategoryForm = useCallback(
-    () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'CATEGORY_FORM' }),
-    [dispatch]
-  );
-
-  const openProductForm = useCallback(
-    () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'PRODUCT_FORM' }),
-    [dispatch]
-  );
-
-  const openCouponForm = useCallback(
-    () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'CAMPAING_FORM' }),
-    [dispatch]
-  );
+ 
 
   return (
     <Grid fluid={true}>
