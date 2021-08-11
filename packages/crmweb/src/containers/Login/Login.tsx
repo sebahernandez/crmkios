@@ -15,7 +15,7 @@ export default function Login() {
 	const { authenticate, isAuthenticated } = useContext(AuthContext);
 	let history = useHistory();
 	let location = useLocation();
-	if (isAuthenticated) return <Redirect to={{ pathname: '/' }} />;
+	if (isAuthenticated) return <Redirect to={{ pathname: '/products' }} />;
 
 	let { from } = (location.state as any) || { from: { pathname: DASHBOARD } }; 
 
