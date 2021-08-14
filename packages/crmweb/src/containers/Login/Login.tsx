@@ -1,13 +1,48 @@
-import { useContext, useState } from 'react';
-import { Wrapper, FormWrapper, LogoImage, LogoWrapper } from './Login.style'; 
-import { Redirect, useHistory, useLocation } from 'react-router';
+import { useContext, useEffect, useState } from 'react';
+import { Wrapper, FormWrapper, LogoImage, LogoWrapper } from './Login.style';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { useHistory, useLocation } from 'react-router';
 import Logoimage from 'assets/image/tuecommerce.png';
 import '../../settings/constants';
 import { DASHBOARD } from '../../settings/constants';
 import { AuthContext } from 'context/auth';
-import { FormFields, FormTitle } from 'components/FormFields/FormFields'; 
+import { FormFields, FormTitle } from 'components/FormFields/FormFields';
+import { Alert } from 'react-bootstrap';
 
- 
+/**
+ * Develop by Alejandro Sandoval 
+ * Alias Joker
+ */
+/* 
+const GET_SUSCRIPTOR = gql`
+	query GETSUSCRIPTOR($usuario: String!,$password: String!) {
+		suscripciones(where: {usuario: {_eq: $usuario}, clave: {_eq: $password},fecha_vencimiento: {_gte: "now()"}}) {
+		usuario
+		clave
+		clientid
+		imageURL
+	}
+}
+
+`;
+ */
+const GET_SUSCRIPTOR = gql`
+	query GETSUSCRIPTOR($usuario: String!,$password: String!) {
+	info_user_view(where: {usuario: {_eq: $usuario}, clave: {_eq: $password},fecha_vencimiento: {_gte: "now()"}}) {
+	  img_site_url
+	  img_user_url
+	  nombre
+	  usuario
+	  plan_suscripcion
+	  fecha_vencimiento
+	  estado
+	  clientid
+	  fecha_suscripcion
+	}
+  }
+  
+  
+`;
 
 export default function Login() {
 	const [usuario, SetUsuario] = useState('');
@@ -15,9 +50,16 @@ export default function Login() {
 	const { authenticate, isAuthenticated } = useContext(AuthContext);
 	let history = useHistory();
 	let location = useLocation();
-	if (isAuthenticated) return <Redirect to={{ pathname: '/products' }} />;
+	let { from } = (location.state as any) || { from: { pathname: DASHBOARD } };
+ 
 
-	let { from } = (location.state as any) || { from: { pathname: DASHBOARD } }; 
+	const { data:data2, error:error2 } = useQuery(GET_SUSCRIPTOR,
+		{
+			variables: { 
+				usuario: usuario, 
+				password: password 
+			}
+		});
 
 	function handleInput(e) {
 		console.log(e.target.name);
@@ -31,11 +73,30 @@ export default function Login() {
 				break;
 		}
 	}
-	 const login = () => { 
-	  authenticate({ usuario, password }, () => {
-		history.replace(from);
-	  });
-	};
+
+	useEffect(()=> {
+		console.log('pasando por useEffect', data2)
+		if(data2)
+		console.log(':::::::::',JSON.stringify(data2))
+	},[])
+
+
+	const auth = () => {
+
+		authenticate({ usuario, password }, () => {
+			console.log(usuario, password);
+			history.replace(from);
+		});
+	}
+
+	const handleMoreInfo = () => {
+		console.log('handleMoreInfo');
+		console.log('pasando por handleMoreInfo', data2)
+		  
+		console.log('cerrando')
+		
+
+	}
 
 	return (
 	  <>
@@ -46,11 +107,11 @@ export default function Login() {
                   <LogoImage src={Logoimage} alt="pickbazar-admin" />
                 </LogoWrapper>
                 <FormTitle>Ingreso Administración</FormTitle>
-								{/* {
-									authorInfo! && <Alert key={1} variant={'danger'} transition={true}>
+								{
+									data2! && <Alert key={1} variant={'danger'} transition={true}>
     							Suscriptor no identificado o problemas para validar sus datos, intente nuevamente!!!
   								</Alert>
-								} */}
+								}
               </FormFields>
 	 					<div className="form-group">
 							<label>Usuario</label>
@@ -69,9 +130,21 @@ export default function Login() {
 							</div>
 						</div>
 
-						<button onClick={login} className="btn btn-success btn-block">Ingresar</button>
-				 
-						 
+						<button onClick={handleMoreInfo} className="btn btn-success btn-block">Ingresar</button>
+						{/* {called && loading} */}
+						{ data2 && data2.info_user_view.map(item => {
+							console.log(1);
+							sessionStorage.setItem('pickbazar_token', `${usuario}.${password}`);			
+							console.log(2);
+							sessionStorage.setItem('clientid', item.clientid);
+							sessionStorage.setItem('infoUser', JSON.stringify(item));
+							console.log(3);
+							auth()
+						})
+						}					
+						<p className="forgot-password text-right">
+							Se me olvido la  <a href="#">contraseña?</a>
+						</p>
 					</FormWrapper>
 			</Wrapper>
         </>

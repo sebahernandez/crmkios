@@ -7,16 +7,36 @@ import { BaseProvider } from 'baseui';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { theme } from './theme';
 import Routes from './routes';
+import { WebSocketLink } from "@apollo/client/link/ws"; 
 import * as serviceWorker from './serviceWorker';
 import './theme/global.css';
+import { useState } from 'react';
 
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_API_URL,
-  cache: new InMemoryCache(),
-});
+const createApolloClient = () => {
 
+  return new ApolloClient({
+      link: new WebSocketLink({ 
+      uri: 'wss://cuddly-hog-22.hasura.app/v1/graphql',
+      options: {
+        reconnect: true,
+        timeout: 10000,
+        connectionParams: {
+          headers: {
+            'content-type' : 'application/json',
+            'x-hasura-admin-secret':  'kxUJ2vmT0kihpyf9x7MDVAj1OoURuQzMXhN9O8JuLvMhVk05aSIKL4IdQZ4WXNDN',
+            Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik9FWTJSVGM1UlVOR05qSXhSRUV5TUR`
+          }
+        }
+      }
+     }),
+     cache: new  InMemoryCache
+  });
+ };
 function App() {
+  const [idToken, setIdToken] = useState("");
+  
   const engine = new Styletron();
+  const client = createApolloClient();
 
   return (
     <ApolloProvider client={client as any}>
