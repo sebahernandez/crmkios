@@ -104,7 +104,7 @@ export default function Login() {
 				<FormWrapper>
 							<FormFields>
                 <LogoWrapper>
-                  <LogoImage src={Logoimage} alt="pickbazar-admin" />
+                  <LogoImage src={Logoimage} alt="pickbazar-admin"  className="logo"/>
                 </LogoWrapper>
                 <FormTitle>Ingreso Administración</FormTitle>
 								{
@@ -114,12 +114,12 @@ export default function Login() {
 								}
               </FormFields>
 	 					<div className="form-group">
-							<label>Usuario</label>
+							<label>Usuario:</label>
 							<input type="text" name="usuario" className="form-control" onChange={handleInput} placeholder="suscriptor@demo.cl"   />
 						</div>
 
 						<div className="form-group">
-							<label>Contraseña</label>
+							<label>Contraseña:</label>
 							<input type="password" name="password" className="form-control" onChange={handleInput} placeholder="Ingrese su clave"   />
 						</div>
 
@@ -130,7 +130,7 @@ export default function Login() {
 							</div>
 						</div>
 
-						<button onClick={handleMoreInfo} className="btn btn-success btn-block">Ingresar</button>
+						<button onClick={handleMoreInfo} className="btn-login">Ingresar</button>
 						{/* {called && loading} */}
 						{ data2 && data2.info_user_view.map(item => {
 							console.log(1);
