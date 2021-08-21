@@ -240,7 +240,7 @@ function Dashboard({clientid}) {
           variables: {cid: clientid}
       })
       .then(result => { 
-        if(result !== null && result.data !== null && result.data.pedidos_objetivo_view !== null && result.data?.pedidos_objetivo_view?.length>1)
+        if(result  && result.data  && result.data.pedidos_objetivo_view  && result.data?.pedidos_objetivo_view?.length>1)
         setTs(result.data.pedidos_objetivo_view[1].total)
        else return 0
     })
@@ -253,7 +253,7 @@ function Dashboard({clientid}) {
       variables: {cid: clientid}
     })
     .then(result => { 
-     if(result !== null && result.data !== null && result.data.pedidos_objetivo_view !== null && result.data.pedidos_objetivo_view.length>1)
+     if(result  && result.data && result.data.pedidos_objetivo_view && result.data.pedidos_objetivo_view.length>1)
      setTm(result.data.pedidos_objetivo_view[0].total)
       else return 0
     })
@@ -270,7 +270,7 @@ async function cargaMeses() {
     variables: {cid: clientid}
   })
   .then(result => { 
-    if(result !== null && result.data !== null && result.data.dashboard_titulo_anual !== null && result.data.dashboard_titulo_anual.length>0)
+    if(result && result.data  && result.data.dashboard_titulo_anual  && result.data.dashboard_titulo_anual.length>0)
         return result.data.dashboard_titulo_anual[0].meses;
      else return [];   
     

@@ -47,6 +47,8 @@ const GET_SUSCRIPTOR = gql`
 export default function Login() {
 	const [usuario, SetUsuario] = useState('');
 	const [password, SetPassword] = useState('');
+	const [isLogged, SetIsLogged] = useState(false);
+	const [isClicked, SetIsClicked] = useState(false);
 	const { authenticate, isAuthenticated } = useContext(AuthContext);
 	let history = useHistory();
 	let location = useLocation();
@@ -75,25 +77,39 @@ export default function Login() {
 	}
 
 	useEffect(()=> {
+		SetIsLogged(false)
+		SetIsClicked(false)
 		console.log('pasando por useEffect', data2)
-		if(data2)
-		console.log(':::::::::',JSON.stringify(data2))
+		if(data2 !== undefined){
+			console.log(':::::::::',JSON.stringify(data2))
+			SetIsLogged(true)
+		}	
 	},[])
 
 
 	const auth = () => {
-
+	 
 		authenticate({ usuario, password }, () => {
 			console.log(usuario, password);
 			history.replace(from);
+			SetIsLogged(true)
 		});
+		
+		SetIsLogged(false)
 	}
 
 	const handleMoreInfo = () => {
-		console.log('handleMoreInfo');
-		console.log('pasando por handleMoreInfo', data2)
-		  
-		console.log('cerrando')
+		SetIsClicked(true) 
+
+		if(data2  && data2.info_user_view && data2.info_user_view.length > 0) {
+			console.log(':::::::::',JSON.stringify(data2))
+			SetIsLogged(true)
+			auth()
+		}	else {
+			SetIsLogged(false)
+			
+		}
+		
 		
 
 	}
@@ -108,7 +124,7 @@ export default function Login() {
                 </LogoWrapper>
                 <FormTitle>Ingreso Administración</FormTitle>
 								{
-									data2! && <Alert key={1} variant={'danger'} transition={true}>
+									isClicked && isLogged===false && <Alert key={1} variant={'danger'} transition={true}>
     							Suscriptor no identificado o problemas para validar sus datos, intente nuevamente!!!
   								</Alert>
 								}
@@ -134,12 +150,11 @@ export default function Login() {
 						{/* {called && loading} */}
 						{ data2 && data2.info_user_view.map(item => {
 							console.log(1);
-							sessionStorage.setItem('pickbazar_token', `${usuario}.${password}`);			
+							sessionStorage.setItem('tuecommerce_token', `${usuario}.${password}`);			
 							console.log(2);
 							sessionStorage.setItem('clientid', item.clientid);
 							sessionStorage.setItem('infoUser', JSON.stringify(item));
 							console.log(3);
-							auth()
 						})
 						}					
 						<p className="forgot-password text-right">

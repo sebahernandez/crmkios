@@ -149,11 +149,12 @@ const Topbar = ({ refs }: any) => {
               </NavLink>
               <LogoutBtn
                 onClick={() => {
-                  signout();
-
+                  signout(); 
                   sessionStorage.removeItem('infoUser');
                   sessionStorage.setItem('infoUser',null);
                   sessionStorage.setItem('clientid',null);
+                  sessionStorage.removeItem('pickbazar_token')
+                  sessionStorage.removeItem('infoUser')
                   sessionStorage.clear();
                   window.sessionStorage.clear();
                   close();
