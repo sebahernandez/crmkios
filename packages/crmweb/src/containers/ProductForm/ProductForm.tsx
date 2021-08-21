@@ -9,8 +9,7 @@ import { Row, Col } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input'; 
 import Select from 'components/Select/Select';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
-import { app } from '../../../src/base';
-  
+import { app } from '../../../src/base'; 
 
 import {
   Form,
@@ -36,8 +35,9 @@ const GET_CATEGORIAS = gql`
  
 const CREATE_PRODUCT = gql`
   
-  mutation insert_producto($nombre: String!, $descripcion: String!,$sku: String!,$unidad: Int!, $precio: Int!, $precio_venta: Int!, $descuento: Int!,
-  $categoria: Int!, $cantidad: Int!, $imageURL: String!, $clientid: String! ) {
+  mutation insert_producto($nombre: String!, $descripcion: String!,$sku: String!,
+    $unidad: Int!, $precio: Int!, $precio_venta: Int!, $descuento: Int!,
+  $categoria: Int!, $cantidad: Int!, $imageURL: String!, $clientid: String!, $gallery: String! ) {
     insert_producto(
             objects: [
                 {
@@ -52,6 +52,7 @@ const CREATE_PRODUCT = gql`
                   cantidad: $cantidad
                   imageURL: $imageURL
                   clientid: $clientid
+                  gallery: $gallery
                 }
               ]
           ){
@@ -68,9 +69,11 @@ const AddProduct: React.FC<Props> = (props) => {
   ]);
   const { register, handleSubmit } = useForm();
   const [tag, setTag] = useState([]);
+  const [gallery, setGallery] = useState([])
   const [clientid] = useState(sessionStorage.getItem('clientid')); 
   const [imageURL, setImageURL] = useState(null); 
-  const [categoria, setCategoria] = useState(null); 
+  const [categoria, setCategoria] = useState(null);  
+  const [isLoading, setIsLoading] = useState(false);  
   
   
   React.useEffect(() => {
@@ -110,15 +113,28 @@ const AddProduct: React.FC<Props> = (props) => {
 
   
   const onFileChange = async (e) => {
-    const file = e.target.files[0];
-    if(file){
-      const storageRef = app.storage().ref();
-      const fileRef = storageRef.child(file.name);
-      await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
-      setImageURL(await fileRef.getDownloadURL());      
-    }
+    setIsLoading(true)
+    let arg = [] 
+    let file = e.target.files[0];  // solo una imagen
+    const storageRef = app.storage().ref();
+        try { 
+          for (let i = 0; i < e.target.files.length; i++) {
+            
+            file = e.target.files[i] 
+            
+            const fileRef = storageRef.child(file.name);
+            
+            await fileRef.put(file) 
+            arg.push( await fileRef.getDownloadURL()  );   
+          }
+        } catch(error ){
+          console.log(error)
+        } 
+
+    setGallery(arg)
+    setIsLoading(false)
+
+    console.log('gallery>' + gallery)
    } 
 
  
@@ -136,7 +152,8 @@ const AddProduct: React.FC<Props> = (props) => {
       precio: Number(e.precio),
       precio_venta: Number(e.precio_venta),
       descuento: Number(e.descuento),
-      clientid: sessionStorage.getItem('clientid')
+      clientid: sessionStorage.getItem('clientid'),
+      gallery: gallery.toString()
     };    
     console.log(newProduct, 'Ingresando Producto Nuevo');
     insert_producto({
@@ -150,7 +167,9 @@ const AddProduct: React.FC<Props> = (props) => {
                   descuento: newProduct.descuento,
                   categoria: newProduct.categoria,
                   imageURL: newProduct.imageURL,
-                  clientid: newProduct.clientid
+                  clientid: newProduct.clientid,
+                  gallery: newProduct.gallery
+
                 }
     });
     closeDrawer();
@@ -198,8 +217,15 @@ const AddProduct: React.FC<Props> = (props) => {
                 }}
               > 
               
-             <input className="charge-image" type="file" onChange={onFileChange} />
-             <img width="100" height="100" src={imageURL}/>
+             <input className="charge-image" type="file" multiple onChange={onFileChange} />
+            
+             
+             {gallery.map((url, i) => (
+                <div key={i}>
+                   <img id={'name'+i} width="100" height="100" src={url}/> 
+                </div>
+              ))} 
+                { isLoading && <div className="lds-dual-ring"></div> } 
              </DrawerBox> 
             </Col>
           </Row>
