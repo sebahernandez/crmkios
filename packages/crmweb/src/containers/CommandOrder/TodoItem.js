@@ -172,38 +172,33 @@ const TodoItem = ({ index, pedido }) => {
   }
 
   return (
-    <li>
-      <div className="view">
-        <div className="round">
-          <input
+    <li className="d-flex justify-content-between align-items-center list-group-item">
+      <div>{icon(status)} <span>Ord:{pedido.order}</span> </div>  
+      <div>{pedido.order_date}</div>
+      <div className={'d-flex flex-column justify-content-right' + status}>
+        <div>${pedido.total}</div>
+        
+      </div>
+
+      <div> 
+        <ModalCommand order={pedido.order} />
+      </div>
+     
+      {/* 
+      <button className="closeBtn" onClick={removePedido}>
+        x
+      </button>   */}
+
+         {/*  <input
             checked={pedido.is_closed}
             type="checkbox"
             id={pedido.id}
             onChange={togglePedido}
           />
-          <label htmlFor={pedido.id} />
-        </div>
-      </div>
-      {}
-      <div className={'labelContent ' + status}>
-        <div>
-          {' '}
-          <ModalCommand order={pedido.order} />{' '}
-        </div>
-        <div>Ord.: &nbsp;{pedido.order}</div>
-        <div>&nbsp;&nbsp;</div>
-        <div>$ {pedido.total}</div>
-        <div>&nbsp;&nbsp;</div>
-        <div>{pedido.order_date}</div>
-        <div>&nbsp;&nbsp;</div>
-        <div>{icon(status)} </div>
-      </div>
-
-      {/* 
-      <button className="closeBtn" onClick={removePedido}>
-        x
-      </button>   */}
+          <label htmlFor={pedido.id} /> */}
     </li>
+
+    
   );
 };
 

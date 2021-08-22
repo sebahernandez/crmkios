@@ -122,8 +122,8 @@ const TodoPrivateList = (props) => {
         clearCompletedFn={clearCompleted}
         clearInProgress={state.clearInProgress}
       />
-      <div className="todoListWrapper">
-        <ul>{pedidoList}</ul>
+      <div className="todoListWrapper ">
+        <ul className="list-group">{pedidoList}</ul>
       </div>
 
       <TodoFilters

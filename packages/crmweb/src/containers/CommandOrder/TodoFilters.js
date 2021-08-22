@@ -45,31 +45,31 @@ const TodoFilters = ({
   }
 
   return (
-    <div className="footerList">
+    <div className="footerList py-5">
       <span>
         {' '}
         {itemCount} órden
         {itemCount !== 1 ? 'es' : ''}
       </span>
 
-      <ul>
-        <li onClick={filterResultsHandler('active')}>
-          <a className={currentFilter === 'active' ? 'selected' : ''}>Todos</a>
+      <ul className="list-group list-group-flush">
+        <li className="text-white rounded bg-dark my-2 d-flex justify-content-between list-group-item" onClick={filterResultsHandler('active')}>
+          <a className={currentFilter === 'active' ? 'selected' : '', 'text-white'}>Todos</a>
         </li>
-        <li onClick={filterResultsHandler('received')}>
-          <a className={currentFilter === 'received' ? 'selected' : ''}>
+        <li className="text-white rounded my-2 bg-success d-flex justify-content-between list-group-item" onClick={filterResultsHandler('received')}>
+          <a className={currentFilter === 'received' ? 'selected' : '', 'text-white'}>
             Recibidas{' '}
           </a>
           <NotificationIcon />
         </li>
-        <li onClick={filterResultsHandler('process')}>
-          <a className={currentFilter === 'process' ? 'selected' : ''}>
+        <li className="text-white rounded my-2 bg-warning d-flex justify-content-between list-group-item" onClick={filterResultsHandler('process')}>
+          <a className={currentFilter === 'process' ? 'selected' : '', 'text-white'}>
             En Proceso
           </a>
           <Cooking />
         </li>
-        <li onClick={filterResultsHandler('delivery')}>
-          <a className={currentFilter === 'delivery' ? 'selected' : ''}>
+        <li className="text-white rounded my-2 bg-danger d-flex justify-content-between list-group-item" onClick={filterResultsHandler('delivery')}>
+          <a className={currentFilter === 'delivery' ? 'selected' : '', 'text-white'}>
             En Delivery
           </a>
           <DeliveryIcon />
