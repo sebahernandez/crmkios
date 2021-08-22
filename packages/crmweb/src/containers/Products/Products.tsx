@@ -412,7 +412,7 @@ export default function Products({clientid}) {
                       title={item.nombre}
                       descripcion={item.descripcion}
                       weight={item.unidad}
-                      image={item.imageURL}
+                      image={item.gallery !== null &&  item.gallery.length > 0 ? item.gallery.split(",")[0] : item.imageURL}
                       currency={CURRENCY}
                       price={item.precio}
                       salePrice={item.precio_venta}

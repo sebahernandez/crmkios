@@ -193,10 +193,7 @@ const TodoItem = ({ index, pedido }) => {
         <div>Ord.: &nbsp;{pedido.order}</div>
         <div>&nbsp;&nbsp;</div>
         <div>$ {pedido.total}</div>
-        <div>&nbsp;&nbsp;</div>
-        <div>{pedido.order_date}</div>
-        <div>&nbsp;&nbsp;</div>
-        <div>{icon(status)} </div>
+
       </div>
 
       {/* 
