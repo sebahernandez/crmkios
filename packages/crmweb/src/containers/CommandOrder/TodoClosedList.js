@@ -40,10 +40,11 @@ const TodoClosedList = (props) => {
   return (
     <Fragment>
       <div className="todoListWrapper">
-        <ul>{pedidoList}</ul>
+       <ul className="list-group">{pedidoList}</ul> 
       </div>
     </Fragment>
   );
+  
 };
 
 const TodoClosedListQuery = () => {
