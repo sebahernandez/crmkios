@@ -153,10 +153,13 @@ const TodoClosedItem = ({ index, pedido }) => {
     }
   } 
   return (
-    <li>
-      <div className="view">
-        <div className="round">
-          <input
+    <li className="d-flex justify-content-between list-group-item">
+      <div className={'float-right' + status}>
+        <Wallet />
+        <span className="pl-2"> Orden Nº: &nbsp;{pedido.order}</span>
+      </div>
+      <div>
+        <input
             checked={pedido.is_closed}
             type="checkbox"
             id={pedido.id}
@@ -164,13 +167,8 @@ const TodoClosedItem = ({ index, pedido }) => {
           />
           <label htmlFor={pedido.id} />
         </div>
-      </div>
       {}
-      <div className={'labelContent ' + status}>
-        <div>Ord.: &nbsp;{pedido.order}</div>
-        <Wallet />
-      </div>
-
+  
       {/* 
       <button className="closeBtn" onClick={removePedido}>
         x

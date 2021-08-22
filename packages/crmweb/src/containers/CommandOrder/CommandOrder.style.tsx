@@ -1,5 +1,4 @@
 import { styled } from "baseui";
-import Background from 'assets/image/bg-commerce.jpg';
 
 export const Wrapper = styled("div", ({ $theme }) => ({
   width: "100vw",
