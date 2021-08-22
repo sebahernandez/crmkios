@@ -45,34 +45,34 @@ const TodoFilters = ({
   }
 
   return (
-    <div className="footerList py-5">
+    <div className="footerList pt-2">
       <span>
         {' '}
         {itemCount} órden
         {itemCount !== 1 ? 'es' : ''}
       </span>
 
-      <ul className="list-group list-group-flush">
-        <li className="text-white rounded bg-dark my-2 d-flex justify-content-between list-group-item" onClick={filterResultsHandler('active')}>
+      <ul className="list-group list-group-horizontal pt-3">
+        <li className="mr-3 text-white rounded bg-dark d-flex justify-content-between list-group-item" onClick={filterResultsHandler('active')}>
           <a className={currentFilter === 'active' ? 'selected' : '', 'text-white'}>Todos</a>
         </li>
-        <li className="text-white rounded my-2 bg-success d-flex justify-content-between list-group-item" onClick={filterResultsHandler('received')}>
-          <a className={currentFilter === 'received' ? 'selected' : '', 'text-white'}>
+        <li className="mr-3 text-white rounded  bg-success d-flex justify-content-between list-group-item" onClick={filterResultsHandler('received')}>
+          <a className={currentFilter === 'received' ? 'selected' : '', 'text-white mr-2'}>
             Recibidas{' '}
           </a>
-          <NotificationIcon />
+           <NotificationIcon />
         </li>
-        <li className="text-white rounded my-2 bg-warning d-flex justify-content-between list-group-item" onClick={filterResultsHandler('process')}>
-          <a className={currentFilter === 'process' ? 'selected' : '', 'text-white'}>
+        <li className="mr-3 text-white rounded  bg-warning d-flex justify-content-between list-group-item" onClick={filterResultsHandler('process')}>
+          <a className={currentFilter === 'process' ? 'selected' : '', 'text-white mr-2'}>
             En Proceso
           </a>
-          <Cooking />
+           <Cooking />
         </li>
-        <li className="text-white rounded my-2 bg-danger d-flex justify-content-between list-group-item" onClick={filterResultsHandler('delivery')}>
-          <a className={currentFilter === 'delivery' ? 'selected' : '', 'text-white'}>
+        <li className="mr-3 text-white rounded bg-danger d-flex justify-content-between list-group-item" onClick={filterResultsHandler('delivery')}>
+          <a className={currentFilter === 'delivery' ? 'selected' : '', 'text-white mr-2'}>
             En Delivery
           </a>
-          <DeliveryIcon />
+           <DeliveryIcon />
         </li>
       </ul>
 

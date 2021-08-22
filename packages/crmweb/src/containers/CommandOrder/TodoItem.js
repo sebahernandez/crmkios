@@ -172,10 +172,11 @@ const TodoItem = ({ index, pedido }) => {
   }
 
   return (
-    <li className="d-flex justify-content-between align-items-center list-group-item">
+    <li className="d-flex justify-content-between list-group-item">
       <div>{icon(status)} <span>Ord:{pedido.order}</span> </div>  
       <div>{pedido.order_date}</div>
-      <div className={'d-flex flex-column justify-content-right' + status}>
+
+      <div className={status}>
         <div>${pedido.total}</div>
         
       </div>
