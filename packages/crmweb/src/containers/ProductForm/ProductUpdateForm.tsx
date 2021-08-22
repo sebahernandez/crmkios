@@ -37,7 +37,7 @@ const GET_CATEGORIAS = gql`
 const UPDATE_PRODUCT = gql`
   
   mutation update_producto($id: Int!,$nombre: String!,$descripcion: String!, $sku: String!,$unidad: Int!, $precio: Int!, $precio_venta: Int!, $descuento: Int!,
-  $categoria: Int!, $cantidad: Int!, $imageURL: String!, $clientid: String! ) {
+  $categoria: Int!, $cantidad: Int!, $imageURL: String!, $gallery: String!, $clientid: String! ) {
     update_producto(where: {id: {_eq: $id}, clientid:{_eq: $clientid}  }
             _set: {
                     nombre: $nombre,
@@ -49,7 +49,8 @@ const UPDATE_PRODUCT = gql`
                     descuento: $descuento,
                     categoria: $categoria,
                     cantidad: $cantidad,
-                    imageURL: $imageURL
+                    imageURL: $imageURL,
+                    gallery: $gallery
                   },
           ){
             affected_rows
@@ -92,8 +93,8 @@ const ModifyProduct: React.FC<Props> = () => {
   const [clientid] = useState([{ value: data1.clientid }]); 
   const [tag, setTag] = useState([{ value: data1.categorias[0].value }]);
   const [imageURL, setImageURL] = useState(data1.imageURL);  
-
-  
+  const [gallery, setGallery] = useState(data1.gallery.split(","));  
+  const [isLoading, setIsLoading] = useState(false);  
 
   React.useEffect(() => {
     register({ name: 'orderId' });
@@ -132,15 +133,28 @@ const ModifyProduct: React.FC<Props> = () => {
   };
   
   const onFileChange = async (e) => {
-    const file = e.target.files[0];
-    if(file){
-      const storageRef = app.storage().ref();
-      const fileRef = storageRef.child(file.name);
-      await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
-      setImageURL(await fileRef.getDownloadURL());            
-    }
+    setIsLoading(true)
+    let arg = [] 
+    let file = e.target.files[0];  // solo una imagen
+    const storageRef = app.storage().ref();
+        try { 
+          for (let i = 0; i < e.target.files.length; i++) {
+            
+            file = e.target.files[i] 
+            
+            const fileRef = storageRef.child(file.name);
+            
+            await fileRef.put(file) 
+            arg.push( await fileRef.getDownloadURL()  );   
+          }
+        } catch(error ){
+          console.log(error)
+        } 
+
+    setGallery(arg)
+    setIsLoading(false)
+
+    console.log('gallery>' + gallery)
    } 
 
 
@@ -155,6 +169,7 @@ const ModifyProduct: React.FC<Props> = () => {
       sku: data.sku,
       cantidad: Number(data.cantidad),
       imageURL: imageURL && imageURL.length !== 0 ? imageURL : '',
+      gallery: gallery.toString(),
       precio: Number(data.precio),
       precio_venta: Number(data.precio_venta),
       descuento: Number(data.descuento)     
@@ -173,7 +188,8 @@ const ModifyProduct: React.FC<Props> = () => {
                   cantidad: product.cantidad,
                   descuento: product.descuento,
                   categoria: product.categoria,
-                  imageURL: product.imageURL 
+                  imageURL: product.imageURL ,
+                  gallery: product.gallery
                 }
     });
     closeDrawer(); 
@@ -214,8 +230,14 @@ const ModifyProduct: React.FC<Props> = () => {
             </Col>
             <Col lg={8}>
               <DrawerBox>
-                <input  type="file" onChange={onFileChange} />
-                <img width="150" height="150" src={imageURL}/>
+               <input className="charge-image" type="file" multiple onChange={onFileChange} />
+             
+                {gallery.map((url, i) => (
+                  <div key={i}>
+                      <img id={'name'+i} width="100" height="100" src={url}/> 
+                  </div>
+                ))} 
+                  { isLoading && <div className="lds-dual-ring"></div> } 
               </DrawerBox>
             </Col>
           </Row>

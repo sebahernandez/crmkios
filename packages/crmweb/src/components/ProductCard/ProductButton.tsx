@@ -5,6 +5,7 @@ import { useDrawerDispatch } from 'context/DrawerContext';
 type ProductCardProps = {
   title: string;
   image: any;
+  gallery: any;
   weight?: string;
   currency?: string;
   descripcion?: string;
@@ -21,6 +22,7 @@ const ProductButton: React.FC<ProductCardProps> = ({
   title,
   descripcion,
   image,
+  gallery,
   weight,
   price,
   category,

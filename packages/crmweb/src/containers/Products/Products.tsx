@@ -96,6 +96,7 @@ subscription s1($clientid: String!, $categoria: String!, $searchText: String!) {
     cantidad
     unidad
     imageURL
+    gallery
     categoria
     categorias {
       name
@@ -294,7 +295,7 @@ export default function Products({clientid}) {
                            <StyledBodyCell>{item.sku}</StyledBodyCell>
                           <StyledBodyCell>
                             <ImageWrapper>
-                              <Image src={item.imageURL} alt={item.nombre} />
+                              <Image src={item.gallery !== null &&  item.gallery.length > 0 ? item.gallery.split(",")[0] : item.imageURL} alt={item.nombre} />
                             </ImageWrapper>
                           </StyledBodyCell>
                           <StyledBodyCell>{item.nombre}</StyledBodyCell>
@@ -310,6 +311,7 @@ export default function Products({clientid}) {
                                   descripcion={item.descripcion}
                                   weight={item.unidad}
                                   image={item.imageURL}
+                                  gallery={item.gallery}
                                   currency={CURRENCY}
                                   price={item.precio}
                                   salePrice={item.precio_venta}
