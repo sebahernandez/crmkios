@@ -79,3 +79,13 @@ input:focus{
     transform: rotate(360deg);
   }
 }
+.list-group{
+  max-height: 600px;
+  margin-bottom: 10px;
+  overflow:scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cerradas{
+  margin-top:125px;
+}

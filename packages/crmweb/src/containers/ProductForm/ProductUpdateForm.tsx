@@ -7,6 +7,7 @@ import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
 import { Row, Col } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input'; 
+import Uploader from 'components/Uploader/Uploader';
 import Select from 'components/Select/Select';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 import { app } from '../../../src/base';
@@ -132,15 +133,16 @@ const ModifyProduct: React.FC<Props> = () => {
     setTag(value);
   };
   
-  const onFileChange = async (e) => {
+
+  const onFileChange = async (files) => {
     setIsLoading(true)
     let arg = [] 
-    let file = e.target.files[0];  // solo una imagen
+    let file = files[0];  // solo una imagen
     const storageRef = app.storage().ref();
         try { 
-          for (let i = 0; i < e.target.files.length; i++) {
+          for (let i = 0; i < files.length; i++) {
             
-            file = e.target.files[i] 
+            file = files[i] 
             
             const fileRef = storageRef.child(file.name);
             
@@ -155,7 +157,7 @@ const ModifyProduct: React.FC<Props> = () => {
     setIsLoading(false)
 
     console.log('gallery>' + gallery)
-   } 
+  };
 
 
   const onSubmit = (data) => {
@@ -230,7 +232,7 @@ const ModifyProduct: React.FC<Props> = () => {
             </Col>
             <Col lg={8}>
               <DrawerBox>
-               <input className="charge-image" type="file" multiple onChange={onFileChange} />
+              <Uploader  onChange={onFileChange} /> 
              
                 {gallery.map((url, i) => (
                   <div key={i}>

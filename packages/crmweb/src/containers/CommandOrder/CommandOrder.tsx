@@ -13,7 +13,7 @@ export default function CommandOrder({clientid}) {
 return (
 <div>
   <TopbarCommand />
-  <div className="container">
+  <div className="container-fluid bg-light pt-5">
     <div className="row">
       <div className="col-md-8">
         <TodoPrivateWrapper />

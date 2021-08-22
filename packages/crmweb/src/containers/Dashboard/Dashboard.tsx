@@ -208,7 +208,7 @@ function Dashboard({clientid}) {
 
   useEffect(() => {
     
-       cargaObjetivos();
+       // cargaObjetivos();
        if(ts>0){
           cargaMeses();
           cargaVisitas();

@@ -5,8 +5,8 @@ import TodoClosedList from './TodoClosedList';
 
 const TodoClosedWrapper = () => {
   return (
-    <div className="todoWrapper">
-      <div className="sectionHeader">Órdenes Cerradas (Real-Time)</div>
+    <div className="todoWrapper cerradas">
+      <h5 className="sectionHeader">Órdenes Cerradas (Real-Time)</h5>
 
       {/*  <TodoInput /> */}
       <TodoClosedList />

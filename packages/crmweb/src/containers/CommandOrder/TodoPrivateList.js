@@ -87,6 +87,7 @@ const TodoPrivateList = (props) => {
     filteredPedidos = pedidos.filter(
       (pedido) => pedido.is_closed !== true && pedido.is_cancelled !== true
     );
+    
   } else {
     if (state.filter === 'closed') {
       filteredPedidos = pedidos.filter((pedido) => pedido.is_closed === true);
@@ -122,8 +123,8 @@ const TodoPrivateList = (props) => {
         clearCompletedFn={clearCompleted}
         clearInProgress={state.clearInProgress}
       />
-      <div className="todoListWrapper">
-        <ul>{pedidoList}</ul>
+      <div className="todoListWrapper mt-3 ">
+        <ul className="list-group">{pedidoList}</ul>
       </div>
 
       <TodoFilters

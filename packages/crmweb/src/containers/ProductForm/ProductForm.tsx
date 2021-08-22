@@ -5,7 +5,8 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
-import { Row, Col } from 'components/FlexBox/FlexBox';
+import { Grid, Row, Col } from 'components/FlexBox/FlexBox';
+import Uploader from 'components/Uploader/Uploader';
 import Input from 'components/Input/Input'; 
 import Select from 'components/Select/Select';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
@@ -110,17 +111,17 @@ const AddProduct: React.FC<Props> = (props) => {
   };
 
  
+ 
 
-  
-  const onFileChange = async (e) => {
+   const onFileChange = async (files) => {
     setIsLoading(true)
     let arg = [] 
-    let file = e.target.files[0];  // solo una imagen
+    let file = files[0];  // solo una imagen
     const storageRef = app.storage().ref();
         try { 
-          for (let i = 0; i < e.target.files.length; i++) {
+          for (let i = 0; i < files.length; i++) {
             
-            file = e.target.files[i] 
+            file = files[i] 
             
             const fileRef = storageRef.child(file.name);
             
@@ -135,12 +136,10 @@ const AddProduct: React.FC<Props> = (props) => {
     setIsLoading(false)
 
     console.log('gallery>' + gallery)
-   } 
-
+  };
  
   const onSubmit = (e) => {
-
-     
+ 
     const newProduct = {
       nombre: e.nombre,
       categoria: Number(categoria),
@@ -180,7 +179,6 @@ const AddProduct: React.FC<Props> = (props) => {
       <DrawerTitleWrapper>
         <DrawerTitle>Agregar Producto</DrawerTitle>
       </DrawerTitleWrapper>
-
       <Form onSubmit={handleSubmit(onSubmit)} style={{ height: '100%' }}>
         <Scrollbars
           autoHide
@@ -216,16 +214,8 @@ const AddProduct: React.FC<Props> = (props) => {
                   },
                 }}
               > 
-              
-             <input className="charge-image" type="file" multiple onChange={onFileChange} />
-            
+               <Uploader  onChange={onFileChange} />
              
-             {gallery.map((url, i) => (
-                <div key={i}>
-                   <img id={'name'+i} width="100" height="100" src={url}/> 
-                </div>
-              ))} 
-                { isLoading && <div className="lds-dual-ring"></div> } 
              </DrawerBox> 
             </Col>
           </Row>
@@ -382,7 +372,7 @@ const AddProduct: React.FC<Props> = (props) => {
            Guardar
           </Button>
         </ButtonGroup>
-      </Form>
+      </Form> 
     </>
   );
 };

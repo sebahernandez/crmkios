@@ -45,34 +45,34 @@ const TodoFilters = ({
   }
 
   return (
-    <div className="footerList">
+    <div className="footerList pt-2">
       <span>
         {' '}
         {itemCount} órden
         {itemCount !== 1 ? 'es' : ''}
       </span>
 
-      <ul>
-        <li onClick={filterResultsHandler('active')}>
-          <a className={currentFilter === 'active' ? 'selected' : ''}>Todos</a>
+      <ul className="list-group list-group-horizontal pt-3">
+        <li className="mr-3 text-white rounded bg-dark d-flex justify-content-between list-group-item" onClick={filterResultsHandler('active')}>
+          <a className={currentFilter === 'active' ? 'selected' : '', 'text-white'}>Todos</a>
         </li>
-        <li onClick={filterResultsHandler('received')}>
-          <a className={currentFilter === 'received' ? 'selected' : ''}>
+        <li className="mr-3 text-white rounded  bg-success d-flex justify-content-between list-group-item" onClick={filterResultsHandler('received')}>
+          <a className={currentFilter === 'received' ? 'selected' : '', 'text-white mr-2'}>
             Recibidas{' '}
           </a>
-          <NotificationIcon />
+           <NotificationIcon />
         </li>
-        <li onClick={filterResultsHandler('process')}>
-          <a className={currentFilter === 'process' ? 'selected' : ''}>
+        <li className="mr-3 text-white rounded  bg-warning d-flex justify-content-between list-group-item" onClick={filterResultsHandler('process')}>
+          <a className={currentFilter === 'process' ? 'selected' : '', 'text-white mr-2'}>
             En Proceso
           </a>
-          <Cooking />
+           <Cooking />
         </li>
-        <li onClick={filterResultsHandler('delivery')}>
-          <a className={currentFilter === 'delivery' ? 'selected' : ''}>
+        <li className="mr-3 text-white rounded bg-danger d-flex justify-content-between list-group-item" onClick={filterResultsHandler('delivery')}>
+          <a className={currentFilter === 'delivery' ? 'selected' : '', 'text-white mr-2'}>
             En Delivery
           </a>
-          <DeliveryIcon />
+           <DeliveryIcon />
         </li>
       </ul>
 
