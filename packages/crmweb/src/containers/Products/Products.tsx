@@ -164,13 +164,13 @@ export default function Products({clientid}) {
 
   // lista de productos x categoria x clientid + ordenados asc desc price  
   
- 
+/*  
   if (error1){
     return <div>Error! {error1.message} </div>;
   }
   if (error2) {
     return <div>,Error! {error2.message} </div>;
-  }
+  } */
 /*   if (error3) {
     return <div>,Error! {error3.message} </div>;
   } */
@@ -211,11 +211,7 @@ export default function Products({clientid}) {
   }
   
   function handleSearch(event) {
-
-    const value = event.currentTarget.value;
-
-    console.log(type, search )
-
+    const value = event.currentTarget.value;  
     setSearch(value); 
   }
 
