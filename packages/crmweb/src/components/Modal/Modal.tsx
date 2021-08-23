@@ -1,4 +1,5 @@
 import Button from "components/Button/Button";
+import { Fragment } from "react";
 import { useState } from "react";
 import { Modal } from "react-bootstrap"; 
 /* import 'bootstrap/dist/css/bootstrap.min.css'; */ 
@@ -29,17 +30,18 @@ export const ModalCommand = ({order}) => {
       ))}
       <Modal  show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
        
-        <Modal.Body>
-        
-                <iframe id="inlineFrameExample"
-                    title="Inline Frame Example"
-                    width="1000px"
+        <Fragment>
+        <div className="resp-container">
+                <iframe
+                    className="resp-iframe"
+                    id="inlineFrameExample"
+                    title="checkout"
                     height="1000px"
+                    width="1000px"
                     src={url}>
                 </iframe>
-
-        
-        </Modal.Body>
+        </div>
+        </Fragment>
       </Modal>
 
     
