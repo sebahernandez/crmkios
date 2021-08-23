@@ -89,3 +89,13 @@ input:focus{
 .cerradas{
   margin-top:125px;
 }
+
+iframe {
+  position: relative;
+  display: block;
+  top:0;
+  right: 0;
+  border: none;         /* Reset default border */
+  margin: 0 auto;
+
+}
