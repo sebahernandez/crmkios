@@ -3,7 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import {
   LOGIN,
   COMMAND_ORDER,
-  REGISTRO, 
+  REGISTRO,
+  COMENZAR, 
   PRODUCTS,
   CATEGORY,
   DASHBOARD,
@@ -32,6 +33,7 @@ const Coupons = lazy(() => import('containers/Coupons/Coupons'));
 const Login = lazy(() => import('containers/Login/Login'));
 const CommandOrder = lazy(() => import('containers/CommandOrder/CommandOrder'));
 const Register = lazy(() => import('containers/RegistroForm/RegistroForm'));
+const MakeUp = lazy(() => import('containers/MakeUp/MakeUp'));
 const NotFound = lazy(() => import('containers/NotFound/NotFound'));
 const HelpForm = lazy(() => import('containers/Help/Help'));
 
@@ -153,9 +155,17 @@ const Routes = () => {
           <Route path={LOGIN}>
             <Login />
           </Route>
+          
+          {/* Solucion 2 */}
           <Route path={REGISTRO}>
             <Register />
           </Route>
+          
+          {/* Solucion 1 */}
+          <Route path={COMENZAR}>
+            <MakeUp />
+          </Route>
+          
           <Route component={NotFound} />
         </Switch>
       </Suspense>

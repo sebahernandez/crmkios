@@ -1,0 +1,57 @@
+{
+  "dataUser": 
+    {
+    "name": "Andrés",
+    "taksPercentage" :50,
+    "shopUrl" : "shop.tuecommerce.cl",
+    "visits": "120",
+    "publishedProducts":"36",
+    "sales": "234",
+    "totalValue":"850"
+    }
+  ,
+
+  "products": [
+    {
+      "id": "1",
+      "title": "Agregar Producto",
+      "content": "Tu logo es la imagen de tu empresa, súbelo y capta la atención del mundo.",
+      "step": "Paso 3",
+      "time": "menos de 3 minutos",
+      "icon": "/icons/logo.svg"
+    },
+    {
+      "id": "2",
+      "title": "Información",
+      "content": "Selecciona las opciones de pago que recibes cuando un cliente compra tus productos.",
+      "step": "Paso 5",
+      "time": "menos de 3 minutos",
+      "icon": "/icons/info.svg"
+    },
+    {
+      "id": "3",
+      "title": "Ubicación",
+      "content": "Escribe los datos de tu negocio, tus clientes van a querer visitarte y hacer compras.",
+      "step": "Paso 7",
+      "time": "menos de 3 minutos",
+      "icon": "/icons/map.svg"
+    },
+    {
+      "id": "4",
+      "title": "Personalizar diseño",
+      "content": "Da rienda suelta a tu imaginación y diseña la tienda que siempre has soñado, es muy facil.",
+      "step": "Paso 8",
+      "time": "menos de 3 minutos",
+      "icon": "/icons/design.svg"
+    },
+    {
+      "id": "5",
+      "title": "Mis mensajes",
+      "content": "En esta sección pasarás una gran parte de tu tiempo en comunicación con tus clientes.",
+      "step": "Paso 9",
+      "time": "menos de 3 minutos",
+      "icon": "/icons/mail.svg"
+    }
+  ]
+
+}

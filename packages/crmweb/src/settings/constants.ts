@@ -6,6 +6,7 @@ export const CATEGORY = '/category';
 export const LOGIN = '/login';
 export const COMMAND_ORDER = '/command_order';
 export const REGISTRO = '/registro'; 
+export const COMENZAR = '/comenzar'; 
 export const LOGOUT = '/logout';
 export const ORDERS = '/orders';
 export const CUSTOMERS = '/customers';
