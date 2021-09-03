@@ -44,7 +44,7 @@ function MakeUp() {
               </div>
             </Bar>
           </TasktText>
-          <img src='./../../assets/makeup/icons/image.svg' alt='Design' />
+          <img src='/icons/image.svg' alt='Design' />
         </CenterContent>
         <CardsProductContainer>
           {Data.products.map((p) => (

@@ -18,7 +18,7 @@
       "content": "Tu logo es la imagen de tu empresa, súbelo y capta la atención del mundo.",
       "step": "Paso 3",
       "time": "menos de 3 minutos",
-      "icon": "./../../../assets/makeup/icons/logo.svg"
+      "icon": "/icons/logo.svg"
     },
     {
       "id": "2",
@@ -26,7 +26,7 @@
       "content": "Selecciona las opciones de pago que recibes cuando un cliente compra tus productos.",
       "step": "Paso 5",
       "time": "menos de 3 minutos",
-      "icon": "./../../../assets/makeup/icons/info.svg"
+      "icon": "/icons/info.svg"
     },
     {
       "id": "3",
@@ -34,7 +34,7 @@
       "content": "Escribe los datos de tu negocio, tus clientes van a querer visitarte y hacer compras.",
       "step": "Paso 7",
       "time": "menos de 3 minutos",
-      "icon": "./../../../assets/makeup/icons/map.svg"
+      "icon": "/icons/map.svg"
     },
     {
       "id": "4",
@@ -42,7 +42,7 @@
       "content": "Da rienda suelta a tu imaginación y diseña la tienda que siempre has soñado, es muy facil.",
       "step": "Paso 8",
       "time": "menos de 3 minutos",
-      "icon": "./../../../assets/makeup/icons/design.svg"
+      "icon": "/icons/design.svg"
     },
     {
       "id": "5",
@@ -50,7 +50,7 @@
       "content": "En esta sección pasarás una gran parte de tu tiempo en comunicación con tus clientes.",
       "step": "Paso 9",
       "time": "menos de 3 minutos",
-      "icon": "./../../../assets/makeup/icons/mail.svg"
+      "icon": "/icons/mail.svg"
     }
   ]
 
