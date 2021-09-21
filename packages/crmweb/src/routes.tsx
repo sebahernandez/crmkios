@@ -4,6 +4,7 @@ import {
   LOGIN,
   COMMAND_ORDER,
   REGISTRO,
+  SUBSCRIPCION,
   COMENZAR, 
   PRODUCTS,
   CATEGORY,
@@ -33,6 +34,7 @@ const Coupons = lazy(() => import('containers/Coupons/Coupons'));
 const Login = lazy(() => import('containers/Login/Login'));
 const CommandOrder = lazy(() => import('containers/CommandOrder/CommandOrder'));
 const Register = lazy(() => import('containers/RegistroForm/RegistroForm'));
+const BasicForm = lazy(() => import('pages/BasicForm'));
 const MakeUp = lazy(() => import('containers/MakeUp/MakeUp'));
 const NotFound = lazy(() => import('containers/NotFound/NotFound'));
 const HelpForm = lazy(() => import('containers/Help/Help'));
@@ -155,10 +157,14 @@ const Routes = () => {
           <Route path={LOGIN}>
             <Login />
           </Route>
-          
-          {/* Solucion 2 */}
+
           <Route path={REGISTRO}>
             <Register />
+          </Route>
+
+          {/* Solucion 2 */}
+         <Route path={SUBSCRIPCION}>
+            <BasicForm />
           </Route>
           
           {/* Solucion 1 */}
