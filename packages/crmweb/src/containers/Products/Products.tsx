@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, withStyle } from 'baseui'; 
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input';
@@ -71,7 +71,7 @@ export const LoaderItem = styled('div', () => ({
 
 
 const GET_CATEGORIAS = gql`
-   query  ($clientid: String!) {
+ subscription  c1($clientid: String!) {
     categorias (where: {clientid: {_eq: $clientid}}) {
       id
       name 
@@ -85,8 +85,8 @@ const GET_CATEGORIAS = gql`
  
 // clientid: {_eq: $clientid}}}, order_by: {precio_venta: $sort}) {
 const GET_PRODUCTS_X_CATEGORIA = gql`
-subscription s1($clientid: String!, $categoria: String!, $searchText: String!) {
-  producto(where: {clientid: {_eq: $clientid}, _and: {categorias: {name: {_eq: $categoria}}, _and: {nombre: {_like: $searchText}}}}) {
+subscription s1($clientid: String!, $categoria: String, $searchText: String) {
+  producto(where: {clientid: {_eq: $clientid}, _or: {categorias: {name: {_eq: $categoria}}, _or: {nombre: {_like: $searchText}}}}) {
     id
     clientid
     nombre
@@ -94,8 +94,7 @@ subscription s1($clientid: String!, $categoria: String!, $searchText: String!) {
     sku
     precio
     cantidad
-    unidad
-    imageURL
+    unidad 
     gallery
     categoria
     categorias {
@@ -157,11 +156,19 @@ export default function Products({clientid}) {
  
 
   // lista de categorias x clientid
-  const { data:data2, error:error2 } = useQuery(GET_CATEGORIAS,
+  const { data:data2, error:error2 } = useSubscription(GET_CATEGORIAS,
     {
       variables: {clientid}
     });
+    
 
+    useEffect(()=> {
+      console.log('clientid',clientid)
+      console.log('type',type)
+      console.log('search',search)
+      if(data1)console.log('data1',data1)
+      if(data2)console.log('data2',data2)
+    },[])
   // lista de productos x categoria x clientid + ordenados asc desc price  
   
 /*  

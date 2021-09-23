@@ -47,6 +47,7 @@ const GET_SUSCRIPTOR = gql`
 export default function Login() {
 	const [usuario, SetUsuario] = useState('');
 	const [password, SetPassword] = useState('');
+	const [isAuth, SetIsAuth] = useState(true);
 	const [isLogged, SetIsLogged] = useState(false);
 	const [isClicked, SetIsClicked] = useState(false);
 	const { authenticate, isAuthenticated } = useContext(AuthContext);
@@ -105,14 +106,28 @@ export default function Login() {
 			console.log(':::::::::',JSON.stringify(data2))
 			SetIsLogged(true)
 			auth()
+			SetIsAuth(false)
 		}	else {
 			SetIsLogged(false)
+			SetIsAuth(true)
 			
 		}
 		
 		
 
 	}
+
+const loadMessage = () => {
+	 
+	if(	isAuth ) {
+		return <Alert key={1} variant={'danger'} transition={true}>
+    			Suscriptor no identificado o problemas para validar sus datos, intente nuevamente o contacte al administrador!!!
+  			</Alert>
+	}	else {
+		return
+	}	  
+
+}
 
 	return (
 	  <>
@@ -124,9 +139,8 @@ export default function Login() {
                 </LogoWrapper>
                 <FormTitle>Ingreso Administración</FormTitle>
 								{
-									isClicked && isLogged===false && <Alert key={1} variant={'danger'} transition={true}>
-    							Suscriptor no identificado o problemas para validar sus datos, intente nuevamente!!!
-  								</Alert>
+									(isAuth === true && isClicked===true && isLogged===false)  && loadMessage()
+									
 								}
               </FormFields>
 	 					<div className="form-group">
