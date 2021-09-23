@@ -38,7 +38,7 @@ const GET_CATEGORIAS = gql`
 const UPDATE_PRODUCT = gql`
   
   mutation update_producto($id: Int!,$nombre: String!,$descripcion: String!, $sku: String!,$unidad: Int!, $precio: Int!, $precio_venta: Int!, $descuento: Int!,
-  $categoria: Int!, $cantidad: Int!, $imageURL: String!, $gallery: String!, $clientid: String! ) {
+  $categoria: Int!, $cantidad: Int!, $gallery: String!, $clientid: String! ) {
     update_producto(where: {id: {_eq: $id}, clientid:{_eq: $clientid}  }
             _set: {
                     nombre: $nombre,
@@ -49,8 +49,7 @@ const UPDATE_PRODUCT = gql`
                     precio_venta: $precio_venta,
                     descuento: $descuento,
                     categoria: $categoria,
-                    cantidad: $cantidad,
-                    imageURL: $imageURL,
+                    cantidad: $cantidad, 
                     gallery: $gallery
                   },
           ){
@@ -93,7 +92,6 @@ const ModifyProduct: React.FC<Props> = () => {
   const [orderId] = useState([{ value: data1.id }]);
   const [clientid] = useState([{ value: data1.clientid }]); 
   const [tag, setTag] = useState([{ value: data1.categorias[0].value }]);
-  const [imageURL, setImageURL] = useState(data1.imageURL);  
   const [gallery, setGallery] = useState(data1.gallery.split(","));  
   const [isLoading, setIsLoading] = useState(false);  
 
@@ -101,8 +99,7 @@ const ModifyProduct: React.FC<Props> = () => {
     register({ name: 'orderId' });
     register({ name: 'clientid' });
     register({ name: 'categorias' });
-    register({ name: 'categoria' });
-    register({ name: 'imageURL', required: true }); 
+    register({ name: 'categoria' }); 
   }, [register]);
 
   const [update_producto, {error}] = useMutation(UPDATE_PRODUCT );
@@ -169,8 +166,7 @@ const ModifyProduct: React.FC<Props> = () => {
       descripcion: data.descripcion,
       categoria: Number(data.categoria),
       sku: data.sku,
-      cantidad: Number(data.cantidad),
-      imageURL: imageURL && imageURL.length !== 0 ? imageURL : '',
+      cantidad: Number(data.cantidad), 
       gallery: gallery.toString(),
       precio: Number(data.precio),
       precio_venta: Number(data.precio_venta),
@@ -189,8 +185,7 @@ const ModifyProduct: React.FC<Props> = () => {
                   precio_venta: product.precio_venta,
                   cantidad: product.cantidad,
                   descuento: product.descuento,
-                  categoria: product.categoria,
-                  imageURL: product.imageURL ,
+                  categoria: product.categoria, 
                   gallery: product.gallery
                 }
     });

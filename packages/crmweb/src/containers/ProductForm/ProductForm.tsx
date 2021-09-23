@@ -38,7 +38,7 @@ const CREATE_PRODUCT = gql`
   
   mutation insert_producto($nombre: String!, $descripcion: String!,$sku: String!,
     $unidad: Int!, $precio: Int!, $precio_venta: Int!, $descuento: Int!,
-  $categoria: Int!, $cantidad: Int!, $imageURL: String!, $clientid: String!, $gallery: String! ) {
+  $categoria: Int!, $cantidad: Int!, $clientid: String!, $gallery: String! ) {
     insert_producto(
             objects: [
                 {
@@ -50,8 +50,7 @@ const CREATE_PRODUCT = gql`
                   precio_venta: $precio_venta
                   descuento: $descuento
                   categoria: $categoria
-                  cantidad: $cantidad
-                  imageURL: $imageURL
+                  cantidad: $cantidad 
                   clientid: $clientid
                   gallery: $gallery
                 }
@@ -72,15 +71,13 @@ const AddProduct: React.FC<Props> = (props) => {
   const [tag, setTag] = useState([]);
   const [gallery, setGallery] = useState([])
   const [clientid] = useState(sessionStorage.getItem('clientid')); 
-  const [imageURL, setImageURL] = useState(null); 
   const [categoria, setCategoria] = useState(null);  
   const [isLoading, setIsLoading] = useState(false);  
   
   
   React.useEffect(() => {
     register({ name: 'clientid' });
-    register({ name: 'categorias' });
-    register({ name: 'imageURL', required: true });
+    register({ name: 'categorias' });    
   }, [register]);
 
   const [insert_producto, {error}] = useMutation(CREATE_PRODUCT );
@@ -147,7 +144,6 @@ const AddProduct: React.FC<Props> = (props) => {
       sku: e.sku,
       unidad: 1,
       cantidad: Number(e.cantidad),
-      imageURL: imageURL && imageURL.length !== 0 ? imageURL : '',
       precio: Number(e.precio),
       precio_venta: Number(e.precio_venta),
       descuento: Number(e.descuento),
@@ -165,7 +161,6 @@ const AddProduct: React.FC<Props> = (props) => {
                   cantidad: newProduct.cantidad,
                   descuento: newProduct.descuento,
                   categoria: newProduct.categoria,
-                  imageURL: newProduct.imageURL,
                   clientid: newProduct.clientid,
                   gallery: newProduct.gallery
 
