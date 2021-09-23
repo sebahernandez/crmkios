@@ -14,7 +14,7 @@ import {
   StyleButton,
   Subtitle,
   TextFieldsInitial,
-} from "./styled";
+} from "./styled"
 import { useState } from "react";
 
 const SignupSchema = Yup.object().shape({

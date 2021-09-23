@@ -1,5 +1,6 @@
 import React, { useContext, lazy, Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import Layout from 'components/Layout';
 import {
   LOGIN,
   COMMAND_ORDER,
@@ -35,6 +36,7 @@ const Login = lazy(() => import('containers/Login/Login'));
 const CommandOrder = lazy(() => import('containers/CommandOrder/CommandOrder'));
 const Register = lazy(() => import('containers/RegistroForm/RegistroForm'));
 const BasicForm = lazy(() => import('pages/BasicForm'));
+
 const MakeUp = lazy(() => import('containers/MakeUp/MakeUp'));
 const NotFound = lazy(() => import('containers/NotFound/NotFound'));
 const HelpForm = lazy(() => import('containers/Help/Help'));
@@ -164,7 +166,9 @@ const Routes = () => {
 
           {/* Solucion 2 */}
          <Route path={SUBSCRIPCION}>
-            <BasicForm />
+           <Layout>
+              <BasicForm />
+            </Layout>
           </Route>
           
           {/* Solucion 1 */}
