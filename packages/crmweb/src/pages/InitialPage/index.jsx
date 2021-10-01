@@ -62,7 +62,7 @@ const InitialPage = ({ saveData, nextPage }) => {
       </Subtitle>
       <InitialComment> Bienvenido</InitialComment>
       <InitialDescription>
-        <p>Estás a unos pasos de iniciar con Tú E-commerce!!!</p>
+        <p className="p_paso">Estás a unos pasos de iniciar con Tú E-commerce!!!</p>
       </InitialDescription>
       <LabelInfo>
         <Formik
@@ -88,8 +88,7 @@ const InitialPage = ({ saveData, nextPage }) => {
                     <div>{errors.name}</div>
                   ) : null}
                 </FieldContainerError>
-                <FieldContainerError
-                  active={errors.password && touched.password}
+                <FieldContainerError  active={errors.password && touched.password}
                 >
                   <FieldInput
                     placeholder="Contraseña"
@@ -100,12 +99,13 @@ const InitialPage = ({ saveData, nextPage }) => {
                     <div>{errors.password}</div>
                   ) : null}{" "}
                 </FieldContainerError>
+                
               </TextFieldsInitial>
-
+              
               <LabelButton>
                 <h5> PASO 1</h5>
                 <StyleButton type="submit">
-                  <h3>SIGUIENTE</h3>
+                  SIGUIENTE
                 </StyleButton>
               </LabelButton>
             </Form>

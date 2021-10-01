@@ -34,7 +34,7 @@ export const Logo = styled.div`
   justify-content: center;
   padding-bottom: 10px;
   img {
-    width: 300px;
+    width:90%;
   }
 `;
 
@@ -42,7 +42,7 @@ export const Subtitle = styled.div`
   width: 90%;
   display: flex;
   color: white;
-  font-size: 13px;
+  font-size: 18px;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -86,11 +86,11 @@ export const LabelButton = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 10px 0px;
-  width: 85%;
+  padding: 40px 0px;
+  width: 75%;
 
   h5 {
-    margin: 10px;
+    margin: 40px 10px;
     font-size: 13px;
   }
 `;
@@ -124,11 +124,7 @@ export const ButtonMaterial = styled.button`
 `;
 
 export const StyleButton = styled.button`
-  background: linear-gradient(
-    90deg,
-    rgba(255, 161, 19, 1) 40%,
-    rgba(255, 184, 78, 1) 100%
-  );
+  background:darkorange;
   color: bisque;
   width: 100px;
   display: flex;
@@ -140,22 +136,25 @@ export const StyleButton = styled.button`
   border-radius: 8px;
   font-weight: 500;
   font-size: 13px;
-  box-shadow: 3px 6px 6px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 6px 20px 1px rgba(0, 0, 0, 0.1);
 `;
 
 export const FieldContainerError = styled.div`
-  width: 250px;
-  height: ${(props) => (props.active ? "80px" : "40px")};
-  margin: 0px 10px;
+  width:250px;
+  height: ${(props) => (props.active ? "100px" : "100px")};
+  margin:0;
 `;
 
 export const FieldInput = styled(Field)`
-  height: 30px;
+  position:relative;
+  display:block;
+  height: 50px;
   border-radius: 5px;
   background-color: white;
   border: none;
   width: 100%;
   margin: 10px 0px;
+  padding:20px;
 
   div {
     height: ${(props) => (props.active ? "auto" : "0")};

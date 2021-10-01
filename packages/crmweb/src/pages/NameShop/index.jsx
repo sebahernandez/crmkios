@@ -16,7 +16,7 @@ const SignupSchema = Yup.object().shape({
   nameshop: Yup.string()
     .min(2, "¡Nombre muy corto!")
     .max(50, "¡Nombre muy largo!")
-    .required("¡Nombre obligatorio"),
+    .required("El nombre es requerido"),
 });
 
 const NameShop = ({ saveData, printData, nextPage, pageBefore }) => {
@@ -51,16 +51,15 @@ const NameShop = ({ saveData, printData, nextPage, pageBefore }) => {
               <p>PASO 2</p>
               <ContainerButtons>
                 <StyleButtonBack onClick={pageBefore}>
-                  <h3> ATRÁS </h3>
+                  ATRÁS
                 </StyleButtonBack>
                 <StyleButton type="submit">
-                  <h3> SIGUIENTE</h3>
+                  SIGUIENTE
                 </StyleButton>
               </ContainerButtons>
             </FormStyled>
           )}
         </Formik>{" "}
-        <button onClick={printData}> Data</button>
       </ContainerShop>
     </CardInitial>
   );

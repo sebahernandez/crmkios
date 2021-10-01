@@ -52,25 +52,24 @@ const RelatedWeb = ({ saveData, printData, nextPage, pageBefore }) => {
                   name="url"
                   active={errors.url && touched.url}
                 />{" "}
-                <p>.tu-ecommerce.cl </p>
               </UrlLabel>
               {errors.url && touched.url ? <div>{errors.url}</div> : null}
               <TopSeparator>
-                <p>PASO 2</p>
+                <p>PASO 4</p>
               </TopSeparator>
 
               <ContainerButtons>
                 <StyleButtonBack onClick={pageBefore}>
-                  <h3> ATRÁS </h3>
+                  ATRÁS
                 </StyleButtonBack>
                 <StyleButton type="submit">
-                  <h3> SIGUIENTE</h3>
+                  SIGUIENTE
                 </StyleButton>
               </ContainerButtons>
             </FormStyled>
           )}
         </Formik>
-        <button onClick={printData}> DATA</button>
+
       </ContainerWeb>
     </CardInitial>
   );
