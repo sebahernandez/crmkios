@@ -91,13 +91,13 @@ export const LabelTextRadio = styled.div`
 `;
 
 export const FieldInput = styled(Field)`
-  height: 30px;
+  height: 50px;
   border-radius: 5px;
   padding: 5px 10px;
   background-color: white;
   border: none;
   width: 330px;
-  margin: 10px 0px;
+  margin: 0px 0px;
 `;
 
 export const ContainerButtons = styled.div`

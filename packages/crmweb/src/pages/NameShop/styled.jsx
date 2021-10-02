@@ -58,11 +58,7 @@ export const ContainerButtons = styled.div`
 
 export const StyleButton = styled.button`
   margin: 0px 10px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 161, 19, 1) 40%,
-    rgba(255, 184, 78, 1) 100%
-  );
+  background:darkorange;
   color: bisque;
   width: 100px;
   display: flex;
@@ -99,12 +95,13 @@ export const StyleButtonBack = styled.button`
 `;
 
 export const FieldInput = styled(Field)`
-  height: 30px;
+  height: 50px;
   border-radius: 5px;
   background-color: white;
   border: none;
   width: 100%;
   margin: 10px 0px;
+  padding:20px;
   div {
     height: ${(props) => (props.active ? "auto" : "0")};
   }
@@ -112,6 +109,6 @@ export const FieldInput = styled(Field)`
 
 export const FieldContainerError = styled.div`
   width: 250px;
-  height: ${(props) => (props.active ? "80px" : "40px")};
+  height: ${(props) => (props.active ? "100px" : "100px")};
   margin: 0px 10px;
 `;

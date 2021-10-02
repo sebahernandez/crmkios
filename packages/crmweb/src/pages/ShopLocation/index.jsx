@@ -45,19 +45,18 @@ const ShopLocation = ({ saveData, printData, nextPage, pageBefore }) => {
               {errors.locationshop && touched.locationshop ? (
                 <div>{errors.locationshop}</div>
               ) : null}
-              <p>PASO 2</p>
+              <p>PASO 3</p>
               <ContainerButtons>
                 <StyleButtonBack onClick={pageBefore}>
-                  <h3> ATRÁS </h3>
+                  ATRÁS
                 </StyleButtonBack>
                 <StyleButton type="submit">
-                  <h3> SIGUIENTE</h3>
+                  SIGUIENTE
                 </StyleButton>
               </ContainerButtons>
             </FormStyled>
           )}
         </Formik>{" "}
-        <button onClick={printData}> Data</button>
       </ContainerLocation>
     </CardInitial>
   );
