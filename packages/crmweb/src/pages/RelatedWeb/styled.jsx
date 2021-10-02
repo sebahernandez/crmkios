@@ -108,7 +108,8 @@ export const ContainerButtons = styled.div`
 `;
 
 export const TopSeparator = styled.div`
-  padding-top: 50px;
+  padding-top: 20px;
+  margin:0;
 `;
 
 export const StyleButton = styled.button`
