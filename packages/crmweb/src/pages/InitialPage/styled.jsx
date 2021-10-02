@@ -18,7 +18,7 @@ export const FormContainer = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 0px;
 
   form {
     display: flex;
@@ -54,7 +54,7 @@ export const Subtitle = styled.div`
 
 export const InitialComment = styled.div`
   display: flex;
-  padding-top: 50px;
+  padding-top: 0px;
   font-size: 26px;
   justify-content: center;
 `;
@@ -63,7 +63,7 @@ export const InitialDescription = styled.div`
   display: flex;
   font-size: 15px;
   justify-content: center;
-  margin: 10px 0px;
+  margin: 0px 0px;
   width: 85%;
   p {
     text-align: center;
@@ -78,7 +78,7 @@ export const LabelInfo = styled.div`
   align-items: center;
   width: 100%;
   div {
-    padding: 3px;
+    padding: 0px;
   }
 `;
 
@@ -87,10 +87,14 @@ export const LabelButton = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding: 40px 0px;
-  width: 75%;
+  width: 80%;
+
+  @media (max-width: 768px) {
+    width: 250px;
+  }
 
   h5 {
-    margin: 40px 10px;
+    margin: 10px 10px;
     font-size: 13px;
   }
 `;

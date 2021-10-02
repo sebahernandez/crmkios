@@ -40,7 +40,8 @@ export const FormStyled = styled(Form)`
   width: 80%;
   height: auto;
   p {
-    padding-top: 50px;
+    padding-top: 10px;
+    margin:0;
     font-size: 15px;
   }
 
