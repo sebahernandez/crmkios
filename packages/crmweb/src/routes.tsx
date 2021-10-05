@@ -5,7 +5,7 @@ import {
   LOGIN,
   COMMAND_ORDER,
   REGISTRO,
-  SUBSCRIPCION,
+  SUSCRIPCION,
   COMENZAR, 
   PRODUCTS,
   CATEGORY,
@@ -165,7 +165,7 @@ const Routes = () => {
           </Route>
 
           {/* Solucion 2 */}
-         <Route path={SUBSCRIPCION}>
+         <Route path={SUSCRIPCION}>
            <Layout>
               <BasicForm />
             </Layout>
