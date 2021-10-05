@@ -93,6 +93,7 @@ const InitialPage = ({ saveData, nextPage }) => {
                   <FieldInput
                     placeholder="Contraseña"
                     name="password"
+                    type="password"
                     active={errors.password && touched.password}
                   />
                   {errors.password && touched.password ? (
