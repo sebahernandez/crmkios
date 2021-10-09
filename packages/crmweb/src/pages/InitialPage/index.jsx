@@ -26,6 +26,15 @@ const SignupSchema = Yup.object().shape({
     .min(2, "Contraseña muy corta!")
     .max(50, "Contraseña muy larga!")
     .required("Contraseña obligatoria"),
+  lastname: Yup.string()
+    .min(2, "Contraseña muy corta!")
+    .max(50, "Contraseña muy larga!")
+    .required("Apellido obligatorio"),
+
+    email: Yup.string()
+    .min(2, "Contraseña muy corta!")
+    .max(50, "Contraseña muy larga!")
+    .required("Email obligatorio"),
 });
 
 const InitialPage = ({ saveData, nextPage }) => {
@@ -88,6 +97,32 @@ const InitialPage = ({ saveData, nextPage }) => {
                     <div>{errors.name}</div>
                   ) : null}
                 </FieldContainerError>
+
+
+                <FieldContainerError active={errors.lastname && touched.lastname}>
+                  <FieldInput
+                    placeholder="Ingrese su Apellido"
+                    name="lastname"
+                    active={errors.lastname && touched.lastname}
+                  />
+                  {errors.lastname && touched.lastname ? (
+                    <div>{errors.lastname}</div>
+                  ) : null}
+                </FieldContainerError>
+
+                <FieldContainerError active={errors.email && touched.email}>
+                  <FieldInput
+                    placeholder="Ingrese su Correo Electrónico"
+                    name="email"
+                    active={errors.email && touched.email}
+                  />
+                  {errors.email && touched.email ? (
+                    <div>{errors.email}</div>
+                  ) : null}
+                </FieldContainerError>
+
+
+
                 <FieldContainerError  active={errors.password && touched.password}
                 >
                   <FieldInput

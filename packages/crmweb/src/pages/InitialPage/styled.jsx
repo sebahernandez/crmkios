@@ -19,6 +19,7 @@ export const FormContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-top: 0px;
+ 
 
   form {
     display: flex;
@@ -72,11 +73,7 @@ export const InitialDescription = styled.div`
 `;
 
 export const LabelInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  display:flex;
   div {
     padding: 0px;
   }
@@ -87,10 +84,10 @@ export const LabelButton = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding: 40px 0px;
-  width: 80%;
+  width: 100%;
 
   @media (max-width: 768px) {
-    width: 250px;
+    width:100%;
   }
 
   h5 {
@@ -101,16 +98,9 @@ export const LabelButton = styled.div`
 
 export const TextFieldsInitial = styled.div`
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  flex-direction:column;
   width: 100%;
-  @media (min-width: 769px) {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 80%;
-  }
+ 
 `;
 
 export const ButtonMaterial = styled.button`
@@ -144,20 +134,19 @@ export const StyleButton = styled.button`
 `;
 
 export const FieldContainerError = styled.div`
-  width:250px;
-  height: ${(props) => (props.active ? "100px" : "100px")};
+  width:300px;
+  height: ${(props) => (props.active ? "80px" : "80px")};
   margin:0;
 `;
 
 export const FieldInput = styled(Field)`
   position:relative;
-  display:block;
+
   height: 50px;
   border-radius: 5px;
   background-color: white;
   border: none;
   width: 100%;
-  margin: 10px 0px;
   padding:20px;
 
   div {
