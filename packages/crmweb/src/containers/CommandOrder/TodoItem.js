@@ -1,10 +1,12 @@
 import { useMutation, gql } from '@apollo/client';
-import { FETCH_PRIVATE_ORDER } from './TodoPrivateList';
+import { FETCH_PRIVATE_ORDER_QUERY } from './TodoPrivateList';
 import { NotificationIcon } from 'assets/icons/NotificationIcon';
 import { Cooking } from 'assets/icons/Cooking';
 import { DeliveryIcon } from 'assets/icons/DeliveryIcon';
 import config from 'settings/config'; 
 import ModalCommand from 'components/Modal/Modal';
+
+import Button from "components/Button/Button";  
 
 const TodoItem = ({ index, pedido }) => {
   let flagstatus = '';
@@ -66,6 +68,7 @@ const TodoItem = ({ index, pedido }) => {
     }
   };
   const togglePedido = () => {
+   
     // logica de negocio algoritmica
     if (!isClosed && !isCancelled) {
       // si no esta cerrada procede
@@ -86,7 +89,7 @@ const TodoItem = ({ index, pedido }) => {
           }
         }
       }
-
+    
       togglePedidoMutation({
         variables: {
           delivery_date: new Date(),
@@ -103,43 +106,48 @@ const TodoItem = ({ index, pedido }) => {
         update: (cache) => {
           // read cache
           const existingPedidos = cache.readQuery({
-            query: FETCH_PRIVATE_ORDER,
+            query: FETCH_PRIVATE_ORDER_QUERY,
             variables: {
               clientid: cid,
             },
           });
+          
           // process data
+          if(existingPedidos) {
           const newPedidos = existingPedidos.pedido.map((t) => {
-            if (t.id === pedido.id) {
-              if (flagstatus === 'closed') {
-                return { ...t, is_closed: !t.is_closed };
-              } else {
-                if (flagstatus === 'delivery') {
-                  return { ...t, is_delivery: !t.is_delivery };
+               
+              if (t.id === pedido.id) {
+                if (flagstatus === 'closed') {
+                  return { ...t, is_closed: !t.is_closed };
                 } else {
-                  if (flagstatus === 'process') {
-                    return { ...t, is_process: !t.is_process };
+                  if (flagstatus === 'delivery') {
+                    return { ...t, is_delivery: !t.is_delivery };
                   } else {
-                    if (flagstatus === 'received') {
-                      return { ...t, is_received: !t.is_received };
+                    if (flagstatus === 'process') {
+                      return { ...t, is_process: !t.is_process };
                     } else {
-                      return { ...t, is_cancelled: !t.is_cancelled };
+                      if (flagstatus === 'received') {
+                        return { ...t, is_received: !t.is_received };
+                      } else {
+                        return { ...t, is_cancelled: !t.is_cancelled };
+                      }
                     }
                   }
                 }
+              } else {
+                return t;
               }
-            } else {
-              return t;
-            }
-          });
-          // write back into the cache
-          cache.writeQuery({
-            query: FETCH_PRIVATE_ORDER,
-            variables: {
-              clientid: cid,
-            },
-            data: { pedido: newPedidos },
-          });
+            });
+         
+            // write back into the cache
+            cache.writeQuery({
+              query: FETCH_PRIVATE_ORDER_QUERY,
+              variables: {
+                clientid: cid,
+              },
+              data: { pedido: newPedidos },
+            });
+          }
         },
       });
     }
@@ -180,6 +188,22 @@ const TodoItem = ({ index, pedido }) => {
         <div>${pedido.total}</div>
         
       </div>
+      <div>
+       
+
+        <Button styles="background-color:black" className="me-2" onClick={() => togglePedido()} >
+            Siguiente
+          </Button>
+
+ 
+         {/*  <input
+            checked={pedido.is_closed}
+            type="checkbox"
+            id={pedido.id}
+            onChange={togglePedido}
+          /> */}
+         
+      </div>
 
       <div> 
         <ModalCommand order={pedido.order} />
@@ -190,13 +214,7 @@ const TodoItem = ({ index, pedido }) => {
         x
       </button>   */}
 
-         {/*  <input
-            checked={pedido.is_closed}
-            type="checkbox"
-            id={pedido.id}
-            onChange={togglePedido}
-          />
-          <label htmlFor={pedido.id} /> */}
+       
     </li>
 
     

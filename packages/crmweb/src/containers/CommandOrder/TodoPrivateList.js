@@ -6,6 +6,37 @@ import config from 'settings/config';
 
 const cid = config().SUBSCRIPTION_ID;
 
+
+export const FETCH_PRIVATE_ORDER_QUERY = gql`
+  query fetchPrivateOrders($clientid: String!) {
+    pedido(
+      limit: 10
+      where: {
+        clientid: { _eq: $clientid }
+        _and: {
+          order: { _neq: "null" }
+          _and: {
+            order_date: { _neq: "full" }
+            _and: { is_closed: { _neq: true } }
+          }
+        }
+      }
+      order_by: { creation_date: desc }
+    ) {
+      id
+      order
+      total
+      order_date
+      is_received
+      is_process
+      is_delivery
+      is_closed
+      is_cancelled
+    }
+  }
+`;
+
+
 export const FETCH_PRIVATE_ORDER = gql`
   subscription fetchPrivateOrders($clientid: String!) {
     pedido(
