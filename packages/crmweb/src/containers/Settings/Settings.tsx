@@ -7,6 +7,7 @@ import { SiteSettings } from 'assets/icons/SiteSettings';
 import { Members } from 'assets/icons/Members';  
 import { Grid, Row, Col as Column } from 'components/FlexBox/FlexBox';
 import { useHistory } from 'react-router-dom';
+import Cookies  from 'universal-cookie';
 
 const Col = withStyle(Column, () => ({
   '@media only screen and (max-width: 767px)': {
@@ -19,7 +20,9 @@ const Col = withStyle(Column, () => ({
 }));
  
 
-export default function Settings({clientid}) {
+export default function Settings() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   let history = useHistory();
  
 

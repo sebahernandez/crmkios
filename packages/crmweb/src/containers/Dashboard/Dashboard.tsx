@@ -14,7 +14,7 @@ import { CoinIcon } from 'assets/icons/CoinIcon';
 import { CartIconBig } from 'assets/icons/CartIconBig';
 import { UserIcon } from 'assets/icons/UserIcon';
 import { DeliveryIcon } from 'assets/icons/DeliveryIcon'; 
-
+import Cookies  from 'universal-cookie';
 
 var Col = withStyle(Column, () => ({
   '@media only screen and (max-width: 574px)': {
@@ -180,8 +180,9 @@ query  dashboard_devoluciones_mes($clientid: String! ) {
  
 
 
-function Dashboard({clientid}) {
-  
+function Dashboard() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   var [ts, setTs] = useState(0);
   var [tm, setTm] = useState(0);
   var [categoriesMeses, setCategoriesMeses] = useState([]);

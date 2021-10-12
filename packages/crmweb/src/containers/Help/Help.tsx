@@ -2,6 +2,7 @@
 import { withStyle } from 'baseui'; 
 import { HelpIcon } from 'assets/icons/HelpIcon'; 
 import { Grid, Row, Col as Column } from 'components/FlexBox/FlexBox';
+import Cookies  from 'universal-cookie';
 
 const Col = withStyle(Column, () => ({
   '@media only screen and (max-width: 767px)': {
@@ -13,8 +14,10 @@ const Col = withStyle(Column, () => ({
   },
 }));
 
-export default function help({clientid}) {
-  
+export default function help() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
+ 
   return (
     <Grid fluid={true}>
       <Row>

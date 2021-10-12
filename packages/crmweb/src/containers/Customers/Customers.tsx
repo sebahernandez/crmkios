@@ -6,6 +6,7 @@ import Input from 'components/Input/Input';
 import Select from 'components/Select/Select';
 import { useQuery, gql } from '@apollo/client';
 import { Wrapper, Header, Heading } from 'components/Wrapper.style';
+import Cookies  from 'universal-cookie';
 
 import {
   TableWrapper,
@@ -67,8 +68,9 @@ const sortByOptions = [
   { value: 'lowestToHighest', label: 'De menor a mayor' },
 ];
 
-export default function Customers({clientid}) {
-
+export default function Customers() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   const [stock, setStock] = useState([]);
   const [search, setSearch] = useState('');
 

@@ -11,6 +11,7 @@ import { Form, FieldDetails } from '../DrawerItems/DrawerItems.style';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 import { useQuery, gql } from '@apollo/client';
 import { app } from '../../../src/base';
+import Cookies  from 'universal-cookie';
 
 const options = [
   { value: 'active', label: 'Active' },
@@ -35,8 +36,9 @@ query setting($clientid: String!) {
 `;
 
 
-type Props = {clientid};
-const SiteSettingsForm: React.FC<Props> = (clientid) => {
+const SiteSettingsForm: React.FC = () => {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   const { register, handleSubmit, setValue } = useForm();
   const onSubmit = (data) => console.log(data);
   const [category, setCategory] = useState([]);
@@ -45,7 +47,7 @@ const SiteSettingsForm: React.FC<Props> = (clientid) => {
   const { data:data1} = useQuery(GET_SETTING,
     {
       variables: {
-        clientid: sessionStorage.getItem('clientid')
+        clientid: clientid
       }
   });
 

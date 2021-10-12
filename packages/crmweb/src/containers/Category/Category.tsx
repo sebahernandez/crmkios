@@ -4,7 +4,7 @@ import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
 import { useDrawerDispatch } from 'context/DrawerContext'; 
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
-
+import Cookies  from 'universal-cookie';
 import { Plus } from 'assets/icons/PlusMinus';
 import { useSubscription, gql } from '@apollo/client';
 import { Wrapper, Header, Heading } from 'components/Wrapper.style'; 
@@ -67,7 +67,9 @@ const Row = withStyle(Rows, () => ({
   },
 }));
 
-export default function Category({clientid}) {
+export default function Category() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   const dispatch = useDrawerDispatch(); 
 
   const openDrawer = useCallback(

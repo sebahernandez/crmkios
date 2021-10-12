@@ -8,6 +8,7 @@ import { DASHBOARD } from '../../settings/constants';
 import { AuthContext } from 'context/auth';
 import { FormFields, FormTitle } from 'components/FormFields/FormFields';
 import { Alert } from 'react-bootstrap';
+import Cookies  from 'universal-cookie';
 
 /**
  * Develop by Alejandro Sandoval 
@@ -45,6 +46,7 @@ const GET_SUSCRIPTOR = gql`
 `;
 
 export default function Login() {
+	const cookie = new Cookies() 
 	const [usuario, SetUsuario] = useState('');
 	const [password, SetPassword] = useState('');
 	const [isAuth, SetIsAuth] = useState(true);
@@ -82,7 +84,7 @@ export default function Login() {
 		SetIsClicked(false)
 		console.log('pasando por useEffect', data2)
 		if(data2 !== undefined){
-			console.log(':::::::::',JSON.stringify(data2))
+			cookie.set('suscriptor',data2.info_user_view[0])
 			SetIsLogged(true)
 		}	
 	},[])
@@ -103,7 +105,7 @@ export default function Login() {
 		SetIsClicked(true) 
 
 		if(data2  && data2.info_user_view && data2.info_user_view.length > 0) {
-			console.log(':::::::::',JSON.stringify(data2))
+			cookie.set('suscriptor',data2.info_user_view[0])
 			SetIsLogged(true)
 			auth()
 			SetIsAuth(false)

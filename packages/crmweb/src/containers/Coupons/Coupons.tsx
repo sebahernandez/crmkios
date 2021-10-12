@@ -11,6 +11,7 @@ import { Plus } from 'assets/icons/PlusMinus';
 import NoResult from 'components/NoResult/NoResult'; 
 import Button from 'components/Button/Button';
 import { useDrawerDispatch } from 'context/DrawerContext'; 
+import Cookies  from 'universal-cookie';
 import {
   TableWrapper,
   StyledTable,
@@ -103,7 +104,9 @@ const GET_COUPONS = gql`
   }
 `;
 
-export default function Coupons({clientid}) {
+export default function Coupons() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   const dispatch = useDrawerDispatch(); 
   const openDrawer = useCallback(
     () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'CAMPAING_FORM' }),

@@ -5,6 +5,7 @@ import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input'; 
 import { useQuery, gql } from '@apollo/client';
 import { Wrapper, Header, Heading } from 'components/Wrapper.style'; 
+import Cookies  from 'universal-cookie';
 
 import {
   TableWrapper,
@@ -48,8 +49,9 @@ const Row = withStyle(Rows, () => ({
 }));
  
 
-export default function Orders({clientid}) { 
-
+export default function Orders() { 
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   const [search, setSearch] = useState('');
 
   const { data, error } = useQuery(GET_ORDERS, {

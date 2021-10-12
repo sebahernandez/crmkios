@@ -11,6 +11,9 @@ import ProductButton from 'components/ProductCard/ProductButton';
 import NoResult from 'components/NoResult/NoResult';
 import { CURRENCY } from 'settings/constants'; 
 import Placeholder from 'components/Placeholder/Placeholder'; 
+import { Alert } from 'react-bootstrap';
+import Cookies  from 'universal-cookie';
+
 import {
   TableWrapper,
   StyledTable,
@@ -85,8 +88,8 @@ const GET_CATEGORIAS = gql`
  
 // clientid: {_eq: $clientid}}}, order_by: {precio_venta: $sort}) {
 const GET_PRODUCTS_X_CATEGORIA = gql`
-subscription s1($clientid: String!, $categoria: String, $searchText: String) {
-  producto(where: {clientid: {_eq: $clientid}, _or: {categorias: {name: {_eq: $categoria}}, _or: {nombre: {_like: $searchText}}}}) {
+subscription s1($clientid: String!, $idcategoria: Int!) {
+  producto(where: {clientid: {_eq: $clientid}, _and: {categorias: {id: {_eq: $idcategoria}}}}) {
     id
     clientid
     nombre
@@ -98,6 +101,7 @@ subscription s1($clientid: String!, $categoria: String, $searchText: String) {
     gallery
     categoria
     categorias {
+      id
       name
       value
     }
@@ -131,9 +135,10 @@ const selectorView = [
   { value: false, label: 'Vista Detalle' },
 ];
 
-export default function Products({clientid}) {
-  
- 
+export default function Products() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
+
   // tipo de producto / categoria
   const [type, setType] = useState([]); 
   const [isView, setIsView] = useState(true);
@@ -148,9 +153,7 @@ export default function Products({clientid}) {
     {
       variables: {
         clientid: clientid, 
-        categoria: type.length > 0 ? type[0].value:'',
-        searchText: '%'+search+'%'  
-        
+        idcategoria: type.length > 0 ? type[0].id:0        
       }
     });
  
@@ -164,8 +167,7 @@ export default function Products({clientid}) {
 
     useEffect(()=> {
       console.log('clientid',clientid)
-      console.log('type',type)
-      console.log('search',search)
+      console.log('type:',type) 
       if(data1)console.log('data1',data1)
       if(data2)console.log('data2',data2)
     },[])
@@ -245,18 +247,19 @@ export default function Products({clientid}) {
 
           <Col md={10} xs={12}>
             <Row>
-              <Col md={3} xs={12}>
-                <Select
+              <Col md={6} xs={12}>
+              <Select
                   options={data2 && data2.categorias}
-                  labelKey="label"
-                  valueKey="name"
+                  labelKey="name"
+                  valueKey="value"
                   placeholder="Tipo Categoría"
-                  searchable={true}
+                  value={type}
+                  searchable={false}
                   onChange={handleCategoryType} 
                 />
               </Col>
 
-              <Col md={3} xs={12}>
+              <Col md={6} xs={12}>
                 <Select
                   options={selectorView}
                   labelKey="label"
@@ -265,22 +268,16 @@ export default function Products({clientid}) {
                   searchable={false}
                   onChange={handleSelector}
                 />
-              </Col>
+              </Col> 
 
-              <Col md={6} xs={12}>
-                <Input
-                   placeholder="Ex: Buscar por nombre o descripción"
-                   onChange={handleSearch}
-                 
-                />
-              </Col>
+           
             </Row>
           </Col>
         </Header>
         <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)' }}>
             <TableWrapper>
               <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(140px, 70px) minmax(140px, 70px) minmax(200px, auto) minmax(150px, auto) minmax(150px, max-content) minmax(150px, auto) minmax(150px, auto)">
-                <StyledHeadCell>ID</StyledHeadCell>
+                <StyledHeadCell>ID1</StyledHeadCell>
                 <StyledHeadCell>SKU</StyledHeadCell>
                 <StyledHeadCell>Imagen</StyledHeadCell>
                 <StyledHeadCell>Nombre</StyledHeadCell>
@@ -288,7 +285,7 @@ export default function Products({clientid}) {
                 <StyledHeadCell>Precio</StyledHeadCell>
                 <StyledHeadCell>Descuento</StyledHeadCell>
                 <StyledHeadCell>Acción</StyledHeadCell>
-
+                {data1 ? (console.log('pico')):('')}
                 {data1 && data1.producto ? (
                   data1.producto.length ? (
                     data1.producto.map((item: any, index: number) => (
@@ -357,7 +354,7 @@ export default function Products({clientid}) {
 
           <Col md={10} xs={12}>
             <Row>
-              <Col md={3} xs={12}>
+              <Col md={6} xs={12}>
                 <Select
                   options={data2 && data2.categorias}
                   labelKey="name"
@@ -369,7 +366,7 @@ export default function Products({clientid}) {
                 />
               </Col>
 
-              <Col md={3} xs={12}>
+              <Col md={6} xs={12}>
                 <Select
                   options={selectorView}
                   labelKey="label"
@@ -378,16 +375,7 @@ export default function Products({clientid}) {
                   searchable={false}
                   onChange={handleSelector}
                 />
-              </Col>
-
-              <Col md={6} xs={12}>
-                <Input
-                  value={search}
-                  placeholder="Ex: Buscar por nombre"
-                   onChange={handleSearch}
-                  clearable
-                />
-              </Col>
+              </Col> 
             </Row>
           </Col>
         </Header>

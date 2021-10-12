@@ -8,6 +8,7 @@ import Button from 'components/Button/Button';
 import { Plus } from 'assets/icons/PlusMinus'; 
 import { useQuery, gql } from '@apollo/client'; 
 import { Wrapper, Header, Heading } from 'components/Wrapper.style';
+import Cookies  from 'universal-cookie';
 
 import {
   TableWrapper,
@@ -74,7 +75,9 @@ const Image = styled('img', () => ({
 
 
 
-export default function StaffMembers({clientid}) {
+export default function StaffMembers() {
+  const cookie = new Cookies() 
+  const clientid = cookie.get('suscriptor').clientid
   const dispatch = useDrawerDispatch();
 
   const openDrawer = useCallback(
