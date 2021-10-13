@@ -2,6 +2,7 @@ import Button from "components/Button/Button";
 import { Fragment } from "react";
 import { useState } from "react";
 import { Modal } from "react-bootstrap"; 
+
 /* import 'bootstrap/dist/css/bootstrap.min.css'; */ 
 
 export const ModalCommand = ({order}) => {

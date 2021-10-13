@@ -2,6 +2,7 @@ import { useMutation, gql } from '@apollo/client';
 import { FETCH_PRIVATE_ORDER } from './TodoPrivateList'; 
 import config from 'settings/config'; 
 import { Wallet } from 'assets/icons/Wallet';
+import ModalCommand from 'components/Modal/Modal';
 
 const TodoClosedItem = ({ index, pedido }) => {
   let flagstatus = '';
@@ -156,7 +157,10 @@ const TodoClosedItem = ({ index, pedido }) => {
     <li className="d-flex justify-content-between list-group-item">
       <div className={'float-right' + status}>
         <Wallet />
-        <span className="pl-2"> Orden Nº: &nbsp;{pedido.order}</span>
+        <span className="pl-2"> Orden Nº: &nbsp;{pedido.order}
+      
+        </span>
+        
       </div>
       <div>
         <input
@@ -173,6 +177,7 @@ const TodoClosedItem = ({ index, pedido }) => {
       <button className="closeBtn" onClick={removePedido}>
         x
       </button>   */}
+      <div><ModalCommand order={pedido.order} /></div>
     </li>
   );
 };

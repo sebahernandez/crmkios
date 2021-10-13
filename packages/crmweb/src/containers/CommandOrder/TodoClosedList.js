@@ -3,6 +3,7 @@ import { useSubscription, gql } from '@apollo/client';
 import config from 'settings/config';
 import TodoClosedItem from './TodoClosedItem';
 
+
 const cid = config().SUBSCRIPTION_ID;
 
 export const FETCH_CLOSED_ORDER = gql`
@@ -28,10 +29,10 @@ export const FETCH_CLOSED_ORDER = gql`
 `;
  
 
+
 const TodoClosedList = (props) => { 
 
   const { pedidos } = props;
-
   const pedidoList = [];
   pedidos.forEach((pedido, index) => {
     pedidoList.push(<TodoClosedItem index={index} pedido={pedido} />);
@@ -40,7 +41,8 @@ const TodoClosedList = (props) => {
   return (
     <Fragment>
       <div className="todoListWrapper">
-       <ul className="list-group">{pedidoList}</ul> 
+       <ul className="list-group">{pedidoList}
+       </ul> 
       </div>
     </Fragment>
   );
