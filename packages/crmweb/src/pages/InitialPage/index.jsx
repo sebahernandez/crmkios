@@ -122,7 +122,6 @@ const InitialPage = ({ saveData, nextPage }) => {
                 </FieldContainerError>
 
 
-
                 <FieldContainerError  active={errors.password && touched.password}
                 >
                   <FieldInput
