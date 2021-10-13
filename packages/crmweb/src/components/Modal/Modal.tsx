@@ -10,14 +10,12 @@ export const ModalCommand = ({order}) => {
     const [show, setShow] = useState(false);
     const [url] = useState("https://shop.tu-ecommerce.cl/ordercrm?order="+order)
     
-    
-    
+  
     function handleShow(breakpoint) {
         setFullscreen(breakpoint);
         setShow(true);
     }
     
-  
     return (
 
    <div className="col-md-12">
@@ -28,20 +26,16 @@ export const ModalCommand = ({order}) => {
           {typeof v === 'string' && `below `}
         </Button>
       ))}
-      <Modal  show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
-       
-        <Fragment>
-        <div className="resp-container">
+      <Modal className="modal-container custom-map-modal"  show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
+
                 <iframe
                     className="resp-iframe"
                     id="inlineFrameExample"
                     title="checkout"
                     height="1000px"
-                    width="1000px"
+                    width="1100px"
                     src={url}>
                 </iframe>
-        </div>
-        </Fragment>
       </Modal>
 
     
