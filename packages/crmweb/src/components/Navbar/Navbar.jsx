@@ -14,7 +14,7 @@ export const Navbar = () => {
 
   return (
     <AppBar position="static" className={classes.appBar}>
-      <Toolbar>
+      <Toolbar className="container">
         <div className={classes.menu}>
           <div className={classes.searchBar}>
             <h3 className={classes.text}>Buscar</h3>
@@ -28,7 +28,7 @@ export const Navbar = () => {
           </div>
           <Input style={{ margin: "0px 10px" }} />
           <Button variant="contained" className={classes.buttonAction}>
-            Ver tienda
+          Tu Tienda
           </Button>
           <IconButton
             edge="end"
