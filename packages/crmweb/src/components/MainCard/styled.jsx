@@ -3,14 +3,12 @@ import styled from "@emotion/styled";
 export const Root = styled.div`
   width: 100%;
   height: 300px;
-  background: linear-gradient(to right, #4cc58b 100%, #0f9e59 51%);
+  background:#029e7f;
   color: white;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+
 
   @media (min-width: 400px) {
-    width: 90%;
-    margin-left: 4.5%;
-    margin-right: 5%;
+    width: 100%;
   }
 `;
 
