@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.main`
-  width: 100vw;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,14 +12,15 @@ export const Container = styled.main`
 `;
 
 export const Content = styled.div`
-  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 10px;
   @media (max-width: 400px) {
     width: 90%;
   }
@@ -56,7 +57,7 @@ export const CenterContent = styled.div`
   @media (max-width: 600px) {
     img {
       display: block;
-      bottom: 160px;
+      bottom:160px;
       left: 50%;
       width: 180px;
     }
@@ -72,7 +73,7 @@ export const CenterContent = styled.div`
   @media (min-width: 1500px) {
     img {
       position: absolute;
-      bottom: 20px;
+      bottom: 70px;
       right: 20px;
       width: 30%;
     }
@@ -88,17 +89,14 @@ export const GreenCard = styled.div`
 
 export const TasktText = styled.div`
   display: flex;
-  width: 40%;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: center;
-  height: 200px;
-  margin: 0 20px;
-  & p {
-    margin: 10px 0px;
-  }
+  width: 100%;
+  height: 150px;
+  margin-top:50px;
+
   & h3 {
-    font-size: 35px;
+    font-size: 25px;
     font-weight: 700;
     margin: 5px 0px;
     &:last-of-type {
@@ -154,21 +152,21 @@ export const TasktText = styled.div`
 
   @media (min-width: 600px) {
     width: 40%;
-    margin-left: 7%;
+    margin-left: 4%;
     & p {
       margin: 0px;
     }
     & h3 {
-      font-size: 30px;
+      font-size: 25px;
       font-weight: 700;
-      margin: 5px 0px;
+      padding: 5px 0px;
       &:last-of-type {
         margin: 0;
       }
     }
 
     & p {
-      font-size: 11px;
+      font-size: 12px;
       color: grey;
     }
   }
@@ -233,11 +231,12 @@ export const CardsProductContainer = styled.div`
   overflow: hidden;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
-  grid-gap: 15px;
+  grid-gap: 40px;
   align-items: center;
   justify-content: flex-start;
+  margin-bottom:50px;
 
   @media (max-width: 400px) {
     grid-template-columns: auto;
@@ -253,18 +252,18 @@ export const CardsProductContainer = styled.div`
   }
   @media (min-width: 900px) {
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(2, 2fr);
     grid-template-rows: auto;
   }
   @media (min-width: 1200px) {
     display: grid;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
   }
 
   @media (min-width: 1500px) {
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
   }
 `;

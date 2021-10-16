@@ -3,7 +3,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export const navBar = makeStyles((theme) => ({
   appBar: {
-    background: "#4CC58B",
+    background: "#029e7fe6",
   },
   menu: {
     [theme.breakpoints.down("sm")]: {
@@ -45,24 +45,24 @@ export const navBar = makeStyles((theme) => ({
     padding: "0px 10px",
   },
   text: {
-    fontSize: "18px",
+    fontSize: "12px",
     margin: "0px 15px",
   },
   search: {
     [theme.breakpoints.down("sm")]: {
       backgroundColor: "#fff",
       width: "100px",
-      borderRadius: "4px",
+      borderRadius: "2px",
     },
     [theme.breakpoints.up("md")]: {
       backgroundColor: "#fff",
       width: "200px",
-      borderRadius: "4px",
+      borderRadius: "2px",
     },
     [theme.breakpoints.up("lg")]: {
       backgroundColor: "#fff",
-      width: "230px",
-      borderRadius: "4px",
+      width: "330px",
+      borderRadius: "2px",
     },
   },
   buttonAction: {
@@ -71,10 +71,17 @@ export const navBar = makeStyles((theme) => ({
     border: "none",
     outline: "none",
     fontFamily: "Roboto",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: "14px",
-    textTransform: "none",
+    textTransform: "uppercase",
+
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "8px",
+    },
   },
+
+
+
   buttonUser: {
     fontSize: "30px",
   },

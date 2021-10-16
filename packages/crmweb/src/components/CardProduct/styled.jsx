@@ -1,17 +1,16 @@
 import styled from "@emotion/styled";
 
 export const CardContainer = styled.div`
-  width: 380px;
-  height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   background: white;
+  width: 100%;
+  height: 200px;
+  border:1px solid #c5c5c5;
   border-radius: 10px;
-  padding: 10px 20px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  margin: 10px;
+
 
   @media (max-width: 400px) {
     width: 290px;
@@ -30,7 +29,7 @@ export const CardItemTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  padding:10px;
   align-items: flex-start;
   justify-content: space-between;
   img {
@@ -47,6 +46,7 @@ export const CardItemTitle = styled.div`
   @media (max-width: 400px) {
     h3 {
       font-size: 12px;
+
     }
     margin: 0;
   }
@@ -61,13 +61,14 @@ export const CardItemContent = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   p {
-    width: 80%;
+    width: 100%;
     font-family: Roboto;
-    font-size: 12px;
-    color: grey;
+    font-size: 14px;
+    color: #b5b5b5;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+    padding:10px;
   }
 `;
 
@@ -77,9 +78,9 @@ export const CardItemFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   height: auto;
-  padding: 5px 0px;
+  padding:10px;
   span {
-    color: #4cc58b;
+    color: #029e7f;
     font-family: Roboto;
     font-size: 12px;
     font-weight: 500;

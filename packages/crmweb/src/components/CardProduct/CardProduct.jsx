@@ -11,7 +11,7 @@ const CardProduct = ({ title, content, step, time, icon }) => {
     <CardContainer>
       <CardItemTitle>
         <img src={icon && icon} alt="Icono" />
-        <h3>{title && title}</h3>
+        <h5>{title && title}</h5>
       </CardItemTitle>
       <CardItemContent>
         <p>{content && content}</p>
