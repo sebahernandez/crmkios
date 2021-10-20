@@ -46,19 +46,13 @@ export const BasicForm = () => {
   const cookie = new Cookies() 
   const [page, setPage] = useState(0);
   const [data, setData] = useState({
-    name: "",
-    password: "",
+    name: "Alejandro",
+    password: "123",
     nameshop: "",
     url: "",
     locationshop: "",
   });
-  const [data2, setData2] = useState({
-    name: "",
-    password: "",
-    nameshop: "",
-    url: "",
-    locationshop: "",
-  });
+  
   const printData = () => {
     console.log('printData:', data);
    
@@ -129,8 +123,8 @@ export const BasicForm = () => {
     return text5.toUpperCase();
   }
   
-
   return (
+    
     <div>
       {page === 0 && (
         <Card>
@@ -178,7 +172,7 @@ export const BasicForm = () => {
       {page === 4 && (
         <CardName>
           {" "}
-          <ConfirmationPage info={data}></ConfirmationPage>
+          <ConfirmationPage ></ConfirmationPage>
         </CardName>
       )}
     </div>
