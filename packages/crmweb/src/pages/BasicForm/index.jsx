@@ -178,7 +178,7 @@ export const BasicForm = () => {
       {page === 4 && (
         <CardName>
           {" "}
-          <ConfirmationPage></ConfirmationPage>
+          <ConfirmationPage info={data}></ConfirmationPage>
         </CardName>
       )}
     </div>
