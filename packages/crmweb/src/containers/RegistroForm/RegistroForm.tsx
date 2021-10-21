@@ -6,7 +6,6 @@ import { useMutation, gql } from '@apollo/client';
 import Header from "./Header";
 import Footer from "./Footer"; 
 import { FormFields, FormLabel } from 'components/FormFields/FormFields'; 
-import  emailjs from 'emailjs-com';  
 import "./Registro.css";
 import {  FormWrapper } from './Registro.style';  
 import '../../settings/constants'; 
@@ -148,28 +147,7 @@ export default function RegistroForm() {
 
     return text5.toUpperCase();
   }
-
-  
-
-  function sendEmail(e) {
  
-    let toSend = {
-      from_name: '',
-      to_name: nombre,
-      message: 'Su clave de acceso es provisoria y su usuario es su correo, contraseña 1234. Puede acceder al siguiente enlace http://crm.tu-ecommerce.cl',
-      reply_to: usuario,
-    };
-
-    
-    emailjs.send(setup.service_id, setup.template_id,  toSend, setup.user_id  )
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });
-  }
-
-
   const onSubmit = (e) => {
     if( usuario !== '' && usuario !== undefined)
     {
@@ -194,8 +172,7 @@ export default function RegistroForm() {
                 }
     });  
 
-    setShow(true);
-    sendEmail(e);
+    setShow(true); 
   }
   };
 

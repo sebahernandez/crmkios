@@ -1,44 +1,50 @@
 import React from "react";
-import { CardInitial, Subtitle } from "./styled";
-import  emailjs from 'emailjs-com';  
+import { CardInitial, Subtitle } from "./styled"; 
 import Cookies  from 'universal-cookie';
  
 const ConfirmationPage = () => {
 
   const cookie = new Cookies() 
-  const setup = {
-    service_id: 'service_ruymjpw',
-    template_id: 'template_92r9a8l',
-    user_id: 'user_HPuNwFjInjszGeOKrVj3w'
-  } 
+ 
 
   React.useEffect(() => {
     
-      sendEmail()
+        main()
   }, []);
 
 
-  function sendEmail() {
- 
-    console.log('!!!! pagina0', cookie.get('pagina0'))
-    console.log('!!!! pagina1', cookie.get('pagina1'))
-    console.log('!!!! pagina2', cookie.get('pagina2'))
-    console.log('!!!! pagina3', cookie.get('pagina3'))
- 
-   let toSend = {
-      from_name: 'marketing@eserp.cl',
-      to_name: cookie.get('pagina0').name,
-      message: 'Su clave de acceso es provisoria y su usuario es su correo, contraseña ' +  cookie.get('pagina0').password + '. Puede acceder al siguiente enlace http://crm.tu-ecommerce.cl',
-      reply_to: cookie.get('pagina0').email,
-    };
+ // async..await is not allowed in global scope, must use a wrapper
+  async function main() {
+    // Generate test SMTP service account from ethereal.email
+    // Only needed if you don't have a real mail account for testing
+    let testAccount = await nodemailer.createTestAccount();
 
-    
-    emailjs.send(setup.service_id, setup.template_id,  toSend, setup.user_id  )
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });  
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: "aschwartz@eserp.cl", // generated ethereal user
+        pass: "Openti2020", // generated ethereal password
+      },
+    });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"Gerencia" <noreply@eserp.cl>', // sender address
+      to: "asandovalster@gmail.com, maravena@eserp.cl", // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Hello world?", // plain text body
+      html: "<b>Hello world?</b>", // html body
+    });
+
+    console.log("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+    // Preview only available when sending through an Ethereal account
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
   }
 
   
