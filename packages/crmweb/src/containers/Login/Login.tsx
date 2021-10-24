@@ -32,6 +32,7 @@ const GET_SUSCRIPTOR = gql`
 	info_user_view(where: {usuario: {_eq: $usuario}, clave: {_eq: $password},fecha_vencimiento: {_gte: "now()"}}) {
 	  img_site_url
 	  img_user_url
+	  negocio_web
 	  nombre
 	  usuario
 	  plan_suscripcion

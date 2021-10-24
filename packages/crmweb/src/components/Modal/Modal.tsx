@@ -2,14 +2,21 @@ import Button from "components/Button/Button";
 import { Fragment } from "react";
 import { useState } from "react";
 import { Modal } from "react-bootstrap"; 
+import Cookies  from 'universal-cookie';
+
+
+
 
 /* import 'bootstrap/dist/css/bootstrap.min.css'; */ 
 
 export const ModalCommand = ({order}) => {
+    const cookie = new Cookies()   
     const values = [true];
     const [fullscreen, setFullscreen] = useState(true);
     const [show, setShow] = useState(false);
-    const [url] = useState("https://shop.tu-ecommerce.cl/ordercrm?order="+order)
+    //const [url] = useState(cookie.get('suscriptor').negocio_web===null?"http://localhost:3000":cookie.get('suscriptor').negocio_web+"/ordercrm?order="+order)
+    
+    const [url] = useState("http://localhost:3000/ordercrm?order="+order)
     
   
     function handleShow(breakpoint) {
