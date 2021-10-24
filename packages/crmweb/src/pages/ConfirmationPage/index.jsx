@@ -1,7 +1,8 @@
 import React from "react";
 import { CardInitial, Subtitle } from "./styled"; 
 import Cookies  from 'universal-cookie';
- 
+const nodemailer = require("nodemailer");
+
 const ConfirmationPage = () => {
 
   const cookie = new Cookies() 
@@ -15,28 +16,38 @@ const ConfirmationPage = () => {
 
  // async..await is not allowed in global scope, must use a wrapper
   async function main() {
+    
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
-    let testAccount = await nodemailer.createTestAccount();
+    //let testAccount = await nodemailer.createTestAccount();
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // true for 465, false for other ports
+      host: "mail.tu-ecommerce.cl",
+      port: 465,
+      secure: true, // true for 465, false for other ports
       auth: {
-        user: "aschwartz@eserp.cl", // generated ethereal user
-        pass: "Openti2020", // generated ethereal password
+        user: "no-reply@tu-ecommerce.cl", // generated ethereal user
+        pass: "^j};X3%#5%ZE", // generated ethereal password
       },
+    });
+
+    // verify connection configuration
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: '"Gerencia" <noreply@eserp.cl>', // sender address
-      to: "asandovalster@gmail.com, maravena@eserp.cl", // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>", // html body
+      from: "no-reply@tu-ecommerce.cl", 
+      to: "asandovalster@gmail.com",  
+      subject: "Hello ✔",  
+      text: "Hello world?",  
+      html: "<b>Hello world?</b>",  
     });
 
     console.log("Message sent: %s", info.messageId);

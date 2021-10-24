@@ -18,10 +18,10 @@ import {
 import { Formik } from "formik";
 
 const SignupSchema = Yup.object().shape({
-  url: Yup.string().required("¡Url obligatoria!"),
+  rubro_negocio: Yup.string().required("¡Rubro Negocio Obligatorio!"),
 });
 
-const RelatedWeb = ({ saveData, printData, nextPage, pageBefore }) => {
+const SectorShop = ({ saveData, printData, nextPage, pageBefore }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -29,13 +29,13 @@ const RelatedWeb = ({ saveData, printData, nextPage, pageBefore }) => {
   return (
     <CardInitial>
       <ContainerWeb>
-       
+        <img src="icons/categories.svg" alt="Man" />
         <Subtitle>
-          <p> ¿Cuentas con dominio propio www.ejemplo.cl?</p>
+          <p> ¿Cual es el rubro de su tienda?</p>
         </Subtitle>
         <Formik
           initialValues={{
-            url: "", 
+            rubro_negocio: "",
           }}
           validationSchema={SignupSchema}
           onSubmit={(values) => {
@@ -48,14 +48,14 @@ const RelatedWeb = ({ saveData, printData, nextPage, pageBefore }) => {
             <FormStyled>
               <UrlLabel>
                 <FieldInput
-                  placeholder="www.tutienda.cl"
-                  name="url"
-                  active={errors.url && touched.url}
+                  placeholder="Vestuario, Comida, Licores"
+                  name="rubro_negocio"
+                  active={errors.rubro_negocio && touched.rubro_negocio}
                 />{" "}
               </UrlLabel>
-              {errors.url && touched.url ? <div>{errors.url}</div> : null}
+              {errors.rubro_negocio && touched.rubro_negocio ? <div>{errors.rubro_negocio}</div> : null}
               <TopSeparator>
-                <p>PASO 4</p>
+                <p>PASO 5</p>
               </TopSeparator>
 
               <ContainerButtons>
@@ -75,4 +75,4 @@ const RelatedWeb = ({ saveData, printData, nextPage, pageBefore }) => {
   );
 };
 
-export default RelatedWeb;
+export default SectorShop;

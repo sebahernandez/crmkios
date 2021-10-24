@@ -17,6 +17,9 @@ import {
 } from "./styled"
 import { useState } from "react";
 
+ 
+
+
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "¡Nombre muy corto!")
@@ -25,26 +28,21 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(2, "Contraseña muy corta!")
     .max(50, "Contraseña muy larga!")
-    .required("Contraseña obligatoria"),
-  lastname: Yup.string()
+    .required("Contraseña obligatoria"), 
+  email: Yup.string()
     .min(2, "Contraseña muy corta!")
     .max(50, "Contraseña muy larga!")
-    .required("Apellido obligatorio"),
-
-    email: Yup.string()
-    .min(2, "Contraseña muy corta!")
-    .max(50, "Contraseña muy larga!")
-    .required("Email obligatorio"),
+    .required("Email obligatorio"),  
 });
 
-const InitialPage = ({ saveData, nextPage }) => {
+  const InitialPage = ({ saveData, nextPage }) => {
   const [values, setValues] = useState({
-    amount: "",
+    name: "",
     password: "",
-    weight: "",
-    weightRange: "",
+    email: "",  
+    founded: true,
     showPassword: false,
-  });
+  }); 
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -94,31 +92,21 @@ const InitialPage = ({ saveData, nextPage }) => {
                     active={errors.name && touched.name}
                   />
                   {errors.name && touched.name ? (
-                    <div>{errors.name}</div>
-                  ) : null}
-                </FieldContainerError>
-
-
-                <FieldContainerError active={errors.lastname && touched.lastname}>
-                  <FieldInput
-                    placeholder="Ingrese su Apellido"
-                    name="lastname"
-                    active={errors.lastname && touched.lastname}
-                  />
-                  {errors.lastname && touched.lastname ? (
-                    <div>{errors.lastname}</div>
+                    <div>{errors.name}</div>  
                   ) : null}
                 </FieldContainerError>
 
                 <FieldContainerError active={errors.email && touched.email}>
                   <FieldInput
                     placeholder="Ingrese su Correo Electrónico"
-                    name="email"
+                    name="email"    
                     active={errors.email && touched.email}
                   />
                   {errors.email && touched.email ? (
                     <div>{errors.email}</div>
                   ) : null}
+                  
+                   
                 </FieldContainerError>
 
 
