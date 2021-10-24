@@ -27,7 +27,7 @@ const ErrorPage = () => {
       <Subtitle>
         <p>
  
-          Ups al parecer Hemos detectado que su <strong> correo electrónico: {cookie.get('pagina0').email}</strong> ya se encuentra registrado. Le recomendamos revisar su casilla para activar su cuenta.
+          Ups al parecer Hemos detectado que su <strong> correo electrónico: {cookie.get('pagina0') && cookie.get('pagina0').email}</strong> ya se encuentra registrado. Le recomendamos revisar su casilla para activar su cuenta.
         </p>
       </Subtitle>
     </CardInitial>
