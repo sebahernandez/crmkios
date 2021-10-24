@@ -29,7 +29,7 @@ export const BasicForm = () => {
 
   const { data:data1 } = useQuery(GET_SUSCRIPCION,{
     variables: { 
-        email:  cookie.get('pagina0').email?cookie.get('pagina0').email:''
+        email:  (cookie.get('pagina0').email && cookie.get('pagina0').email)?cookie.get('pagina0').email:''
         }
   }); 
   
