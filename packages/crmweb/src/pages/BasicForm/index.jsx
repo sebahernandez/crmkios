@@ -4,95 +4,85 @@ import InitialPage from "../InitialPage";
 import NameShop from "../NameShop";
 import RelatedWeb from "../RelatedWeb";
 import ShopLocation from "../ShopLocation";
+import SectorShop from "../SectorShop";
 import ConfirmationPage from "../ConfirmationPage";
+import ErrorPage from "../ErrorPage";
 import Cookies  from 'universal-cookie';
-import { useMutation, gql } from '@apollo/client';
-
-const CREATE_REGISTRO = gql`
-    mutation insert_suscripciones(
-      $nombre: String!, 
-      $clave: String!,
-      $usuario: String!,
-      $estado: String!,
-      $telefono: String!,
-      $clientid: String! ){
-        insert_suscripciones (
-            objects: [
-                {
-                  nombre: $nombre,
-                  usuario: $usuario,
-                  estado: $estado,
-                  telefono: $telefono,
-                  clientid: $clientid,
-                  contactos: {
-                    data: {
-                          celular: $telefono, 
-                          correo: $usuario, 
-                          clientid: $clientid
-                          }
-                    }, 
-                  clave: $clave               
-                }
-              ]
-          )
-    {
-      affected_rows
-    }
-  }
-`;
-
+import { useQuery } from '@apollo/client';
+import { CREATE_SUSCRIPCION } from 'utils/graphql/mutation/suscription';
+import { GET_SUSCRIPCION } from 'utils/graphql/query/suscription';
+import { useMutation } from '@apollo/client';
 
 export const BasicForm = () => {
-  const cookie = new Cookies() 
+  const cookie = new Cookies()  
+  const [errores, setErrores] = useState(false);
   const [page, setPage] = useState(0);
   const [data, setData] = useState({
     name: "",
     password: "",
+    email: "",
     nameshop: "",
-    url: "",
     locationshop: "",
+    rubro_negocio: "",
+    url: "",    
   });
-  const [data2, setData2] = useState({
-    name: "",
-    password: "",
-    nameshop: "",
-    url: "",
-    locationshop: "",
-  });
+
+  const { data:data1 } = useQuery(GET_SUSCRIPCION,{
+    variables: { 
+        email:  cookie.get('pagina0').email?cookie.get('pagina0').email:''
+        }
+  }); 
+  
+
   const printData = () => {
     console.log('printData:', data);
    
   };
 
-  const saveData = (json) => {
-    /* { ...obj, name: { first: 'blah', last: 'ha'} } */
-    console.log(':::::',{ ...data, ...json });
-    cookie.set('pagina'+page,json)  
+  const saveData = (json) => { 
+    cookie.set('pagina'+page,json)   
+    if(page === 4) {
+          console.log('data1 0101 ', data1)
+          
+          if(data1 &&  data1.suscripciones.length === 0) {
+
+           console.log('ingreso esto es peligroso usuario indefinido')   
+          const newRegistro = {
+            nombre: cookie.get('pagina0').name,
+            clave: cookie.get('pagina0').password,
+            usuario: cookie.get('pagina0').email,
+            descripcion: cookie.get('pagina1').nameshop,
+            direccion_tienda: cookie.get('pagina2').locationshop,
+            negocio_web: cookie.get('pagina3').url,        
+            rubro_negocio: cookie.get('pagina4').rubro_negocio,        
+            clientid:  makeid()
+          };    
+          console.log(newRegistro, 'Registro');
     
-    if(page === 3) {
+          try {
 
+              
+                insert_suscripciones({
+                  variables: {
+                              nombre: newRegistro.nombre, 
+                              clave: newRegistro.clave,
+                              usuario: newRegistro.usuario, 
+                              descripcion: newRegistro.descripcion,              
+                              direccion_tienda: newRegistro.direccion_tienda,              
+                              negocio_web: newRegistro.negocio_web,
+                              estado: 'registro',
+                              rubro_negocio: newRegistro.rubro_negocio,              
+                              clientid: newRegistro.clientid               
+                            }
+                });  
 
-      const newRegistro = {
-        clave: cookie.get('pagina0').password,
-        nombre: cookie.get('pagina0').name,
-        telefono: cookie.get('pagina3').url,
-        usuario: cookie.get('pagina1').nameshop,
-        estado: cookie.get('pagina2').locationshop,
-        clientid:  makeid()
-      };    
-      console.log(newRegistro, 'Ingresanda Suscripcion Nueva');
-
-      /* INSERTAR SUSCRIPTOR */
-      insert_suscripciones({
-        variables: {
-                    clave: newRegistro.clave,
-                    nombre: newRegistro.nombre, 
-                    usuario: newRegistro.usuario, 
-                    estado: newRegistro.estado,              
-                    telefono: newRegistro.telefono,
-                    clientid: newRegistro.clientid               
-                  }
-      });  
+              } catch(error){
+                console.log(error)
+              }
+                
+        } else {
+          setErrores(true)
+        }
     }
     
   };
@@ -105,7 +95,7 @@ export const BasicForm = () => {
     setPage(page - 1);
   };
 
-  const [insert_suscripciones ] = useMutation(CREATE_REGISTRO ); 
+  const [insert_suscripciones ] = useMutation(CREATE_SUSCRIPCION ); 
 
 
   function makeid() {
@@ -129,8 +119,8 @@ export const BasicForm = () => {
     return text5.toUpperCase();
   }
   
-
   return (
+    
     <div>
       {page === 0 && (
         <Card>
@@ -174,11 +164,29 @@ export const BasicForm = () => {
           ></RelatedWeb>
         </CardName>
       )}
-
       {page === 4 && (
         <CardName>
           {" "}
-          <ConfirmationPage></ConfirmationPage>
+          <SectorShop
+            saveData={saveData}
+            nextPage={nextPage}
+            printData={printData}
+            pageBefore={pageBefore}
+          ></SectorShop>
+        </CardName>
+      )} 
+
+      {page === 5 && errores===false && (
+        <CardName>
+          {" "}
+          <ConfirmationPage ></ConfirmationPage>
+        </CardName>
+      )}
+
+      {page === 5 && errores===true && (
+        <CardName>
+          {" "}
+          <ErrorPage></ErrorPage>
         </CardName>
       )}
     </div>
