@@ -86,7 +86,7 @@ const SignupSchema = Yup.object().shape({
             <Form>
               <TextFieldsInitial>
                 <FieldContainerError active={errors.name && touched.name}>
-                  <FieldInput
+                  <FieldInput autoFocus
                     placeholder="Ingrese su nombre"
                     name="name"
                     active={errors.name && touched.name}

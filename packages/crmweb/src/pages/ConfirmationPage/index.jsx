@@ -1,70 +1,57 @@
 import React from "react";
-import { CardInitial, Subtitle } from "./styled"; 
-import Cookies  from 'universal-cookie';
-const nodemailer = require("nodemailer");
+import axios from "axios";
+import { CardInitial, Subtitle } from "./styled";
+import Cookies from 'universal-cookie';
 
 const ConfirmationPage = () => {
 
-  const cookie = new Cookies() 
- 
+  const cookie = new Cookies()
+
+  const mail = cookie.get('pagina0').email;
+  const name = cookie.get('pagina0').name;
+
 
   React.useEffect(() => {
-    
-        main()
+
+    const peticion = {
+      userTo: cookie.get('pagina0').email,
+      subject: "Asunto3",
+      bodyText: "Sorprendete texto3",
+      bodyHtml: name + "<br><p>Hemos enviado a su correo electrónico <strong> " + mail + " </strong> un acceso para activar su cuenta.</p > "
+    };
+
+    console.log('peticion:', peticion)
+
+    const config = {
+      url: 'https://mailer-gamma.vercel.app/sendmail',
+      method: 'POST',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'origin': 'x-requested-with',
+        'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify(peticion),
+    };
+    axios(config).then(response => {
+        console.log(response)
+    }).catch((err) => {
+      console.log(err)});
+ 
+    /*    axios.post('http://localhost:8081/sendmail', peticion)
+         .then(response => {
+           console.log(response)
+         }); */
+
   }, []);
 
 
- // async..await is not allowed in global scope, must use a wrapper
-  async function main() {
-    
-    // Generate test SMTP service account from ethereal.email
-    // Only needed if you don't have a real mail account for testing
-    //let testAccount = await nodemailer.createTestAccount();
-
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-      host: "mail.tu-ecommerce.cl",
-      port: 465,
-      secure: true, // true for 465, false for other ports
-      auth: {
-        user: "no-reply@tu-ecommerce.cl", // generated ethereal user
-        pass: "^j};X3%#5%ZE", // generated ethereal password
-      },
-    });
-
-    // verify connection configuration
-    transporter.verify(function (error, success) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Server is ready to take our messages");
-      }
-    });
-
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-      from: "no-reply@tu-ecommerce.cl", 
-      to: "asandovalster@gmail.com",  
-      subject: "Hello ✔",  
-      text: "Hello world?",  
-      html: "<b>Hello world?</b>",  
-    });
-
-    console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-    // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-  }
-
-  
   return (
     <CardInitial>
       <img src="icons/congratulations.svg" alt="congratulation" />
       <Subtitle>
         <p>
- 
+
           Hemos enviado a su <strong> correo electrónico </strong> un acceso
           para activar su cuenta.
         </p>
