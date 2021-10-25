@@ -15,15 +15,16 @@ const ConfirmationPage = () => {
 
     const peticion = {
       userTo: cookie.get('pagina0').email,
-      subject: "Asunto3",
+      subject: "Felicidades estás a un paso de activar tu cuenta",
       bodyText: "Sorprendete texto3",
-      bodyHtml: name + "<br><p>Hemos enviado a su correo electrónico <strong> " + mail + " </strong> un acceso para activar su cuenta.</p > "
+      bodyHtml: "Felicidades " + name + ", <br><p>Estás a un paso de activar tu cuenta ingresando al siguiente enlace <p>https://crm.tu-ecommerce.cl</p> ingresando su usuario y contraseña."
     };
 
     console.log('peticion:', peticion)
 
     const config = {
       url: 'https://mailer-gamma.vercel.app/sendmail',
+      //url: 'http://localhost:4000/sendmail',
       method: 'POST',
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -36,13 +37,7 @@ const ConfirmationPage = () => {
     axios(config).then(response => {
         console.log(response)
     }).catch((err) => {
-      console.log(err)});
- 
-    /*    axios.post('http://localhost:8081/sendmail', peticion)
-         .then(response => {
-           console.log(response)
-         }); */
-
+      console.log(err)}); 
   }, []);
 
 
@@ -52,7 +47,7 @@ const ConfirmationPage = () => {
       <Subtitle>
         <p>
 
-          Hemos enviado a su <strong> correo electrónico </strong> un acceso
+          Hemos enviado a su correo <strong> {mail} </strong> un acceso
           para activar su cuenta.
         </p>
       </Subtitle>
