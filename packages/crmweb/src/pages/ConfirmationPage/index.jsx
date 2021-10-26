@@ -2,24 +2,21 @@ import React from "react";
 import axios from "axios";
 import { CardInitial, Subtitle } from "./styled";
 import Cookies from 'universal-cookie';
+import templates from "../../mail/templates"
 
 const ConfirmationPage = () => {
-
   const cookie = new Cookies()
-
   const mail = cookie.get('pagina0').email;
   const name = cookie.get('pagina0').name;
 
-
+  
   React.useEffect(() => {
-
     const peticion = {
       userTo: cookie.get('pagina0').email,
       subject: "Felicidades estás a un paso de activar tu cuenta",
-      bodyText: "Sorprendete texto3",
-      bodyHtml: "Felicidades " + name + ", <br><p>Estás a un paso de activar tu cuenta ingresando al siguiente enlace <p>https://crm.tu-ecommerce.cl</p> ingresando su usuario y contraseña."
+      bodyText: "Mensaje solo formato texto ahora si",
+      bodyHtml: templates().TEMPLATE_1
     };
-
     console.log('peticion:', peticion)
 
     const config = {
@@ -46,7 +43,6 @@ const ConfirmationPage = () => {
       <img src="icons/congratulations.svg" alt="congratulation" />
       <Subtitle>
         <p>
-
           Hemos enviado a su correo <strong> {mail} </strong> un acceso
           para activar su cuenta.
         </p>
