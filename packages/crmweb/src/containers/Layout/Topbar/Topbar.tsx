@@ -28,6 +28,7 @@ import {
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
+import Cookies  from 'universal-cookie';
 
 const data = [
   {
@@ -37,6 +38,8 @@ const data = [
   },
 ];
 const Topbar = ({ refs }: any) => {
+  const cookie = new Cookies() 
+  const [isNegocioWeb]   = useState(cookie.get('suscriptor').is_negocio_web)
   const [info ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
   const dispatch = useDrawerDispatch();
   const { signout } = React.useContext(AuthContext);
@@ -51,7 +54,15 @@ const Topbar = ({ refs }: any) => {
     window.open('/login');
   }
  
- 
+  const showCommandOrder = () =>{
+    if(isNegocioWeb){
+        return <NavLink to={COMMAND_ORDER} exact={false} onClick={close}>
+        Panel Pedidos
+      </NavLink>
+    } else {
+      console.log('No se encuentra autorizado para operar el commandorder')
+    }
+  } 
 
 
   return (
@@ -138,9 +149,8 @@ const Topbar = ({ refs }: any) => {
         <Popover
           content={({ close }) => (
             <UserDropdowItem>
-              <NavLink to={COMMAND_ORDER} exact={false} onClick={close}>
-                Panel Pedidos
-              </NavLink>
+              {showCommandOrder()}
+
               <NavLink to={STAFF_MEMBERS} exact={false} onClick={close}>
                 Equipo
               </NavLink>

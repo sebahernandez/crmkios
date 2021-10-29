@@ -14,11 +14,8 @@ export const ModalCommand = ({order}) => {
     const values = [true];
     const [fullscreen, setFullscreen] = useState(true);
     const [show, setShow] = useState(false);
-    //const [url] = useState(cookie.get('suscriptor').negocio_web===null?"http://localhost:3000":cookie.get('suscriptor').negocio_web+"/ordercrm?order="+order)
+    const [url] = useState(cookie.get('suscriptor').negocio_web+"/ordercrm?order="+order)
     
-    const [url] = useState("http://localhost:3000/ordercrm?order="+order)
-    
-  
     function handleShow(breakpoint) {
         setFullscreen(breakpoint);
         setShow(true);
