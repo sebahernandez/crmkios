@@ -54,8 +54,9 @@ const Topbar = ({ refs }: any) => {
     window.open('/login');
   }
  
-  const showCommandOrder = () =>{
-    if(isNegocioWeb){
+  const showCommandOrder = (close:any) =>{
+    console.log('suscriptor-->-->-->-->',cookie.get('suscriptor'));
+    if(isNegocioWeb === true){
         return <NavLink to={COMMAND_ORDER} exact={false} onClick={close}>
         Panel Pedidos
       </NavLink>
@@ -149,7 +150,7 @@ const Topbar = ({ refs }: any) => {
         <Popover
           content={({ close }) => (
             <UserDropdowItem>
-              {showCommandOrder()}
+              {showCommandOrder(close)}
 
               <NavLink to={STAFF_MEMBERS} exact={false} onClick={close}>
                 Equipo

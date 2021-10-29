@@ -33,6 +33,7 @@ const GET_SUSCRIPTOR = gql`
 	  img_site_url
 	  img_user_url
 	  negocio_web
+	  is_negocio_web
 	  nombre
 	  usuario
 	  plan_suscripcion
