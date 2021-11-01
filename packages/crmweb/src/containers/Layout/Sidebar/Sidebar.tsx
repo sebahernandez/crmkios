@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import {
   SidebarWrapper,
@@ -10,6 +10,7 @@ import {
 import {
   DASHBOARD,
   PRODUCTS,
+  SUBSCRIPTIONS,
   CATEGORY,
   ORDERS,
   CUSTOMERS,
@@ -29,7 +30,8 @@ import { CouponIcon } from 'assets/icons/CouponIcon';
 import { SettingIcon } from 'assets/icons/SettingIcon';
 import { OrderCommandIcon } from 'assets/icons/OrderCommandIcon';
 import { AyudaIcon } from 'assets/icons/AyudaIcon';
-import { LogoutIcon } from 'assets/icons/LogoutIcon';
+import { LogoutIcon } from 'assets/icons/LogoutIcon'; 
+import Cookies  from 'universal-cookie';
 
 const sidebarMenus = [
   {
@@ -88,16 +90,46 @@ const sidebarMenus = [
   },
 ];
 
+const sidebarMenusRoot = [
+  {
+    name: 'Dashboard',
+    path: DASHBOARD,
+    exact: true,
+    icon: <DashboardIcon />,
+  },
+  {
+    name: 'Suscripciones',
+    path: SUBSCRIPTIONS,
+    exact: false,
+    icon: <CustomerIcon />,
+  },
+  {
+    name: 'Configuración',
+    path: SETTINGS,
+    exact: false,
+    icon: <SettingIcon />,
+  },
+  {
+    name: 'Soporte',
+    path: SITE_HELP,
+    exact: false,
+    icon: <AyudaIcon />,
+  },
+];
+
 export default withRouter(function Sidebar({
   refs,
   style,
   onMenuItemClick,
 }: any) {
   const { signout } = useContext(AuthContext);
+  const cookie = new Cookies() 
+  const [isRoot]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_root:false)
+
   return (
     <SidebarWrapper ref={refs} style={style}>
       <MenuWrapper>
-        {sidebarMenus.map((menu: any, index: number) => (
+        {!isRoot && sidebarMenus.map((menu: any, index: number) => (
           <NavLink
             to={menu.path}
             key={index}
@@ -113,6 +145,24 @@ export default withRouter(function Sidebar({
             {menu.name}
           </NavLink>
         ))}
+       {isRoot && sidebarMenusRoot.map((menu: any, index: number) => (
+          <NavLink
+            to={menu.path}
+            key={index}
+            exact={menu.exact}
+            activeStyle={{
+              color: '#00C58D',
+              backgroundColor: '#f7f7f7',
+              borderRadius: '50px 0 0 50px',
+            }}
+            onClick={onMenuItemClick}
+          >
+            {menu.icon ? <Svg>{menu.icon}</Svg> : ''}
+            {menu.name}
+          </NavLink>
+        ))}
+
+
       </MenuWrapper>
 
       <LogoutBtn

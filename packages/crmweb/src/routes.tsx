@@ -8,6 +8,7 @@ import {
   SUSCRIPCION,
   COMENZAR, 
   PRODUCTS,
+  SUBSCRIPTIONS,
   CATEGORY,
   DASHBOARD,
   ORDERS,
@@ -21,6 +22,7 @@ import {
 import AuthProvider, { AuthContext } from 'context/auth';
 import { InLineLoader } from 'components/InlineLoader/InlineLoader';
 const Products = lazy(() => import('containers/Products/Products'));
+const Subscriptions = lazy(() => import('containers/Subscriptions/Subscriptions'));
 const AdminLayout = lazy(() => import('containers/Layout/Layout'));
 const Dashboard = lazy(() => import('containers/Dashboard/Dashboard'));
 const Category = lazy(() => import('containers/Category/Category'));
@@ -90,6 +92,13 @@ const Routes = () => {
             <AdminLayout>
               <Suspense fallback={<InLineLoader />}>
                 <Products />
+              </Suspense>
+            </AdminLayout>
+          </PrivateRoute>
+          <PrivateRoute path={SUBSCRIPTIONS}>
+            <AdminLayout>
+              <Suspense fallback={<InLineLoader />}>
+                <Subscriptions />
               </Suspense>
             </AdminLayout>
           </PrivateRoute>

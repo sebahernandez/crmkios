@@ -80,8 +80,6 @@ const ModifyCoupon: React.FC<Props> = () => {
       const storageRef = app.storage().ref();
       const fileRef = storageRef.child(file.name);
       await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
       setImage(await fileRef.getDownloadURL());            
     }
    } 
@@ -100,8 +98,6 @@ const ModifyCoupon: React.FC<Props> = () => {
       cupones_usados: Number(data.cupones_usados),
       image: image && image.length !== 0 ? image : ''
     };    
-    console.log(cupon, 'actualizando Cupon');
-
     update_cupon({
       variables: {id: cupon.id,
                   clientid: cupon.clientid,

@@ -7,7 +7,7 @@ import {
 
 export const TableWrapper = styled('div', () => ({
   width: '100%',
-  height: '450px',
+  height: '700px',
 }));
 
 export const StyledTable = withStyle(BaseStyledTable, () => ({
@@ -34,5 +34,5 @@ export const StyledBodyCell = withStyle(BaseStyledCell, () => ({
   fontFamily: "'Lato', sans-serif",
   fontWeight: 400,
   color: '#161F6A !important',
-  alignSelf: 'center',
+  alignSelf: 'center'
 }));

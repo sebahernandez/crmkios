@@ -37,7 +37,7 @@ export default function CustomSelect(props) {
         },
         DropdownListItem: {
           style: ({ $theme }) => ({
-            fontSize: '14px',
+            fontSize: '11px',
             fontWeight: '700',
             color: $theme.colors.textDark,
           }),

@@ -39,7 +39,8 @@ const data = [
 ];
 const Topbar = ({ refs }: any) => {
   const cookie = new Cookies() 
-  const [isNegocioWeb]   = useState(cookie.get('suscriptor').is_negocio_web)
+  const [isRoot]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_root:false)
+  const [isNegocioWeb]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_negocio_web:false)
   const [info ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
   const dispatch = useDrawerDispatch();
   const { signout } = React.useContext(AuthContext);
@@ -55,10 +56,9 @@ const Topbar = ({ refs }: any) => {
   }
  
   const showCommandOrder = (close:any) =>{
-    console.log('suscriptor-->-->-->-->',cookie.get('suscriptor'));
-    if(isNegocioWeb === true){
+    if(isNegocioWeb === true && !isRoot){
         return <NavLink to={COMMAND_ORDER} exact={false} onClick={close}>
-        Panel Pedidos
+          Panel Pedidos
       </NavLink>
     } else {
       console.log('No se encuentra autorizado para operar el commandorder')
@@ -119,7 +119,8 @@ const Topbar = ({ refs }: any) => {
       </DrawerWrapper>
 
       <TopbarRightSide>
-        <Button onClick={openDrawer}>Agregar Producto</Button>
+        
+      {!isRoot && <Button onClick={openDrawer}>Agregar Producto</Button>}
 
         <Popover
           content={({ close }) => <Notification data={data} onClear={close} />}

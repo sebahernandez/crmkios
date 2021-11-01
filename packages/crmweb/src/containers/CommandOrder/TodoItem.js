@@ -56,7 +56,6 @@ const TodoItem = ({ index, pedido }) => {
   const [togglePedidoMutation] = useMutation(TOGGLE_ORDER_MUTATION);
 
   const icon = (st) => {
-    console.log('....', st);
     if (st === 'received') {
       return <NotificationIcon />;
     }

@@ -9,8 +9,8 @@ import ConfirmationPage from "../ConfirmationPage";
 import ErrorPage from "../ErrorPage";
 import Cookies  from 'universal-cookie';
 import { useQuery } from '@apollo/client';
-import { CREATE_SUSCRIPCION } from 'utils/graphql/mutation/suscription';
-import { GET_SUSCRIPCION } from 'utils/graphql/query/suscription';
+import { CREATE_SUBSCRIPCION } from 'utils/graphql/mutation/subscription';
+import { GET_SUBSCRIPCION } from 'utils/graphql/query/subscription.query';
 import { useMutation } from '@apollo/client';
 
 export const BasicForm = () => {
@@ -27,7 +27,7 @@ export const BasicForm = () => {
     url: "",    
   });
 
-  const { data:data1 } = useQuery(GET_SUSCRIPCION,{
+  const { data:data1 } = useQuery(GET_SUBSCRIPCION,{
     variables: { 
         email:  (cookie.get('pagina0') && cookie.get('pagina0').email)?cookie.get('pagina0').email:''
         }
@@ -46,7 +46,6 @@ export const BasicForm = () => {
           
           if(data1 &&  data1.suscripciones.length === 0) {
 
-           console.log('ingreso esto es peligroso usuario indefinido')   
           const newRegistro = {
             nombre: cookie.get('pagina0').name,
             clave: cookie.get('pagina0').password,
@@ -95,7 +94,7 @@ export const BasicForm = () => {
     setPage(page - 1);
   };
 
-  const [insert_suscripciones ] = useMutation(CREATE_SUSCRIPCION ); 
+  const [insert_suscripciones ] = useMutation(CREATE_SUBSCRIPCION ); 
 
 
   function makeid() {

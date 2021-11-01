@@ -113,7 +113,6 @@ const StaffMemberForm: React.FC<Props> = (props) => {
       imageURL: imageURL && imageURL.length !== 0 ? imageURL : '',
       clientid: sessionStorage.getItem('clientid')
     };    
-    console.log(newEmployee, 'Ingresando Empleado Nuevo');
     insert_empleado({
       variables: {nombre: newEmployee.nombre, 
                   paterno: newEmployee.paterno,
@@ -137,8 +136,6 @@ const StaffMemberForm: React.FC<Props> = (props) => {
       const storageRef = app.storage().ref();
       const fileRef = storageRef.child(file.name);
       await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
       setImageURL(await fileRef.getDownloadURL());      
     }
    } 

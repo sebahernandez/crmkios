@@ -66,7 +66,6 @@ const ModifyCategory: React.FC<Props> = () => {
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: data1,
   });
-  console.log(JSON.stringify(data1))
   const [clientid, setClientid] = useState([{ value: data1.clientid }]);  
   const [imageURL, setImageURL] = useState(data1.imageURL);      
   const [update_category, {error}] = useMutation(UPDATE_CATEGORY );
@@ -86,8 +85,6 @@ const ModifyCategory: React.FC<Props> = () => {
       const storageRef = app.storage().ref();
       const fileRef = storageRef.child(file.name);
       await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
       setImageURL(await fileRef.getDownloadURL());            
     }
    } 

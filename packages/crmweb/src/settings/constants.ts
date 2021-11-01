@@ -2,6 +2,7 @@
 // General Page Section
 export const DASHBOARD = '/';
 export const PRODUCTS = '/products';
+export const SUBSCRIPTIONS = '/subscriptions';
 export const CATEGORY = '/category';
 export const LOGIN = '/login';
 export const COMMAND_ORDER = '/command_order';

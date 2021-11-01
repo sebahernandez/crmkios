@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { styled, withStyle } from 'baseui'; 
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
-import Input from 'components/Input/Input';
-import Select from 'components/Select/Select';
-import { useQuery, useSubscription, gql } from '@apollo/client';
+import { CheckMark } from 'assets/icons/CheckMark'
+import {  useSubscription } from '@apollo/client';
 import { Wrapper,Header, Heading } from 'components/Wrapper.style';
-import Fade from 'react-reveal/Fade';
-import ProductCard from 'components/ProductCard/ProductCard';
-import ProductButton from 'components/ProductCard/ProductButton';
+import SubscriptionButton from 'components/SubscriptionCard/SubscriptionButton';
 import NoResult from 'components/NoResult/NoResult';
-import { CURRENCY } from 'settings/constants'; 
-import Placeholder from 'components/Placeholder/Placeholder'; 
-import { Alert } from 'react-bootstrap';
 import Cookies  from 'universal-cookie';
+import { GET_SUBSCRIPTIONS } from 'utils/graphql/query/subscription.query';
 
 import {
   TableWrapper,
   StyledTable,
   StyledHeadCell,
   StyledBodyCell,
-} from './../Customers/Customers.style'; 
+} from '../Customers/Customers.style'; 
 
-export const ProductsRow = styled('div', ({ $theme }) => ({
+export const SubscriptionsRow = styled('div', ({ $theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
   marginTop: '25px',
@@ -52,7 +47,7 @@ const Row = withStyle(Rows, () => ({
   },
 }));
 
-export const ProductCardWrapper = styled('div', () => ({
+export const SubscriptionCardWrapper = styled('div', () => ({
   height: '100%',
 }));
 
@@ -68,50 +63,6 @@ export const LoaderItem = styled('div', () => ({
   padding: '0 15px',
   marginBottom: '30px',
 }));
-
-
-
-
-
-const GET_CATEGORIAS = gql`
- subscription  c1($clientid: String!) {
-    categorias (where: {clientid: {_eq: $clientid}}) {
-      id
-      name 
-      value
-    }
-  }  
-`;
-
-// CASO SIN FILTRO
-
- 
-// clientid: {_eq: $clientid}}}, order_by: {precio_venta: $sort}) {
-const GET_PRODUCTS_X_CATEGORIA = gql`
-subscription s1($clientid: String!, $idcategoria: Int!) {
-  producto(where: {clientid: {_eq: $clientid}, _and: {categorias: {id: {_eq: $idcategoria}}}}) {
-    id
-    clientid
-    nombre
-    descripcion
-    sku
-    precio
-    cantidad
-    unidad 
-    gallery
-    categoria
-    categorias {
-      id
-      name
-      value
-    }
-    descuento
-    precio_venta
-    fecha_creacion
-  }
-}
-`;
-
 
 
 const ImageWrapper = styled('div', ({ $theme }) => ({
@@ -130,16 +81,21 @@ const Image = styled('img', () => ({
   width: '100%',
   height: 'auto',
 })); 
+const ImageRoot = styled('img', () => ({
+  width: '80%',
+  height: 'auto',
+})); 
+
 const selectorView = [
   { value: true, label: 'Vista Imagen' },
   { value: false, label: 'Vista Detalle' },
 ];
 
-export default function Products() {
+export default function Suscriptions() {
   const cookie = new Cookies() 
   const clientid = cookie.get('suscriptor').clientid
 
-  // tipo de producto / categoria
+  // tipo de Subscriptiono / categoria
   const [type, setType] = useState([]); 
   const [isView, setIsView] = useState(true);
   const [textoView, setTextoView] = useState('Vista Imagen');
@@ -148,28 +104,15 @@ export default function Products() {
   const [search, setSearch] = useState(''); 
 
   
-  // lista de productos totales x clientid
-  const { data:data1, error:error1 } = useSubscription(GET_PRODUCTS_X_CATEGORIA,
-    {
-      variables: {
-        clientid: clientid, 
-        idcategoria: type.length > 0 ? type[0].id:0        
-      }
-    });
+  // lista de Subscriptionos totales x clientid
+  const { data  } = useSubscription(GET_SUBSCRIPTIONS);
+ 
  
 
-  // lista de categorias x clientid
-  const { data:data2, error:error2 } = useSubscription(GET_CATEGORIAS,
-    {
-      variables: {clientid}
-    });
-    
-
     useEffect(()=> {
-      if(data1)console.log('data1',data1)
-      if(data2)console.log('data2',data2)
-    },[])
-  // lista de productos x categoria x clientid + ordenados asc desc price  
+      if(data)console.log('data',data) 
+    },[clientid, data, type])
+  // lista de Subscriptionos x categoria x clientid + ordenados asc desc price  
   
 /*  
   if (error1){
@@ -185,16 +128,16 @@ export default function Products() {
     toggleLoading(true);
     fetchMore({
       variables: {
-        offset: data1.producto.length,
+        offset: data.Subscriptiono.length,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         toggleLoading(false);
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          producto: {
-            // _typename: prev.producto._typename,
-            // items: [...prev.producto.items, ...fetchMoreResult.producto.items],
-            // hasMore: fetchMoreResult.producto.hasMore,
+          Subscriptiono: {
+            // _typename: prev.Subscriptiono._typename,
+            // items: [...prev.Subscriptiono.items, ...fetchMoreResult.Subscriptiono.items],
+            // hasMore: fetchMoreResult.Subscriptiono.hasMore,
           },
         });
       },
@@ -239,11 +182,11 @@ export default function Products() {
     <Row>
       <Col md={12}>
       <Header style={{ marginBottom: 15 }}>
-          <Col md={2} xs={12}>
-            <Heading>Productos</Heading>
+          <Col md={12} xs={12}>
+            <Heading>Listado de Suscripciones</Heading>
           </Col>
 
-          <Col md={10} xs={12}>
+         {/*  <Col md={10} xs={12}>
             <Row>
               <Col md={6} xs={12}>
               <Select
@@ -270,52 +213,41 @@ export default function Products() {
 
            
             </Row>
-          </Col>
+          </Col> */}
         </Header>
-        <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)' }}>
+        <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)'  }}>
             <TableWrapper>
-              <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(140px, 70px) minmax(140px, 70px) minmax(200px, auto) minmax(150px, auto) minmax(150px, max-content) minmax(150px, auto) minmax(150px, auto)">
-                <StyledHeadCell>ID1</StyledHeadCell>
-                <StyledHeadCell>SKU</StyledHeadCell>
-                <StyledHeadCell>Imagen</StyledHeadCell>
-                <StyledHeadCell>Nombre</StyledHeadCell>
-                <StyledHeadCell>Categoría</StyledHeadCell>
-                <StyledHeadCell>Precio</StyledHeadCell>
-                <StyledHeadCell>Descuento</StyledHeadCell>
+              <StyledTable $gridTemplateColumns="minmax(120px, 50px) minmax(140px, 70px) minmax(140px, 70px) minmax(200px, auto) minmax(150px, auto) minmax(150px, max-content) minmax(150px, auto) minmax(150px, auto) minmax(150px, auto)">
+                <StyledHeadCell>Logo</StyledHeadCell>
+                <StyledHeadCell>ClientID</StyledHeadCell>
+                <StyledHeadCell>Suscriptor</StyledHeadCell>
+                <StyledHeadCell>Fecha</StyledHeadCell>
+                <StyledHeadCell>Vencimiento</StyledHeadCell>
+                <StyledHeadCell>Estado</StyledHeadCell>
+                <StyledHeadCell>URL</StyledHeadCell>
+                <StyledHeadCell>Autorizado</StyledHeadCell>
                 <StyledHeadCell>Acción</StyledHeadCell>
-                {data1 ? (console.log('pico')):('')}
-                {data1 && data1.producto ? (
-                  data1.producto.length ? (
-                    data1.producto.map((item: any, index: number) => (
+                {data && data.info_user_view ? (
+                  data.info_user_view.length ? (
+                    data.info_user_view.map((item: any, index: number) => (
                         <React.Fragment key={index}>
                         
-                           <StyledBodyCell>{item.id}</StyledBodyCell>
-                           <StyledBodyCell>{item.sku}</StyledBodyCell>
                           <StyledBodyCell>
                             <ImageWrapper>
-                              <Image src={item.gallery !== null &&  item.gallery.length > 0 ? item.gallery.split(",")[0] : item.imageURL} alt={item.nombre} />
+                              <ImageRoot src={item.img_site_url !== null &&  item.img_site_url}   />
                             </ImageWrapper>
                           </StyledBodyCell>
-                          <StyledBodyCell>{item.nombre}</StyledBodyCell>
-                          <StyledBodyCell>{item.categorias[0].name}</StyledBodyCell>
-                          <StyledBodyCell>${item.precio}</StyledBodyCell>
-                          <StyledBodyCell>${item.descuento}</StyledBodyCell>
+                           <StyledBodyCell>{item.clientid}</StyledBodyCell>
+                           <StyledBodyCell>{item.nombre}</StyledBodyCell>
+                          <StyledBodyCell>{item.fecha_suscripcion}</StyledBodyCell>
+                          <StyledBodyCell>{item.fecha_vencimiento}</StyledBodyCell>
+                          <StyledBodyCell>{item.estado}</StyledBodyCell>
+                          <StyledBodyCell>{item.negocio_web}</StyledBodyCell>
+                          <StyledBodyCell>{item.is_negocio_web===false?'':<CheckMark />}</StyledBodyCell>
                           <StyledBodyCell>
-                              <ProductButton
-                                  orderId={item.id}
-                                  clientid={item.clientid}
-                                  category={item.categorias[0].value}
-                                  title={item.nombre}
-                                  descripcion={item.descripcion}
-                                  weight={item.unidad}
-                                  image={item.imageURL}
-                                  gallery={item.gallery}
-                                  currency={CURRENCY}
-                                  price={item.precio}
-                                  salePrice={item.precio_venta}
-                                  discountInPercent={item.descuento} 
-                                  data={item}
-                            />
+                             {  <SubscriptionButton
+                                         data={item}
+                            />  }
                           </StyledBodyCell>  
                         </React.Fragment>
                     ))
@@ -340,14 +272,14 @@ export default function Products() {
   }
 
   function Full(){
-
-     return ( 
+    return (<Grid fluid={true}></Grid>);
+     /* return ( 
     <Grid fluid={true}>
     <Row>
       <Col md={12}>
         <Header style={{ marginBottom: 15 }}>
           <Col md={2} xs={12}>
-            <Heading>Productos</Heading>
+            <Heading>Suscripciones</Heading>
           </Col>
 
           <Col md={10} xs={12}>
@@ -379,9 +311,9 @@ export default function Products() {
         </Header>
 
      <Row>
-          {data1? (
-            data1.producto.length !== 0 ? (
-              data1.producto.map((item: any, index: number) => (
+          {data? (
+            data.Subscriptiono.length !== 0 ? (
+              data.Subscriptiono.map((item: any, index: number) => (
                
                 <Col
                   md={4}
@@ -393,7 +325,7 @@ export default function Products() {
                 >
                    
                   <Fade bottom duration={800} delay={index * 10}>
-                    <ProductCard
+                    <SubscriptionCard
                       orderId={item.id}
                       sku={item.sku}
                       clientid={item.clientid}
@@ -431,29 +363,18 @@ export default function Products() {
             </LoaderWrapper>
           )}
         </Row>  
-      {/*   {data1 !== null && data1.producto !== null && data1.products && data1.products.hasMore && (
-          <Row>
-            <Col
-              md={12}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-               <Button onClick={loadMore} isLoading={loadingMore}>
-                Cargar Más...
-              </Button>               </Col>
-          </Row>
-        )} */}
       </Col>
     </Row>
   </Grid>
   
-    );
+    ); */
   } 
 
-  function DisplayProduct(){
+  function DisplaySubscription(){
 
-   if(isView){
+   if(!isView){
       return <Full />
-   }else
+   } else
     {
      return  <Detail />
     }
@@ -461,7 +382,7 @@ export default function Products() {
   return (
    <>
      
-        <DisplayProduct/>
+        <DisplaySubscription/>
 
    </>
 

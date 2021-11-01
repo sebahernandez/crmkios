@@ -12,7 +12,6 @@ import {
 } from "./styled";
 
 export const MainCard = ({ name, percentage, shopUrl }) => {
-  console.log("props: " + name);
   return (
     <div>
       <Root>

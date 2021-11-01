@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { Wrapper, FormWrapper, LogoImage, LogoWrapper } from './Login.style';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router';
 import Logoimage from 'assets/image/tuecommerce.png';
 import '../../settings/constants';
-import { DASHBOARD } from '../../settings/constants';
+import { DASHBOARD, SUBSCRIPTIONS } from '../../settings/constants';
 import { AuthContext } from 'context/auth';
 import { FormFields, FormTitle } from 'components/FormFields/FormFields';
 import { Alert } from 'react-bootstrap';
@@ -34,6 +34,7 @@ const GET_SUSCRIPTOR = gql`
 	  img_user_url
 	  negocio_web
 	  is_negocio_web
+	  is_root
 	  nombre
 	  usuario
 	  plan_suscripcion
@@ -48,19 +49,20 @@ const GET_SUSCRIPTOR = gql`
 `;
 
 export default function Login() {
-	const cookie = new Cookies() 
+	const cookie = new Cookies();
 	const [usuario, SetUsuario] = useState('');
 	const [password, SetPassword] = useState('');
 	const [isAuth, SetIsAuth] = useState(true);
 	const [isLogged, SetIsLogged] = useState(false);
 	const [isClicked, SetIsClicked] = useState(false);
-	const { authenticate, isAuthenticated } = useContext(AuthContext);
+	const { authenticate } = useContext(AuthContext);
 	let history = useHistory();
 	let location = useLocation();
 	let { from } = (location.state as any) || { from: { pathname: DASHBOARD } };
+	let { from2 } = (location.state as any) || { from2: { pathname: SUBSCRIPTIONS } };
  
 
-	const { data:data2, error:error2 } = useQuery(GET_SUSCRIPTOR,
+	const { data:data2 } = useQuery(GET_SUSCRIPTOR,
 		{
 			variables: { 
 				usuario: usuario, 
@@ -68,9 +70,7 @@ export default function Login() {
 			}
 		});
 
-	function handleInput(e) {
-		console.log(e.target.name);
-		console.log(e.target.value);
+	function handleInput(e) { 
 		switch (e.target.name) {
 			case 'usuario':
 				SetUsuario(e.target.value);
@@ -84,7 +84,6 @@ export default function Login() {
 	useEffect(()=> {
 		SetIsLogged(false)
 		SetIsClicked(false)
-		console.log('pasando por useEffect', data2)
 		if(data2 !== undefined){
 			cookie.set('suscriptor',data2.info_user_view[0])
 			SetIsLogged(true)
@@ -94,9 +93,14 @@ export default function Login() {
 
 	const auth = () => {
 	 
-		authenticate({ usuario, password }, () => {
-			console.log(usuario, password);
-			history.replace(from);
+		authenticate({ usuario, password }, () => { 
+			if(cookie.get('suscriptor').is_root)
+			{
+				history.replace(from2);
+			} else {
+				history.replace(from);
+			}
+			
 			SetIsLogged(true)
 		});
 		
@@ -167,12 +171,11 @@ const loadMessage = () => {
 						<button onClick={handleMoreInfo} className="btn-login">Ingresar</button>
 						{/* {called && loading} */}
 						{ data2 && data2.info_user_view.map(item => {
-							console.log(1);
-							sessionStorage.setItem('tuecommerce_token', `${usuario}.${password}`);			
-							console.log(2);
+							 
+							sessionStorage.setItem('tuecommerce_token', `${usuario}.${password}`);									 
 							sessionStorage.setItem('clientid', item.clientid);
 							sessionStorage.setItem('infoUser', JSON.stringify(item));
-							console.log(3);
+							 
 						})
 						}					
 						<p className="forgot-password text-right">

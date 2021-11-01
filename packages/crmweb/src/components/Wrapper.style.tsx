@@ -20,7 +20,7 @@ export const Header = styled('header', () => ({
   },
 }));
 
-export const Heading = styled('h2', ({ $theme }) => ({
+export const Heading = styled('h1', ({ $theme }) => ({
   ...$theme.typography.fontBold18,
   color: $theme.colors.textDark,
   margin: 0,

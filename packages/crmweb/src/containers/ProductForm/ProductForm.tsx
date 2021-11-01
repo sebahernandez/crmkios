@@ -5,7 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useDrawerDispatch } from 'context/DrawerContext';
 import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
-import { Grid, Row, Col } from 'components/FlexBox/FlexBox';
+import { Row, Col } from 'components/FlexBox/FlexBox';
 import Uploader from 'components/Uploader/Uploader';
 import Input from 'components/Input/Input'; 
 import Select from 'components/Select/Select';
@@ -132,7 +132,6 @@ const AddProduct: React.FC<Props> = (props) => {
     setGallery(arg)
     setIsLoading(false)
 
-    console.log('gallery>' + gallery)
   };
  
   const onSubmit = (e) => {
@@ -174,6 +173,7 @@ const AddProduct: React.FC<Props> = (props) => {
       <DrawerTitleWrapper>
         <DrawerTitle>Agregar Producto</DrawerTitle>
       </DrawerTitleWrapper>
+      
       <Form onSubmit={handleSubmit(onSubmit)} style={{ height: '100%' }}>
         <Scrollbars
           autoHide

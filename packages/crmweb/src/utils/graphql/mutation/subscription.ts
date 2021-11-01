@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const CREATE_SUSCRIPCION = gql`
+// Necesarios para la subscripcion
+export const CREATE_SUBSCRIPCION = gql`
     mutation insert_suscripciones(
       $nombre: String!, 
       $clave: String!,
@@ -31,3 +32,17 @@ export const CREATE_SUSCRIPCION = gql`
     }
   }
 `;
+
+// Para actualizar datos importantes de 
+// los suscriptores, como url shop, autorizaciones
+// y muchas cosas mas..
+export const UPDATE_SUBSCRIPTION = gql`
+mutation update_suscripciones($clientid: String!, $authorized: Boolean!, $url: String!, $status: String!) {
+  update_suscripciones(where: {clientid: {_eq: $clientid}}, _set: {is_negocio_web: $authorized, negocio_web: $url, estado: $status}) {
+    affected_rows
+  }
+}
+`;
+
+// para suscriptores inactivos por mucho tiempo 
+// export const DELETE_SUBSCRIPTION = gql``;

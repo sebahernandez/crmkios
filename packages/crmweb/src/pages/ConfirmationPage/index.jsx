@@ -17,7 +17,6 @@ const ConfirmationPage = () => {
       bodyText: "Mensaje solo formato texto ahora si",
       bodyHtml: templates().TEMPLATE_1
     };
-    console.log('peticion:', peticion)
 
     const config = {
       url: 'https://mailer-gamma.vercel.app/sendmail',

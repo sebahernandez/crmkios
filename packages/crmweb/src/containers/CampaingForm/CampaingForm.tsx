@@ -53,8 +53,6 @@ const AddCampaing: React.FC<Props> = (props) => {
       const storageRef = app.storage().ref();
       const fileRef = storageRef.child(file.name);
       await fileRef.put(file)
-      console.log("Uploaded file " , file.name);
-      console.log(JSON.stringify(await fileRef.getDownloadURL()));
       setImage(await fileRef.getDownloadURL());      
     }
    } 
@@ -71,7 +69,6 @@ const AddCampaing: React.FC<Props> = (props) => {
       cupones_usados: Number(data.cupones_usados),
       image: image && image.length !== 0 ? image : ''
     };
-    console.log(cupon,'>>>>>>>>>>>>>>>>>>>>>>>')
     createCoupon({ 
         variables: {id: cupon.id,
           clientid: cupon.clientid,
