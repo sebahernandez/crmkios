@@ -10,6 +10,7 @@ import ErrorPage from "../ErrorPage";
 import Cookies  from 'universal-cookie';
 import { useQuery } from '@apollo/client';
 import { CREATE_SUBSCRIPCION } from 'utils/graphql/mutation/subscription';
+import { CREATE_NOTIFY } from 'utils/graphql/mutation/notification';
 import { GET_SUBSCRIPCION } from 'utils/graphql/query/subscription.query';
 import { useMutation } from '@apollo/client';
 
@@ -26,6 +27,8 @@ export const BasicForm = () => {
     rubro_negocio: "",
     url: "",    
   });
+
+
 
   const { data:data1 } = useQuery(GET_SUBSCRIPCION,{
     variables: { 
@@ -73,7 +76,16 @@ export const BasicForm = () => {
                               rubro_negocio: newRegistro.rubro_negocio,              
                               clientid: newRegistro.clientid               
                             }
-                });  
+                }); 
+                // Ingresamos una Alerta Web Push
+                insert_notificacion({
+                  variables: {
+                              title: "Nueva Suscripción - " + newRegistro.nombre, 
+                              time: "Recien", 
+                              message: newRegistro.descripcion + " - " + newRegistro.rubro_negocio,
+                              clientid: newRegistro.clientid               
+                            }
+                }); 
 
               } catch(error){
                 console.log(error)
@@ -93,6 +105,7 @@ export const BasicForm = () => {
   const pageBefore = () => {
     setPage(page - 1);
   };
+  const [insert_notificacion ] = useMutation(CREATE_NOTIFY); 
 
   const [insert_suscripciones ] = useMutation(CREATE_SUBSCRIPCION ); 
 

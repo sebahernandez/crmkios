@@ -19,8 +19,7 @@ const ConfirmationPage = () => {
     };
 
     const config = {
-      url: 'https://mailer-gamma.vercel.app/sendmail',
-      //url: 'http://localhost:4000/sendmail',
+      url: 'https://mailer-gamma.vercel.app/sendmail', //url: 'http://localhost:4000/sendmail',
       method: 'POST',
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -34,7 +33,7 @@ const ConfirmationPage = () => {
         console.log(response)
     }).catch((err) => {
       console.log(err)}); 
-  }, []);
+  }, [cookie]);
 
 
   return (
