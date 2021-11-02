@@ -32,7 +32,7 @@ import Sidebar from '../Sidebar/Sidebar';
 
 const data = [
   {
-    title: 'Delivery Successful',
+    title: 'Delivery Successfulx',
     time: '5m',
     message: 'Order #34567 had been placed',
   },

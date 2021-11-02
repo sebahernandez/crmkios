@@ -32,9 +32,19 @@ import Cookies  from 'universal-cookie';
 
 const data = [
   {
-    title: 'Delivery Successful',
-    time: '5m',
-    message: 'Order #34567 had been placed',
+    title: 'Esteban Flores - Pollos del Valle',
+    time: '5 min',
+    message: 'Completo 100% - Módulo Comenzar',
+  },
+  {
+    title: 'Monica Araneda - Moni Ropas',
+    time: '1 min',
+    message: 'Nueva Suscripción - Tienda Vestuario',
+  },
+  {
+    title: 'Esteban Flores - Pollos del Valle',
+    time: '2 min',
+    message: 'Ha superado las 30 ventas diarias',
   },
 ];
 const Topbar = ({ refs }: any) => {
