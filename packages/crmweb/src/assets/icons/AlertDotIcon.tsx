@@ -1,29 +1,30 @@
-import React from 'react';
-export const AlertDotIcon = () => {
+import React, { useState } from 'react';
+
+export const AlertDotIcon = ({ $value }) => {
+
+ 
+
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width='10'
-      height='10'
-      viewBox='0 0 10 10'
+      width='18'
+      height='18'
+      viewBox='0 0 50 50'
     >
       <g data-name='Group 2830' transform='translate(-1598 -32)'>
         <g
           data-name='Ellipse 73'
           transform='translate(1598 32)'
-          fill='#ffffff'
-          stroke='currentColor'
-          strokeWidth='0.3'
+          fill='#F99157'
+          stroke='#ffffff'
+          strokeWidth='2.9'
         >
-          <circle cx='5' cy='5' r='5' stroke='none' />
-          <circle cx='5' cy='5' r='4.85' fill='none' />
+         
+          <circle cx='30' cy='20' r='20' fill='currentColor' /> 
+          <text textAnchor="middle" x='28' y='25'>{$value}</text>
+          
         </g>
-        <path
-          data-name='Path 2700'
-          d='M2,0A2,2,0,1,1,0,2,2,2,0,0,1,2,0Z'
-          transform='translate(1601 35)'
-          fill='currentColor'
-        />
+  
       </g>
     </svg>
   );

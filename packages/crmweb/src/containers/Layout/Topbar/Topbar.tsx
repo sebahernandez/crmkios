@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'components/Button/Button';
 import Popover, { PLACEMENT } from 'components/Popover/Popover';
@@ -68,6 +68,7 @@ const Topbar = ({ refs }: any) => {
     [dispatch]
   );
    // lista de Subscriptionos totales x clientid
+ let [count,setCount] = useState(0)
  const { data  } = useSubscription(GET_ALL_NOTIFY);
 
   if(info===null){
@@ -84,6 +85,13 @@ const Topbar = ({ refs }: any) => {
       console.log('No se encuentra autorizado para operar el commandorder')
     }
   } 
+
+  useEffect(()=>{
+    if(data){
+      setCount(data.notifications.length)
+    }
+  }, [count, data])
+
 
 
   return (
@@ -163,7 +171,7 @@ const Topbar = ({ refs }: any) => {
           <NotificationIconWrapper>
             <NotificationIcon />
             <AlertDot>
-              <AlertDotIcon />
+              <AlertDotIcon $value={count}/>
             </AlertDot>
           </NotificationIconWrapper>
         </Popover>
@@ -174,7 +182,7 @@ const Topbar = ({ refs }: any) => {
               {showCommandOrder(close)}
 
               <NavLink to={STAFF_MEMBERS} exact={false} onClick={close}>
-                Equipo
+                Equipo 
               </NavLink>
               <NavLink to={SETTINGS} exact={false} onClick={close}>
                 Configuración

@@ -146,7 +146,7 @@ const TopbarCommand = ({ refs }: any) => {
           <NotificationIconWrapper>
             <NotificationIcon />
             <AlertDot>
-              <AlertDotIcon />
+              <AlertDotIcon $value={(data)?data.notifications.length:0}/>
             </AlertDot>
           </NotificationIconWrapper>
         </Popover>
