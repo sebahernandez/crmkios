@@ -29,8 +29,16 @@ import { useDrawerDispatch } from 'context/DrawerContext';
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
 import Cookies  from 'universal-cookie';
+import { GET_ALL_NOTIFY } from 'utils/graphql/query/notification.query';
+import { useSubscription } from '@apollo/client';
 
-const data = [
+
+
+
+
+ 
+
+/* const data = [
   {
     title: 'Esteban Flores - Pollos del Valle',
     time: '5 min',
@@ -46,7 +54,7 @@ const data = [
     time: '2 min',
     message: 'Ha superado las 30 ventas diarias',
   },
-];
+]; */
 const Topbar = ({ refs }: any) => {
   const cookie = new Cookies() 
   const [isRoot]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_root:false)
@@ -59,6 +67,8 @@ const Topbar = ({ refs }: any) => {
     () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'PRODUCT_FORM' }),
     [dispatch]
   );
+   // lista de Subscriptionos totales x clientid
+ const { data  } = useSubscription(GET_ALL_NOTIFY);
 
   if(info===null){
     window.location.href = '/login';
@@ -133,7 +143,7 @@ const Topbar = ({ refs }: any) => {
       {!isRoot && <Button onClick={openDrawer}>Agregar Producto</Button>}
 
         <Popover
-          content={({ close }) => <Notification data={data} onClear={close} />}
+          content={({ close }) => <Notification data={data.notifications} onClear={close} />}
           accessibilityType={'tooltip'}
           placement={PLACEMENT.bottomRight}
           overrides={{

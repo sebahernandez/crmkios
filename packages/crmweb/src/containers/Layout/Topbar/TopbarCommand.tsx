@@ -9,6 +9,7 @@ import { AlertDotIcon } from 'assets/icons/AlertDotIcon';
 import { ArrowLeftRound } from 'assets/icons/ArrowLeftRound';
 import { MenuIcon } from 'assets/icons/MenuIcon';
 import { Header, Heading } from 'components/Wrapper.style';
+import { useSubscription } from '@apollo/client';
 import { Grid, Row , Col  } from 'components/FlexBox/FlexBox';
 import {
   TopbarWrapper,
@@ -25,10 +26,10 @@ import {
   DrawerIcon,
   CloseButton,
   DrawerWrapper,
-} from './TopbarCommand.style'; 
-import { useDrawerDispatch } from 'context/DrawerContext';
+} from './TopbarCommand.style';  
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
+import { GET_ALL_NOTIFY } from 'utils/graphql/query/notification.query';
 
 const data = [
   {
@@ -38,6 +39,13 @@ const data = [
   },
 ];
 const TopbarCommand = ({ refs }: any) => {
+
+
+ // lista de Subscriptionos totales x clientid
+ const { data  } = useSubscription(GET_ALL_NOTIFY);
+ 
+
+
   const [info ] = useState(JSON.parse(sessionStorage.getItem('infoUser')))  
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -118,7 +126,7 @@ const TopbarCommand = ({ refs }: any) => {
         
 
         <Popover
-          content={({ close }) => <Notification data={data} onClear={close} />}
+          content={({ close }) => <Notification data={data.notifications} onClear={close} />}
           accessibilityType={'tooltip'}
           placement={PLACEMENT.bottomRight}
           overrides={{
@@ -158,7 +166,7 @@ const TopbarCommand = ({ refs }: any) => {
               <LogoutBtn
                 onClick={() => {
                   signout();
-
+                   
                   sessionStorage.removeItem('infoUser');
                   sessionStorage.setItem('infoUser',null);
                   sessionStorage.setItem('clientid',null);

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { styled, withStyle } from 'baseui'; 
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
-import Input from 'components/Input/Input';
 import Select from 'components/Select/Select';
-import { useQuery, useSubscription, gql } from '@apollo/client';
+import { useSubscription, gql } from '@apollo/client';
 import { Wrapper,Header, Heading } from 'components/Wrapper.style';
 import Fade from 'react-reveal/Fade';
 import ProductCard from 'components/ProductCard/ProductCard';
@@ -11,7 +10,6 @@ import ProductButton from 'components/ProductCard/ProductButton';
 import NoResult from 'components/NoResult/NoResult';
 import { CURRENCY } from 'settings/constants'; 
 import Placeholder from 'components/Placeholder/Placeholder'; 
-import { Alert } from 'react-bootstrap';
 import Cookies  from 'universal-cookie';
 
 import {
