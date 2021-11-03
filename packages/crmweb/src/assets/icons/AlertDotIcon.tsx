@@ -7,21 +7,21 @@ export const AlertDotIcon = ({ $value }) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width='18'
-      height='18'
-      viewBox='0 0 50 50'
+      width='15'
+      height='15'
+      viewBox='0 0 56 56'
     >
       <g data-name='Group 2830' transform='translate(-1598 -32)'>
         <g
           data-name='Ellipse 73'
           transform='translate(1598 32)'
-          fill='#F99157'
+          fill='#ffffff'
           stroke='#ffffff'
-          strokeWidth='2.9'
+          strokeWidth='2.1'
         >
          
-          <circle cx='30' cy='20' r='20' fill='currentColor' /> 
-          <text textAnchor="middle" x='28' y='25'>{$value}</text>
+          <circle cx='28' cy='28' r='28' fill='currentColor' /> 
+          <text fontSize="xx-large" textAnchor="middle" x='28' y='38'>{$value}</text>
           
         </g>
   

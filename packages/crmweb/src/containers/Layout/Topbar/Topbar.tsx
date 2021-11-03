@@ -183,7 +183,7 @@ const Topbar = ({ refs }: any) => {
 
               <NavLink to={STAFF_MEMBERS} exact={false} onClick={close}>
                 Equipo 
-              </NavLink>
+t br              </NavLink>
               <NavLink to={SETTINGS} exact={false} onClick={close}>
                 Configuración
               </NavLink>

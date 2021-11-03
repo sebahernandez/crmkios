@@ -45,4 +45,10 @@ mutation update_suscripciones($clientid: String!, $authorized: Boolean!, $url: S
 `;
 
 // para suscriptores inactivos por mucho tiempo 
-// export const DELETE_SUBSCRIPTION = gql``;
+export const DELETE_SUBSCRIPTION = gql`
+  mutation delete_suscripciones($clientid: String!) {
+    delete_suscripciones(where: {clientid: {_eq: $clientid}, is_negocio_web: {_eq: false}, estado: {_neq: "Activa"}}) {
+    affected_rows
+  }
+}
+`;

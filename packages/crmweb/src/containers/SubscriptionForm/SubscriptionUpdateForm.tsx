@@ -9,7 +9,7 @@ import { Row, Col } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input'; 
 import Select from 'components/Select/Select';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
-import { UPDATE_SUBSCRIPTION } from 'utils/graphql/mutation/subscription';
+import { UPDATE_SUBSCRIPTION, DELETE_SUBSCRIPTION } from 'utils/graphql/mutation/subscription';
 
 import {
   Form,
@@ -58,7 +58,7 @@ const ModifySubscription: React.FC<Props> = () => {
   }, [register]);
 
   const [update_suscripcion] = useMutation(UPDATE_SUBSCRIPTION );
-/*   const [delete_producto] = useMutation(DELETE_PRODUCT ); */
+  const [delete_suscripcion] = useMutation(DELETE_SUBSCRIPTION );
 
  
   const handleMultiChange = ({ value }) => {
@@ -103,8 +103,11 @@ const ModifySubscription: React.FC<Props> = () => {
 
   const darBaja = () => {
    
-    /*  delete_producto({
-       variables:{id: orderId[0].value,clientid: clientid[0].value}}); */
+      delete_suscripcion({
+       variables:{
+          clientid: clientid
+        }
+      }); 
     closeDrawer(); 
   };
 
@@ -244,7 +247,7 @@ const ModifySubscription: React.FC<Props> = () => {
           </Row>
           <Row>
             <Col lg={4}>
-              <FieldDetails>Desea dar de Baja este Producto ?</FieldDetails>
+              <FieldDetails>Desea dar de Baja esta Suscripción ?</FieldDetails>
             </Col>
             <Col lg={8}>
             <DrawerBox>

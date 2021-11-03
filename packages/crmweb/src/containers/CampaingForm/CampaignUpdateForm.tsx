@@ -203,7 +203,7 @@ const ModifyCoupon: React.FC<Props> = () => {
           </Row>
           <Row>
             <Col lg={4}>
-              <FieldDetails>Desea dar de Baja este Producto ?</FieldDetails>
+              <FieldDetails>Desea dar de Baja esta Campaña ?</FieldDetails>
             </Col>
             <Col lg={8}>
             <DrawerBox>
