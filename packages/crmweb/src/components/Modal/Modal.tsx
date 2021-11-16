@@ -1,5 +1,4 @@
 import Button from "components/Button/Button";
-import { Fragment } from "react";
 import { useState } from "react";
 import { Modal } from "react-bootstrap"; 
 import Cookies  from 'universal-cookie';
@@ -14,8 +13,11 @@ export const ModalCommand = ({order}) => {
     const values = [true];
     const [fullscreen, setFullscreen] = useState(true);
     const [show, setShow] = useState(false);
-    const [url] = useState(cookie.get('suscriptor').negocio_web+"/ordercrm?order="+order)
+    const [url] = useState(cookie.get('negocio_web')+"/ordercrm?order="+order)
     
+    console.log('>>>> negocio_web',cookie.get('negocio_web'))
+    console.log('>>>> url',url)
+
     function handleShow(breakpoint) {
         setFullscreen(breakpoint);
         setShow(true);

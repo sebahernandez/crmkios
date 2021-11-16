@@ -86,9 +86,10 @@ export default function Login() {
 		SetIsClicked(false)
 		if(data2 !== undefined){
 			cookie.set('suscriptor',data2.info_user_view[0])
+			cookie.set('negocio_web',data2.info_user_view[0].negocio_web)
 			SetIsLogged(true)
 		}	
-	},[])
+	},[cookie, data2])
 
 
 	const auth = () => {
@@ -112,6 +113,7 @@ export default function Login() {
 
 		if(data2  && data2.info_user_view && data2.info_user_view.length > 0) {
 			cookie.set('suscriptor',data2.info_user_view[0])
+			cookie.set('negocio_web',data2.info_user_view[0].negocio_web)
 			SetIsLogged(true)
 			auth()
 			SetIsAuth(false)
