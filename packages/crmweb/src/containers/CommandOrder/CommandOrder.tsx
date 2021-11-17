@@ -2,7 +2,6 @@ import '../../settings/constants';
 import TopbarCommand from 'containers/Layout/Topbar/TopbarCommand';
 import TodoPrivateWrapper from "./TodoPrivateWrapper";
 import TodoClosedWrapper from "./TodoClosedWrapper";
-import Cookies  from 'universal-cookie';
 
 /**
 * Develop by Alejandro Sandoval
@@ -10,8 +9,6 @@ import Cookies  from 'universal-cookie';
 */
 
 export default function CommandOrder() {
-  const cookie = new Cookies() 
-  const clientid = cookie.get('suscriptor').clientid
 
 return (
 <div>

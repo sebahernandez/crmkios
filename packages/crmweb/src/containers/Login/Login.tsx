@@ -84,8 +84,10 @@ export default function Login() {
 	useEffect(()=> {
 		SetIsLogged(false)
 		SetIsClicked(false)
-		if(data2 !== undefined){
+		if(data2  && data2.info_user_view && data2.info_user_view.length > 0) {
 			cookie.set('suscriptor',data2.info_user_view[0])
+			cookie.set('clientid',data2.info_user_view[0].clientid)
+			cookie.set('cid',data2.info_user_view[0].clientid)
 			cookie.set('negocio_web',data2.info_user_view[0].negocio_web)
 			SetIsLogged(true)
 		}	
