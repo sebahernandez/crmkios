@@ -11,8 +11,7 @@ import Button from 'components/Button/Button';
 
 import { Plus } from 'assets/icons/PlusMinus';
 import { useQuery, gql } from '@apollo/client';
-import { Wrapper, Header, Heading } from 'components/Wrapper.style';
-import Checkbox from 'components/CheckBox/CheckBox';
+import { Wrapper, Header, Heading } from 'components/Wrapper.style'; 
 
 import {
   TableWrapper,
@@ -65,9 +64,7 @@ const statusSelectOptions = [
 ];
 
 export default function Coupons({clientid}) {
-  const dispatch = useDrawerDispatch();
-  const [checkedId, setCheckedId] = useState([]);
-  const [checked, setChecked] = useState(false);
+  const dispatch = useDrawerDispatch(); 
 
   const openDrawer = useCallback(
     () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'CAMPAING_FORM' }),
@@ -89,8 +86,8 @@ export default function Coupons({clientid}) {
     },
   });
 
-  const { data:data1, error, refetch } = useQuery(GET_COUPONS,{
-    variables: { clientid: sessionStorage.getItem('clientid'),
+  const { data:data1, error } = useQuery(GET_COUPONS,{
+    variables: { clientid: clientid,
                  searchText: '%'+search+'%'
                 }
   });
@@ -112,25 +109,8 @@ export default function Coupons({clientid}) {
     setSearch(value);
  
   }
-  function onAllCheck(event) {
-    if (event.target.checked) {
-      const idx = data1 && data1.coupons.map((coupon) => coupon.id);
-      setCheckedId(idx);
-    } else {
-      setCheckedId([]);
-    }
-    setChecked(event.target.checked);
-  }
-
-  function handleCheckbox(event) {
-    const { name } = event.currentTarget;
-    if (!checkedId.includes(name)) {
-      setCheckedId((prevState) => [...prevState, name]);
-    } else {
-      setCheckedId((prevState) => prevState.filter((id) => id !== name));
-    }
-  }
-
+ 
+ 
   const numberToPercent = (num, total) => {
     return (num * 100) / total;
   };

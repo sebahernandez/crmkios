@@ -9,6 +9,7 @@ import Button, { KIND } from 'components/Button/Button';
 import DrawerBox from 'components/DrawerBox/DrawerBox';
 import { Row, Col } from 'components/FlexBox/FlexBox';
 import { app } from '../../../src/base';
+import Cookies  from 'universal-cookie';
 import {
   Form,
   DrawerTitleWrapper,
@@ -32,14 +33,14 @@ const CREATE_COUPON = gql`
  
 
 type Props = any;
-
+const cookie = new Cookies() 
 const AddCampaing: React.FC<Props> = (props) => {
   const dispatch = useDrawerDispatch();
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
   ]);
 
-  const [clientid] = useState(sessionStorage.getItem('clientid')); 
+  const [clientid] = useState(cookie.get('clientid')); 
   const [image, setImage] = useState(''); 
   const { register, handleSubmit } = useForm(); 
   React.useEffect(() => { 

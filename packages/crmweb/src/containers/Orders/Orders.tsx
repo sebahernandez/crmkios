@@ -51,12 +51,12 @@ const Row = withStyle(Rows, () => ({
 
 export default function Orders() { 
   const cookie = new Cookies() 
-  const clientid = cookie.get('suscriptor').clientid
+  const clientid = cookie.get('clientid')
   const [search, setSearch] = useState('');
 
   const { data, error } = useQuery(GET_ORDERS, {
     variables: {
-      clientid: sessionStorage.getItem('clientid'),
+      clientid: clientid,
       searchText: '%'+search+'%' 
     },
   });

@@ -69,7 +69,7 @@ const Row = withStyle(Rows, () => ({
 
 export default function Category() {
   const cookie = new Cookies() 
-  const clientid = cookie.get('suscriptor').clientid
+  const clientid = cookie.get('clientid') 
   const dispatch = useDrawerDispatch(); 
 
   const openDrawer = useCallback(
@@ -79,7 +79,7 @@ export default function Category() {
   const [search, setSearch] = useState('');  
   const {  error, data } =  useSubscription(GET_CATEGORIAS, {
       variables: {
-        clientid: sessionStorage.getItem('clientid'),
+        clientid: clientid,
         searchText: '%'+search+'%'
       },
   });

@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies  from 'universal-cookie';
 
 type AuthProps = {
   isAuthenticated: boolean;
@@ -7,7 +8,7 @@ type AuthProps = {
 };
 
 export const AuthContext = React.createContext({} as AuthProps);
-
+const cookie = new Cookies();
 const isValidToken = () => {
   const token = localStorage.getItem('tuecommerce_token');
   // JWT decode & check token validity & expiration.
@@ -19,12 +20,12 @@ const AuthProvider = (props: any) => {
   const [isAuthenticated, makeAuthenticated] = React.useState(isValidToken());
   function authenticate({ email, password }, cb) {
     makeAuthenticated(true);
-    localStorage.setItem('tuecommerce_token', `${email}.${password}`);
+    cookie.set('tuecommerce_token', `${email}.${password}`);
     setTimeout(cb, 100); // fake async
   }
   function signout(cb) {
     makeAuthenticated(false);
-    localStorage.removeItem('tuecommerce_token');
+    cookie.remove('tuecommerce_token');
     setTimeout(cb, 100);
   }
   return (

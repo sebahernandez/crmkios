@@ -34,6 +34,7 @@ query GETSUSCRIPTOR($usuario: String!,$password: String!) {
 	usuario
 	clave
 	telefono
+	correo
 	is_negocio_web
 	is_root
 	shop_image_body
@@ -44,11 +45,7 @@ query GETSUSCRIPTOR($usuario: String!,$password: String!) {
 	fecha_vencimiento
 	negocio_web
 	nombre
-	estado
-	contactos {
-	celular
-	correo
-	}
+	estado 
 	direccion_tienda
 	id
 }
@@ -183,9 +180,8 @@ const loadMessage = () => {
 						{/* {called && loading} */}
 						{ data2 && data2.suscripciones.map(item => {
 							 
-							sessionStorage.setItem('tuecommerce_token', `${usuario}.${password}`);									 
-							sessionStorage.setItem('clientid', item.clientid);
-							sessionStorage.setItem('infoUser', JSON.stringify(item));
+							cookie.set('tuecommerce_token', `${usuario}.${password}`);									 							 
+							cookie.set('suscriptor', item)
 							 
 						})
 						}					

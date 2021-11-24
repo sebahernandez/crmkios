@@ -77,7 +77,7 @@ export default function Customers() {
 
   let { data:data1, error } = useQuery(GET_CUSTOMERS, {
     variables: {
-      clientid: sessionStorage.getItem('clientid'),
+      clientid: clientid,
       searchText: '%'+search+'%',
     },
   });

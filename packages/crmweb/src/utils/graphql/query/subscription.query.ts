@@ -20,13 +20,16 @@ query suscripciones ($email: String!) {
   export const GET_SUBSCRIPTIONS = gql`
   subscription GETSUSCRIPTOR {
     suscripciones(where: {is_root: {_eq: false}}, order_by: {fecha_suscripcion: desc}) {
+      id
       clientid
       usuario
       clave
       telefono
+      correo
       is_negocio_web
       shop_image_body
-      shop_image_logo 
+      shop_image_logo
+      crm_image_user 
       rubro_negocio
       descripcion
       fecha_suscripcion
@@ -34,13 +37,10 @@ query suscripciones ($email: String!) {
       negocio_web
       nombre
       estado
-      is_root
-      contactos {
-        celular
-        correo
-      }
-      direccion_tienda
-      id
+      facebook
+      instagram
+      is_root 
+      direccion_tienda 
     }
   }  
   `;

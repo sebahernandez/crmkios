@@ -76,14 +76,8 @@ const CREATE_REGISTRO = gql`
                   usuario: $usuario,
                   estado: $estado,
                   telefono: $telefono,
-                  clientid: $clientid,
-                  contactos: {
-                    data: {
-                          celular: $telefono, 
-                          correo: $usuario, 
-                          clientid: $clientid
-                          }
-                    }, 
+                  correo: $usuario,
+                  clientid: $clientid,                  
                   clave: $clave               
                 }
               ]

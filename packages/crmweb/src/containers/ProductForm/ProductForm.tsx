@@ -11,6 +11,7 @@ import Input from 'components/Input/Input';
 import Select from 'components/Select/Select';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 import { app } from '../../../src/base'; 
+import Cookies  from 'universal-cookie';
 
 import {
   Form,
@@ -63,6 +64,7 @@ const CREATE_PRODUCT = gql`
 type Props = any;
 
 const AddProduct: React.FC<Props> = (props) => {
+  const cookie = new Cookies() 
   const dispatch = useDrawerDispatch();
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
@@ -70,7 +72,7 @@ const AddProduct: React.FC<Props> = (props) => {
   const { register, handleSubmit } = useForm();
   const [tag, setTag] = useState([]);
   const [gallery, setGallery] = useState([])
-  const [clientid] = useState(sessionStorage.getItem('clientid')); 
+  const [clientid] = useState(cookie.get('clientid')); 
   const [categoria, setCategoria] = useState(null);  
   const [isLoading, setIsLoading] = useState(false);  
   
@@ -146,7 +148,7 @@ const AddProduct: React.FC<Props> = (props) => {
       precio: Number(e.precio),
       precio_venta: Number(e.precio_venta),
       descuento: Number(e.descuento),
-      clientid: sessionStorage.getItem('clientid'),
+      clientid: clientid,
       gallery: gallery.toString()
     };    
     console.log(newProduct, 'Ingresando Producto Nuevo');

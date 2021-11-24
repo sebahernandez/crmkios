@@ -45,14 +45,22 @@ const ModifySubscription: React.FC<Props> = () => {
     defaultValues: data1,
   });
   const [clientid] = useState(data1.clientid); 
+  const [shop_image_logo,setShop_image_logo] = useState(data1.shop_image_logo); 
+  const [shop_image_body,setShop_image_body] = useState(data1.shop_image_body); 
   const [estado, setEstado] = useState([{ value: data1.estado }]); 
   const [authorized, setAuthorized] = useState([{ value: data1.is_negocio_web }]); 
   const [isLoading, setIsLoading] = useState(false);  
+  const [isLoading2, setIsLoading2] = useState(false);  
  
   
   React.useEffect(() => { 
     
     register({ name: 'clientid' }); 
+    register({ name: 'estado' }); 
+    register({ name: 'telefono' }); 
+    register({ name: 'correo' }); 
+    register({ name: 'facebook' }); 
+    register({ name: 'instagram' }); 
     register({ name: 'estado' }); 
     register({ name: 'authorized' }); 
     register({ name: 'negocio_web' }); 
@@ -77,21 +85,38 @@ const ModifySubscription: React.FC<Props> = () => {
     let arg = [] 
     let file = files[0];  // solo una imagen
     const storageRef = app.storage().ref();
-        try { 
-          for (let i = 0; i < files.length; i++) {
-            
-            file = files[i] 
-            
+        try {  
             const fileRef = storageRef.child(file.name);
             
             await fileRef.put(file) 
-            arg.push( await fileRef.getDownloadURL()  );   
-          }
+            arg.push( await fileRef.getDownloadURL()  );  
+            console.log('arg:', arg)
+            setShop_image_logo(arg[0])
+         
         } catch(error ){
           console.log(error)
         } 
  
     setIsLoading(false) 
+  };
+
+  const onFileChange2 = async (files) => {
+    setIsLoading2(true)
+    let arg = [] 
+    let file = files[0];  // solo una imagen
+    const storageRef = app.storage().ref();
+        try { 
+             const fileRef = storageRef.child(file.name);
+            
+            await fileRef.put(file) 
+            arg.push( await fileRef.getDownloadURL()  );  
+            console.log('arg:', arg) 
+            setShop_image_body(arg[0])
+        } catch(error ){
+          console.log(error)
+        } 
+ 
+    setIsLoading2(false) 
   };
 
   const handleMultiChange2 = ({ value }) => {
@@ -108,17 +133,32 @@ const ModifySubscription: React.FC<Props> = () => {
     if(data) {    
       const suscripcion = {
         clientid: clientid,
+        nombre: data.nombre,
         authorized: authorized[0].value,
         url: data.negocio_web,
         status: estado[0].value,
+        shop_image_logo: shop_image_logo,
+        shop_image_body: shop_image_body,
+        facebook: data.facebook,
+        instagram: data.instagram,
+        telefono: data.telefono,
+        correo: data.correo,
       };    
       console.log(suscripcion, 'actualizando Suscripcion');
-      // $clientid: String!, $authorized: Boolean!, $url: String!, $status: String!
+       // $clientid: String!, $authorized: Boolean!, $url: String!, $status: String!, 
+     // $shop_image_logo:String!, $shop_image_body:String!,$facebook: String!, $instagram: String!, $telefono: String!, $correo: String!
       update_suscripcion({
         variables: {clientid: suscripcion.clientid,
+                    nombre: suscripcion.nombre,
                     authorized: suscripcion.authorized,         
                     url: suscripcion.url,
-                    status: suscripcion.status
+                    status: suscripcion.status,
+                    shop_image_logo: suscripcion.shop_image_logo,
+                    shop_image_body: suscripcion.shop_image_body,
+                    facebook:  suscripcion.facebook,
+                    instagram:  suscripcion.instagram,
+                    telefono:  suscripcion.telefono,
+                    correo:  suscripcion.correo
                   }
       });
     }
@@ -181,6 +221,12 @@ const ModifySubscription: React.FC<Props> = () => {
               > 
                <Uploader  onChange={onFileChange} />
              
+                  <div  >
+                      <img   width="100" height="100" src={shop_image_logo}/> 
+                  </div>
+         
+                  { isLoading && <div className="lds-dual-ring"></div> } 
+
              </DrawerBox> 
             </Col>
           </Row>
@@ -207,8 +253,14 @@ const ModifySubscription: React.FC<Props> = () => {
                   },
                 }}
               > 
-               <Uploader  onChange={onFileChange} />
+               <Uploader  onChange={onFileChange2} />
              
+               <div  >
+                      <img   width="100" height="100" src={shop_image_body}/> 
+                  </div>
+         
+                  { isLoading2 && <div className="lds-dual-ring"></div> } 
+
              </DrawerBox> 
             </Col>
           </Row>
@@ -231,9 +283,23 @@ const ModifySubscription: React.FC<Props> = () => {
 
                 <FormFields>
                   <FormLabel>Nombre</FormLabel>
-                  <Input type="text" disabled
+                  <Input type="text" 
                     inputRef={register} /* ({ required: true, maxLength: 20 })} */
                     name="nombre"
+                  />
+                </FormFields>
+                <FormFields>
+                  <FormLabel>Teléfono</FormLabel>
+                  <Input type="text" 
+                    inputRef={register} /* ({ required: true, maxLength: 20 })} */
+                    name="telefono"
+                  />
+                </FormFields>
+                <FormFields>
+                  <FormLabel>Correo</FormLabel>
+                  <Input type="text" 
+                    inputRef={register} /* ({ required: true, maxLength: 20 })} */
+                    name="correo"
                   />
                 </FormFields>
                 <FormFields>
@@ -325,6 +391,32 @@ const ModifySubscription: React.FC<Props> = () => {
               </DrawerBox>
             </Col>
           </Row>
+
+
+          <Row>
+            <Col lg={4}>
+              <FieldDetails>
+                Actualice Redes Sociales  aquí
+              </FieldDetails>
+            </Col>
+
+            <Col lg={8}>
+              <DrawerBox>
+
+                <FormFields>
+                  <FormLabel>Facebook</FormLabel>
+                  <Input type="text"  inputRef={register} name="facebook" />
+                </FormFields>
+
+                <FormFields>
+                  <FormLabel>Instagram</FormLabel>
+                  <Input type="text"  inputRef={register} name="instagram" />
+                </FormFields> 
+               
+              </DrawerBox>
+            </Col>
+          </Row>
+
           <Row>
             <Col lg={4}>
               <FieldDetails>Desea dar de Baja esta Suscripción ?</FieldDetails>

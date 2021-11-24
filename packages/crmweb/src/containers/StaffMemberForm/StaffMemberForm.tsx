@@ -20,7 +20,7 @@ import {
 } from '../DrawerItems/DrawerItems.style';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 import { app } from '../../../src/base';
-
+import Cookies  from 'universal-cookie';
  
 
 const CREATE_STAFF = gql`
@@ -64,11 +64,12 @@ const estados = [
 type Props = any;
 
 const StaffMemberForm: React.FC<Props> = (props) => {
+  const cookie = new Cookies() 
   const dispatch = useDrawerDispatch();
   const closeDrawer = useCallback(() => dispatch({ type: 'CLOSE_DRAWER' }), [
     dispatch,
   ]);
-  const [clientid] = useState(sessionStorage.getItem('clientid')); 
+  const [clientid] = useState(cookie.get('clientid')); 
   const { register, handleSubmit } = useForm( );
   const [rol, setRol] = React.useState(undefined);
   const [estado, setEstado] = React.useState(undefined); 
@@ -111,7 +112,7 @@ const StaffMemberForm: React.FC<Props> = (props) => {
       email: e.email,
       estado: estado[0].value,
       imageURL: imageURL && imageURL.length !== 0 ? imageURL : '',
-      clientid: sessionStorage.getItem('clientid')
+      clientid: clientid
     };    
     insert_empleado({
       variables: {nombre: newEmployee.nombre, 

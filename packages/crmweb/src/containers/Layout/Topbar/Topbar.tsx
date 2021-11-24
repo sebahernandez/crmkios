@@ -59,7 +59,7 @@ const Topbar = ({ refs }: any) => {
   const cookie = new Cookies() 
   const [isRoot]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_root:false)
   const [isNegocioWeb]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_negocio_web:false)
-  const [info ] = useState(JSON.parse(sessionStorage.getItem('infoUser'))) 
+  const [info ] = useState(cookie.get('suscriptor')) 
   const dispatch = useDrawerDispatch();
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -98,7 +98,7 @@ const Topbar = ({ refs }: any) => {
     <TopbarWrapper ref={refs}>
       <Logo>
         <Link to="/">
-          <LogoImage src={JSON.parse(sessionStorage.getItem('infoUser')).img_site_url}   />
+          <LogoImage src={cookie.get('suscriptor').shop_image_logo}   />
         </Link>
       </Logo>
 
@@ -183,20 +183,14 @@ const Topbar = ({ refs }: any) => {
 
               <NavLink to={STAFF_MEMBERS} exact={false} onClick={close}>
                 Equipo 
-t br              </NavLink>
+             </NavLink>
               <NavLink to={SETTINGS} exact={false} onClick={close}>
                 Configuración
               </NavLink>
               <LogoutBtn
                 onClick={() => {
-                  signout(); 
-                  sessionStorage.removeItem('infoUser');
-                  sessionStorage.setItem('infoUser',null);
-                  sessionStorage.setItem('clientid',null);
-                  sessionStorage.removeItem('pickbazar_token')
-                  sessionStorage.removeItem('infoUser')
-                  sessionStorage.clear();
-                  window.sessionStorage.clear();
+                  signout();  
+                  cookie.remove('clientid'); 
                   close();
                 }}
               >
@@ -221,7 +215,7 @@ t br              </NavLink>
           }}
         >
           <ProfileImg>
-            <Image src={JSON.parse(sessionStorage.getItem('infoUser')).img_user_url} alt="user" />
+            <Image src={cookie.get('suscriptor').crm_image_user} alt="user" />
           </ProfileImg>
         </Popover>
       </TopbarRightSide>

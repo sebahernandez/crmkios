@@ -30,6 +30,8 @@ import {
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
 import { GET_ALL_NOTIFY } from 'utils/graphql/query/notification.query';
+import Cookies  from 'universal-cookie';
+
 
 const data = [
   {
@@ -43,15 +45,15 @@ const TopbarCommand = ({ refs }: any) => {
 
  // lista de Subscriptionos totales x clientid
  const { data  } = useSubscription(GET_ALL_NOTIFY);
- 
+ const cookie = new Cookies() 
 
 
-  const [info ] = useState(JSON.parse(sessionStorage.getItem('infoUser')))  
+  const [ suscriptor ] = useState(JSON.parse(cookie.get('suscriptor')))  
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
  
 
-  if(info===null){
+  if(suscriptor===null){
     window.location.href = '/login';
     window.open('/login');
   } 
@@ -60,7 +62,7 @@ const TopbarCommand = ({ refs }: any) => {
     <TopbarWrapper ref={refs}>
       <Logo>
         <Link to="/">
-          <LogoImage src={JSON.parse(sessionStorage.getItem('infoUser')).img_site_url}   />
+          <LogoImage src={suscriptor.shop_image_logo}   />
         </Link>
       </Logo>
       <Grid fluid={true}>
@@ -167,11 +169,10 @@ const TopbarCommand = ({ refs }: any) => {
                 onClick={() => {
                   signout();
                    
-                  sessionStorage.removeItem('infoUser');
-                  sessionStorage.setItem('infoUser',null);
-                  sessionStorage.setItem('clientid',null);
-                  sessionStorage.clear();
-                  window.sessionStorage.clear();
+                  cookie.remove('suscriptor');
+                  cookie.remove('clientid');
+                  cookie.set('suscriptor',null);
+                  cookie.set('clientid',null);                   
                   close();
                 }}
               >
@@ -196,7 +197,7 @@ const TopbarCommand = ({ refs }: any) => {
           }}
         >
           <ProfileImg>
-            <Image src={JSON.parse(sessionStorage.getItem('infoUser')).img_user_url} alt="user" />
+            <Image src={JSON.parse(cookie.get('suscriptor')).img_user_url} alt="user" />
           </ProfileImg>
         </Popover>
       </TopbarRightSide>
