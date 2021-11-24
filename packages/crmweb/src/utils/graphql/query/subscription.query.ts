@@ -15,19 +15,33 @@ query suscripciones ($email: String!) {
   // ----------------------
  //  1 de Noviembre 2021, Actualizado
  // ----------------------
+ 
+  
   export const GET_SUBSCRIPTIONS = gql`
-	subscription GETSUSCRIPTOR {
-    info_user_view(where: {is_root: {_eq: false}}, order_by: {fecha_suscripcion: desc}) {
-      img_site_url
+  subscription GETSUSCRIPTOR {
+    suscripciones(where: {is_root: {_eq: false}}, order_by: {fecha_suscripcion: desc}) {
       clientid
-      nombre
+      usuario
+      clave
+      telefono
+      is_negocio_web
+      shop_image_body
+      shop_image_logo 
+      rubro_negocio
+      descripcion
       fecha_suscripcion
       fecha_vencimiento
-      estado
       negocio_web
-      is_negocio_web
+      nombre
+      estado
       is_root
+      contactos {
+        celular
+        correo
+      }
+      direccion_tienda
+      id
     }
-    }
+  }  
   `;
-  
+

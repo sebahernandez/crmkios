@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { useMutation, gql,useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDrawerDispatch, useDrawerState } from 'context/DrawerContext'; 
@@ -10,6 +10,8 @@ import Input from 'components/Input/Input';
 import Select from 'components/Select/Select';
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
 import { UPDATE_SUBSCRIPTION, DELETE_SUBSCRIPTION } from 'utils/graphql/mutation/subscription';
+import Uploader from 'components/Uploader/Uploader';
+import { app } from '../../../src/base';
 
 import {
   Form,
@@ -70,6 +72,28 @@ const ModifySubscription: React.FC<Props> = () => {
    
   };  
   
+  const onFileChange = async (files) => {
+    setIsLoading(true)
+    let arg = [] 
+    let file = files[0];  // solo una imagen
+    const storageRef = app.storage().ref();
+        try { 
+          for (let i = 0; i < files.length; i++) {
+            
+            file = files[i] 
+            
+            const fileRef = storageRef.child(file.name);
+            
+            await fileRef.put(file) 
+            arg.push( await fileRef.getDownloadURL()  );   
+          }
+        } catch(error ){
+          console.log(error)
+        } 
+ 
+    setIsLoading(false) 
+  };
+
   const handleMultiChange2 = ({ value }) => {
     if(value && value.length > 0)
     {
@@ -133,6 +157,62 @@ const ModifySubscription: React.FC<Props> = () => {
             />
           )}
         >
+
+      <Row>
+            <Col lg={4}>
+              <FieldDetails>Sube Logo del Sitio aquí!</FieldDetails>
+            </Col>
+            <Col lg={8}>
+           <DrawerBox
+                overrides={{
+                  Block: {
+                    style: {
+                      width: '100%',
+                      height: 'auto',
+                      padding: '30px',
+                      borderRadius: '3px',
+                      backgroundColor: '#ffffff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    },
+                  },
+                }}
+              > 
+               <Uploader  onChange={onFileChange} />
+             
+             </DrawerBox> 
+            </Col>
+          </Row>
+
+
+          <Row>
+            <Col lg={4}>
+              <FieldDetails>Sube Imagen Body del Shop aquí!</FieldDetails>
+            </Col>
+            <Col lg={8}>
+           <DrawerBox
+                overrides={{
+                  Block: {
+                    style: {
+                      width: '100%',
+                      height: 'auto',
+                      padding: '30px',
+                      borderRadius: '3px',
+                      backgroundColor: '#ffffff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    },
+                  },
+                }}
+              > 
+               <Uploader  onChange={onFileChange} />
+             
+             </DrawerBox> 
+            </Col>
+          </Row>
+
           <Row>
             <Col lg={4}>
               <FieldDetails>

@@ -167,10 +167,9 @@ export default withRouter(function Sidebar({
 
       <LogoutBtn
         onClick={() => {
-          sessionStorage.setItem('infoUser',null);
-          sessionStorage.setItem('clientid',null);
-          sessionStorage.clear();
-          window.sessionStorage.clear();
+          cookie.remove('cid')
+          cookie.remove('clientid')
+          cookie.remove('suscriptor')
           signout();
         }}
       >

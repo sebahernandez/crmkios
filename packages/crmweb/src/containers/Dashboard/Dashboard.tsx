@@ -208,7 +208,6 @@ function Dashboard() {
  
 
   useEffect(() => {
-    
        // cargaObjetivos();
        if(ts>0){
           cargaMeses();
@@ -226,9 +225,8 @@ function Dashboard() {
           cargaTotalAnual();   
       }
     
-  }, [])
-
-  if(sessionStorage.getItem('clientid')===null){
+  }, []) 
+  if(!cookie.get('suscriptor').clientid){
     window.location.href = '/login';
     window.open('/login');
   }

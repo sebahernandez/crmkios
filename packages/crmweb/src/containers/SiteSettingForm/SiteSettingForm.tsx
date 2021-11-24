@@ -38,13 +38,13 @@ query setting($clientid: String!) {
 
 const SiteSettingsForm: React.FC = () => {
   const cookie = new Cookies() 
-  const clientid = cookie.get('suscriptor').clientid
+  const clientid = cookie.get('clientid')
   const { register, handleSubmit, setValue } = useForm();
   const onSubmit = (data) => console.log(data);
-  const [category, setCategory] = useState([]);
-  const [description, setDescription] = React.useState('');
+  const [description, setDescription] = useState(''); 
+  const [category, setCategory] = useState([]); 
 
-  const { data:data1} = useQuery(GET_SETTING,
+  const { data} = useQuery(GET_SETTING,
     {
       variables: {
         clientid: clientid
@@ -63,7 +63,7 @@ const SiteSettingsForm: React.FC = () => {
   React.useEffect(() => {
     register({ name: 'reactSelect' });
     register({ name: 'reactDropzone' });
-    setImageURL(data1 && data1.setting[0].image_url);
+    setImageURL(data && data.setting[0].image_url);
   }, [register]);
 
   const onFileChange = async (e) => {
@@ -106,7 +106,7 @@ const SiteSettingsForm: React.FC = () => {
               <FormFields>
                 <FormLabel>Nombre Sitio</FormLabel>
                 <Input
-                  value={data1 && data1.setting[0].site_name}
+                  value={data && data.setting[0].site_name}
                   name="site_name"
                   inputRef={register({ required: true, maxLength: 20 })}
                 />
@@ -115,7 +115,7 @@ const SiteSettingsForm: React.FC = () => {
               <FormFields>
                 <FormLabel>Descripción Sitio</FormLabel>
                 <Textarea
-                  value={data1 && data1.setting[0].description  }
+                  value={data && data.setting[0].description  }
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FormFields>

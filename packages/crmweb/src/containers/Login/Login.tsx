@@ -28,24 +28,31 @@ const GET_SUSCRIPTOR = gql`
 `;
  */
 const GET_SUSCRIPTOR = gql`
-	query GETSUSCRIPTOR($usuario: String!,$password: String!) {
-	info_user_view(where: {usuario: {_eq: $usuario}, clave: {_eq: $password},fecha_vencimiento: {_gte: "now()"}}) {
-	  img_site_url
-	  img_user_url
-	  negocio_web
-	  is_negocio_web
-	  is_root
-	  nombre
-	  usuario
-	  plan_suscripcion
-	  fecha_vencimiento
-	  estado
-	  clientid
-	  fecha_suscripcion
+query GETSUSCRIPTOR($usuario: String!,$password: String!) {
+	suscripciones(where: {usuario: {_eq: $usuario}, clave: {_eq: $password},fecha_vencimiento: {_gte: "now()"}}) {
+	clientid
+	usuario
+	clave
+	telefono
+	is_negocio_web
+	is_root
+	shop_image_body
+	shop_image_logo
+	rubro_negocio
+	descripcion
+	fecha_suscripcion
+	fecha_vencimiento
+	negocio_web
+	nombre
+	estado
+	contactos {
+	celular
+	correo
 	}
-  }
-  
-  
+	direccion_tienda
+	id
+}
+}
 `;
 
 export default function Login() {
@@ -84,11 +91,11 @@ export default function Login() {
 	useEffect(()=> {
 		SetIsLogged(false)
 		SetIsClicked(false)
-		if(data2  && data2.info_user_view && data2.info_user_view.length > 0) {
-			cookie.set('suscriptor',data2.info_user_view[0])
-			cookie.set('clientid',data2.info_user_view[0].clientid)
-			cookie.set('cid',data2.info_user_view[0].clientid)
-			cookie.set('negocio_web',data2.info_user_view[0].negocio_web)
+		if(data2  && data2.suscripciones && data2.suscripciones.length > 0) {
+			cookie.set('suscriptor',data2.suscripciones[0])
+			cookie.set('clientid',data2.suscripciones[0].clientid)
+			cookie.set('cid',data2.suscripciones[0].clientid)
+			cookie.set('negocio_web',data2.suscripciones[0].negocio_web)
 			SetIsLogged(true)
 		}	
 	},[cookie, data2])
@@ -113,9 +120,9 @@ export default function Login() {
 	const handleMoreInfo = () => {
 		SetIsClicked(true) 
 
-		if(data2  && data2.info_user_view && data2.info_user_view.length > 0) {
-			cookie.set('suscriptor',data2.info_user_view[0])
-			cookie.set('negocio_web',data2.info_user_view[0].negocio_web)
+		if(data2  && data2.suscripciones && data2.suscripciones.length > 0) {
+			cookie.set('suscriptor',data2.suscripciones[0])
+			cookie.set('negocio_web',data2.suscripciones[0].negocio_web)
 			SetIsLogged(true)
 			auth()
 			SetIsAuth(false)
@@ -174,7 +181,7 @@ const loadMessage = () => {
 
 						<button onClick={handleMoreInfo} className="btn-login">Ingresar</button>
 						{/* {called && loading} */}
-						{ data2 && data2.info_user_view.map(item => {
+						{ data2 && data2.suscripciones.map(item => {
 							 
 							sessionStorage.setItem('tuecommerce_token', `${usuario}.${password}`);									 
 							sessionStorage.setItem('clientid', item.clientid);
