@@ -31,7 +31,9 @@ query suscripciones ($email: String!) {
       shop_image_logo
       crm_image_user 
       rubro_negocio
+      titulo
       descripcion
+      tags
       fecha_suscripcion
       fecha_vencimiento
       negocio_web

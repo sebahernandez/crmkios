@@ -20,6 +20,7 @@ import {
   FieldDetails,
   ButtonGroup,
 } from '../DrawerItems/DrawerItems.style';
+import { Textarea } from 'components/Textarea/Textarea';
 
 type Props = any;
 
@@ -50,7 +51,8 @@ const ModifySubscription: React.FC<Props> = () => {
   const [estado, setEstado] = useState([{ value: data1.estado }]); 
   const [authorized, setAuthorized] = useState([{ value: data1.is_negocio_web }]); 
   const [isLoading, setIsLoading] = useState(false);  
-  const [isLoading2, setIsLoading2] = useState(false);  
+  const [isLoading2, setIsLoading2] = useState(false); 
+  const [descripcion, setDescripcion] = useState(data1.descripcion);  
  
   
   React.useEffect(() => { 
@@ -59,6 +61,9 @@ const ModifySubscription: React.FC<Props> = () => {
     register({ name: 'estado' }); 
     register({ name: 'telefono' }); 
     register({ name: 'correo' }); 
+    register({ name: 'titulo' });
+    register({ name: 'descripcion' }); 
+    register({ name: 'tags' }); 
     register({ name: 'facebook' }); 
     register({ name: 'instagram' }); 
     register({ name: 'estado' }); 
@@ -139,8 +144,11 @@ const ModifySubscription: React.FC<Props> = () => {
         status: estado[0].value,
         shop_image_logo: shop_image_logo,
         shop_image_body: shop_image_body,
-        facebook: data.facebook,
+        facebook: data.facebook,        
         instagram: data.instagram,
+        titulo: data.titulo,
+        descripcion: descripcion,
+        tags: data.tags,
         telefono: data.telefono,
         correo: data.correo,
       };    
@@ -157,6 +165,9 @@ const ModifySubscription: React.FC<Props> = () => {
                     shop_image_body: suscripcion.shop_image_body,
                     facebook:  suscripcion.facebook,
                     instagram:  suscripcion.instagram,
+                    titulo:  suscripcion.titulo,
+                    descripcion:  suscripcion.descripcion,
+                    tags:  suscripcion.tags,
                     telefono:  suscripcion.telefono,
                     correo:  suscripcion.correo
                   }
@@ -413,6 +424,38 @@ const ModifySubscription: React.FC<Props> = () => {
                   <Input type="text"  inputRef={register} name="instagram" />
                 </FormFields> 
                
+              </DrawerBox>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col lg={4}>
+              <FieldDetails>
+                Ingresa los parámetros SEO de tu sitio
+              </FieldDetails>
+            </Col>
+
+            <Col lg={8}>
+              <DrawerBox>
+
+                <FormFields>
+                  <FormLabel>Meta Title</FormLabel>
+                  <Input type="text"   inputRef={register} name="titulo" />
+                </FormFields>
+
+                <FormFields>
+                  <FormLabel>Meta Description</FormLabel>
+                  <Textarea
+                  value={ descripcion  }
+                  onChange={(e) => setDescripcion(e.target.value)}
+                />
+                </FormFields>
+
+                <FormFields>
+                  <FormLabel>Meta Tag</FormLabel>
+                  <Input type="text"   inputRef={register} name="tags" />
+                </FormFields>
+
               </DrawerBox>
             </Col>
           </Row>
