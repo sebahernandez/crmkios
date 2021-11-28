@@ -9,7 +9,6 @@ import { AuthContext } from 'context/auth';
 import { FormFields, FormTitle } from 'components/FormFields/FormFields';
 import { Alert } from 'react-bootstrap';
 import Cookies  from 'universal-cookie';
-
 /**
  * Develop by Alejandro Sandoval 
  * Alias Joker
@@ -56,15 +55,20 @@ export default function Login() {
 	const cookie = new Cookies();
 	const [usuario, SetUsuario] = useState('');
 	const [password, SetPassword] = useState('');
+	const [passwordShown, setPasswordShown] = useState(false);
 	const [isAuth, SetIsAuth] = useState(true);
-	const [isLogged, SetIsLogged] = useState(false);
-	const [isClicked, SetIsClicked] = useState(false);
+
 	const { authenticate } = useContext(AuthContext);
 	let history = useHistory();
 	let location = useLocation();
 	let { from } = (location.state as any) || { from: { pathname: DASHBOARD } };
 	let { from2 } = (location.state as any) || { from2: { pathname: SUBSCRIPTIONS } };
  
+	const togglePassword = () => {
+		// When the handler is invoked
+		// inverse the boolean state of passwordShown
+		setPasswordShown(!passwordShown);
+	  };
 
 	const { data:data2 } = useQuery(GET_SUSCRIPTOR,
 		{
@@ -86,14 +90,12 @@ export default function Login() {
 	}
 
 	useEffect(()=> {
-		SetIsLogged(false)
-		SetIsClicked(false)
 		if(data2  && data2.suscripciones && data2.suscripciones.length > 0) {
 			cookie.set('suscriptor',data2.suscripciones[0])
 			cookie.set('clientid',data2.suscripciones[0].clientid)
 			cookie.set('cid',data2.suscripciones[0].clientid)
 			cookie.set('negocio_web',data2.suscripciones[0].negocio_web)
-			SetIsLogged(true)
+			SetIsAuth(true)
 		}	
 	},[cookie, data2])
 
@@ -106,26 +108,20 @@ export default function Login() {
 				history.replace(from2);
 			} else {
 				history.replace(from);
-			}
-			
-			SetIsLogged(true)
+			} 
 		});
-		
-		SetIsLogged(false)
+		 
 	}
 
 	const handleMoreInfo = () => {
-		SetIsClicked(true) 
-
+		 
+	 
 		if(data2  && data2.suscripciones && data2.suscripciones.length > 0) {
 			cookie.set('suscriptor',data2.suscripciones[0])
 			cookie.set('negocio_web',data2.suscripciones[0].negocio_web)
-			SetIsLogged(true)
 			auth()
-			SetIsAuth(false)
 		}	else {
-			SetIsLogged(false)
-			SetIsAuth(true)
+			SetIsAuth(false)
 			
 		}
 		
@@ -135,11 +131,11 @@ export default function Login() {
 
 const loadMessage = () => {
 	 
-	if(	isAuth ) {
+ 	if(	usuario && password ) { 
 		return <Alert key={1} variant={'danger'} transition={true}>
     			Suscriptor no identificado o problemas para validar sus datos, intente nuevamente o contacte al administrador!!!
   			</Alert>
-	}	else {
+	 }	else {
 		return
 	}	  
 
@@ -155,7 +151,9 @@ const loadMessage = () => {
                 </LogoWrapper>
                 <FormTitle>Ingreso Administración</FormTitle>
 								{
-									(isAuth === true && isClicked===true && isLogged===false)  && loadMessage()
+									
+									(!isAuth)  && 
+									loadMessage() 
 									
 								}
               </FormFields>
@@ -166,7 +164,8 @@ const loadMessage = () => {
 
 						<div className="form-group">
 							<label>Contraseña:</label>
-							<input type="password" name="password" className="form-control" onChange={handleInput} placeholder="Ingrese su clave"   />
+							 <input type={passwordShown ? "text" : "password"} name="password" className="form-control" onChange={handleInput} placeholder="Ingrese su clave"  />
+      						<button onClick={togglePassword}>Mostrar</button>
 						</div>
 
 						<div className="form-group">
@@ -177,14 +176,7 @@ const loadMessage = () => {
 						</div>
 
 						<button onClick={handleMoreInfo} className="btn-login">Ingresar</button>
-						{/* {called && loading} */}
-						{ data2 && data2.suscripciones.map(item => {
-							 
-							cookie.set('tuecommerce_token', `${usuario}.${password}`);									 							 
-							cookie.set('suscriptor', item)
-							 
-						})
-						}					
+					 				
 						<p className="forgot-password text-right">
 							Se me olvido la  <a href="#">contraseña?</a>
 						</p>
