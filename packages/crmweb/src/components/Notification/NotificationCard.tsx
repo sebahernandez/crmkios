@@ -1,3 +1,5 @@
+import Button from 'components/Button/Button';
+import { Link } from 'components/Widgets/StickerCard/StickerCard.style';
 import React from 'react';
 import {
   Title,
@@ -15,9 +17,11 @@ export default function NotificationCard({ title, time, message }) {
         <Title>{title}</Title>
         <Dot />
         <Time>{time}</Time>
+        
       </TitleWrapper>
 
       <Details>{message}</Details>
+      <Button className="sm-1">Eliminar</Button>
     </Message>
   );
 }

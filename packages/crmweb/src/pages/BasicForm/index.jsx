@@ -83,7 +83,8 @@ export const BasicForm = () => {
                               title: "Nueva Suscripción - " + newRegistro.nombre, 
                               time: "Recien", 
                               message: newRegistro.descripcion + " - " + newRegistro.rubro_negocio,
-                              clientid: newRegistro.clientid               
+                              clientid: newRegistro.clientid  ,
+                              is_root: true            
                             }
                 }); 
 

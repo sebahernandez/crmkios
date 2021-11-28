@@ -51,12 +51,18 @@ const Topbar = ({ refs }: any) => {
  
    // lista de Subscriptionos totales x clientid
  let [count,setCount] = useState(0)
- const { data  } = useSubscription(GET_ALL_NOTIFY);
+
 
   if(info===null){
     window.location.href = '/login';
     window.open('/login');
   }
+
+  const { data  } = useSubscription(GET_ALL_NOTIFY, {
+    variables: {
+      is_root: info.is_root
+    }
+  });
 
   const {  data:data1 } =  useSubscription(GET_CATEGORIAS, {
     variables: {

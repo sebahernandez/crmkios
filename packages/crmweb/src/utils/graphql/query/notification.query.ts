@@ -5,14 +5,16 @@ import { gql } from '@apollo/client';
 // 1 de Noviembre 2021
 // ----------------------
 export const GET_ALL_NOTIFY = gql`
-    subscription todasNotificaciones {
-      notifications(order_by: {fecha: desc}) {
+    subscription todasNotificaciones ($is_root: Boolean!) {
+      notifications(where: {is_root: {_eq: $is_root}}) {
         id
         title
         time
-        message
         clientid
         fecha
+        suscriptor
+        cliente
+        is_root
       }
     }
   `;

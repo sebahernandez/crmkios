@@ -5,8 +5,8 @@ import { gql } from '@apollo/client';
 // 1 de Noviembre 2021
 // --------------------
 export const CREATE_NOTIFY = gql`
-    mutation ingresarNotificacion ($title: String!,$time: String!,$message: String!, $clientid: String! ) {
-      insert_notifications(objects: {title: $title, time: $time, message: $message, clientid: $clientid}) {
+    mutation ingresarNotificacion ($title: String!,$time: String!,$message: String!, $clientid: String! ,$is_root: Boolean!) {
+      insert_notifications(objects: {title: $title, time: $time, message: $message, clientid: $clientid, is_root: $is_root}) {
         affected_rows
       }
     }
