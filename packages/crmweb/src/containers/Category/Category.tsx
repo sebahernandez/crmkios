@@ -6,8 +6,10 @@ import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import Cookies  from 'universal-cookie';
 import { Plus } from 'assets/icons/PlusMinus';
-import { useSubscription, gql } from '@apollo/client';
+import { useSubscription } from '@apollo/client';
 import { Wrapper, Header, Heading } from 'components/Wrapper.style'; 
+import { GET_CATEGORIAS_SEARCH } from 'utils/graphql/query/categories.query';
+
 
 import {
   TableWrapper,
@@ -19,17 +21,7 @@ import {
 import NoResult from 'components/NoResult/NoResult';
 import CategoryButton from './CategoryButton';
 
-const GET_CATEGORIAS = gql`
-   subscription  ($clientid: String!,$searchText: String!) {
-    categorias (where: {clientid: {_eq: $clientid},name: {_like: $searchText}}) {
-      id
-      imageURL
-      clientid
-      name 
-      value
-    }
-  }  
-`;
+
 
 const ImageWrapper = styled('div', ({ $theme }) => ({
   width: '88px',
@@ -77,7 +69,7 @@ export default function Category() {
     [dispatch]
   ); 
   const [search, setSearch] = useState('');  
-  const {  error, data } =  useSubscription(GET_CATEGORIAS, {
+  const {  error, data } =  useSubscription(GET_CATEGORIAS_SEARCH, {
       variables: {
         clientid: clientid,
         searchText: '%'+search+'%'

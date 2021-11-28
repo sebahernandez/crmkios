@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { useMutation, gql,useQuery } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDrawerDispatch, useDrawerState } from 'context/DrawerContext'; 
@@ -8,6 +8,8 @@ import DrawerBox from 'components/DrawerBox/DrawerBox';
 import { Row, Col } from 'components/FlexBox/FlexBox';
 import Input from 'components/Input/Input'; 
 import { FormFields, FormLabel } from 'components/FormFields/FormFields';
+import { UPDATE_CATEGORY } from 'utils/graphql/mutation/category';
+import { DELETE_CATEGORY } from 'utils/graphql/mutation/category';
 import { app } from '../../base';
 
 import {
@@ -20,41 +22,12 @@ import {
 
  
 
-const UPDATE_CATEGORY = gql`
-  
-    mutation update_categorias($id: Int!,$name: String!, $value: String!, 
-    $imageURL: String!,$clientid: String!) {
-      update_categorias(where: {id: {_eq: $id}, clientid:{_eq: $clientid}  }
-              _set: {
-                      value: $value,
-                      name: $name,
-                      imageURL: $imageURL 
-                    },
-            ){
-              affected_rows
-            }
-      }
-`;
-
-const DELETE_CATEGORY = gql`
-  
-  mutation delete_categorias($id: Int!, $clientid: String!) {
-  delete_categorias(
-      where: {id: {_eq:$id}, clientid:{_eq: $clientid} } 
-  ){
-      affected_rows
-  }
-  }
-
-`;
 
 type Props = any;
 
 
 
 const ModifyCategory: React.FC<Props> = () => {
-
-  let options = [];
 
   const dispatch = useDrawerDispatch();
   const data1 = useDrawerState('data'); // saca el prop

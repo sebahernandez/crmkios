@@ -29,40 +29,18 @@ import { useDrawerDispatch } from 'context/DrawerContext';
 import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
 import Cookies  from 'universal-cookie';
-import { GET_ALL_NOTIFY } from 'utils/graphql/query/notification.query';
+import { GET_ALL_NOTIFY } from 'utils/graphql/query/notification.query'; 
+import { GET_CATEGORIAS } from 'utils/graphql/query/categories.query';
 import { useSubscription } from '@apollo/client'; 
 import { Heading } from 'components/Wrapper.style';
-import { styled } from 'baseui';
- 
 
-
-
-
- 
-
-/* const data = [
-  {
-    title: 'Esteban Flores - Pollos del Valle',
-    time: '5 min',
-    message: 'Completo 100% - Módulo Comenzar',
-  },
-  {
-    title: 'Monica Araneda - Moni Ropas',
-    time: '1 min',
-    message: 'Nueva Suscripción - Tienda Vestuario',
-  },
-  {
-    title: 'Esteban Flores - Pollos del Valle',
-    time: '2 min',
-    message: 'Ha superado las 30 ventas diarias',
-  },
-]; */
 const Topbar = ({ refs }: any) => {
   const cookie = new Cookies() 
   const [isRoot]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_root:false)
   const [isNegocioWeb]   = useState(cookie.get('suscriptor')?cookie.get('suscriptor').is_negocio_web:false)
   const [info ] = useState(cookie.get('suscriptor')) 
   const dispatch = useDrawerDispatch();
+  const [existCategory, setExistCategory] = useState(false)
   const { signout } = React.useContext(AuthContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const openDrawer = useCallback(
@@ -79,6 +57,12 @@ const Topbar = ({ refs }: any) => {
     window.location.href = '/login';
     window.open('/login');
   }
+
+  const {  data:data1 } =  useSubscription(GET_CATEGORIAS, {
+    variables: {
+      clientid: info.clientid
+    },  
+  });
  
   const showCommandOrder = (close:any) =>{
     if(isNegocioWeb === true && !isRoot){
@@ -94,7 +78,12 @@ const Topbar = ({ refs }: any) => {
     if(data){
       setCount(data.notifications.length)
     }
-  }, [count, data])
+    if(data1 && data1.categorias.length > 0){
+      setExistCategory(true)
+    } else{
+      setExistCategory(false)
+    }
+  }, [count, data, data1])
 
 
 
@@ -160,8 +149,10 @@ const Topbar = ({ refs }: any) => {
           <Button className="button">Ir Tienda</Button>
         </a> 
       }   
-    {!isRoot && <Button onClick={openDrawer}>Agregar Producto</Button>}
-      
+      {!isRoot && !existCategory && <Button disabled  onClick={openDrawer}>Agregar Producto</Button>}
+      {!isRoot && existCategory && <Button  onClick={openDrawer}>Agregar Producto</Button>}
+
+
       <TopbarRightSide>
 
         <Popover
