@@ -34,6 +34,7 @@ query suscripciones ($email: String!) {
       titulo
       descripcion
       tags
+      canonical
       fecha_suscripcion
       fecha_vencimiento
       negocio_web

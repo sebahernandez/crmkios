@@ -64,6 +64,7 @@ const ModifySubscription: React.FC<Props> = () => {
     register({ name: 'titulo' });
     register({ name: 'descripcion' }); 
     register({ name: 'tags' }); 
+    register({ name: 'canonical' }); 
     register({ name: 'facebook' }); 
     register({ name: 'instagram' }); 
     register({ name: 'estado' }); 
@@ -149,6 +150,7 @@ const ModifySubscription: React.FC<Props> = () => {
         titulo: data.titulo,
         descripcion: descripcion,
         tags: data.tags,
+        canonical: data.canonical,
         telefono: data.telefono,
         correo: data.correo,
       };    
@@ -168,6 +170,7 @@ const ModifySubscription: React.FC<Props> = () => {
                     titulo:  suscripcion.titulo,
                     descripcion:  suscripcion.descripcion,
                     tags:  suscripcion.tags,
+                    canonical:  suscripcion.canonical,
                     telefono:  suscripcion.telefono,
                     correo:  suscripcion.correo
                   }
@@ -455,6 +458,12 @@ const ModifySubscription: React.FC<Props> = () => {
                   <FormLabel>Meta Tag</FormLabel>
                   <Input type="text"   inputRef={register} name="tags" />
                 </FormFields>
+
+                <FormFields>
+                  <FormLabel>Meta Canonical</FormLabel>
+                  <Input type="text"   inputRef={register} name="canonical" />
+                </FormFields>
+
 
               </DrawerBox>
             </Col>

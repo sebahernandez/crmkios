@@ -114,7 +114,7 @@ export default function Suscriptions() {
         </Header>
         <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)'  }}>
             <TableWrapper>
-              <StyledTable $gridTemplateColumns="minmax(150px, 50px) minmax(120px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(150px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(300px, 70px) minmax(300px, 70px) minmax(300px , 50px) minmax(300px, 50px) minmax(300px, 50px)   minmax(300px, 50px) minmax(150px, max-content)">
+              <StyledTable $gridTemplateColumns="minmax(150px, 50px) minmax(120px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(150px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(300px, 70px) minmax(300px, 70px) minmax(300px , 50px) minmax(300px, 50px)  minmax(300px, 50px)   minmax(300px, 50px)   minmax(300px, 50px) minmax(150px, max-content)">
                 <StyledHeadCell>Acción</StyledHeadCell>
                 <StyledHeadCell>Logo</StyledHeadCell>
                 <StyledHeadCell>Image Body</StyledHeadCell>
@@ -128,9 +128,10 @@ export default function Suscriptions() {
                 <StyledHeadCell>Estado</StyledHeadCell>
                 <StyledHeadCell>FaceBook</StyledHeadCell>
                 <StyledHeadCell>Instagram</StyledHeadCell>
-                <StyledHeadCell>Título</StyledHeadCell>
-                <StyledHeadCell>Descripción</StyledHeadCell>
-                <StyledHeadCell>Tags</StyledHeadCell>
+                <StyledHeadCell>SEO Título</StyledHeadCell>
+                <StyledHeadCell>SEO Descripción</StyledHeadCell>
+                <StyledHeadCell>SEO Tags</StyledHeadCell>
+                <StyledHeadCell>SEO Canonical</StyledHeadCell>
                 <StyledHeadCell>URL</StyledHeadCell>
                 <StyledHeadCell>Autorizado</StyledHeadCell>             
                 {data && data.suscripciones ? (
@@ -169,6 +170,7 @@ export default function Suscriptions() {
                           <StyledBodyCell>{item.titulo}</StyledBodyCell>
                           <StyledBodyCell>{item.descripcion}</StyledBodyCell>
                           <StyledBodyCell>{item.tags}</StyledBodyCell>
+                          <StyledBodyCell>{item.canonical}</StyledBodyCell>
                           <StyledBodyCell>{item.negocio_web}</StyledBodyCell>
                  <StyledBodyCell>{item.is_negocio_web===false?'':<CheckMark />}</StyledBodyCell>   
                     
