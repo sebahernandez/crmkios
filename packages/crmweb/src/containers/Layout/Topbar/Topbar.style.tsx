@@ -44,7 +44,7 @@ export const TopbarWrapper = styled('div', () => ({
 }));
 
 export const Logo = styled('div', () => ({
-  marginRight: 'auto',
+/*   marginRight: 'auto', */
   cursor: 'pointer',
 
   '@media only screen and (max-width: 1199px)': {

@@ -30,8 +30,10 @@ import Drawer, { ANCHOR } from 'components/Drawer/Drawer';
 import Sidebar from '../Sidebar/Sidebar';
 import Cookies  from 'universal-cookie';
 import { GET_ALL_NOTIFY } from 'utils/graphql/query/notification.query';
-import { useSubscription } from '@apollo/client';
-
+import { useSubscription } from '@apollo/client'; 
+import { Heading } from 'components/Wrapper.style';
+import { styled } from 'baseui';
+ 
 
 
 
@@ -67,6 +69,8 @@ const Topbar = ({ refs }: any) => {
     () => dispatch({ type: 'OPEN_DRAWER', drawerComponent: 'PRODUCT_FORM' }),
     [dispatch]
   );
+
+ 
    // lista de Subscriptionos totales x clientid
  let [count,setCount] = useState(0)
  const { data  } = useSubscription(GET_ALL_NOTIFY);
@@ -85,7 +89,7 @@ const Topbar = ({ refs }: any) => {
       console.log('No se encuentra autorizado para operar el commandorder')
     }
   } 
-
+ 
   useEffect(()=>{
     if(data){
       setCount(data.notifications.length)
@@ -101,7 +105,7 @@ const Topbar = ({ refs }: any) => {
           <LogoImage src={cookie.get('suscriptor').shop_image_logo}   />
         </Link>
       </Logo>
-
+ 
       <DrawerWrapper>
         <DrawerIcon onClick={() => setIsDrawerOpen(true)}>
           <MenuIcon />
@@ -146,9 +150,19 @@ const Topbar = ({ refs }: any) => {
         </Drawer>
       </DrawerWrapper>
 
+    
+  
+       <Heading>Hola, {info.nombre} </Heading>   
+ 
+
+      {!isRoot && 
+        <a href={info.negocio_web} target="_blank">
+          <Button className="button">Ir Tienda</Button>
+        </a> 
+      }   
+    {!isRoot && <Button onClick={openDrawer}>Agregar Producto</Button>}
+      
       <TopbarRightSide>
-        
-      {!isRoot && <Button onClick={openDrawer}>Agregar Producto</Button>}
 
         <Popover
           content={({ close }) => <Notification data={data.notifications} onClear={close} />}
