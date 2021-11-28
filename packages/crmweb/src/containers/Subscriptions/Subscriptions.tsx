@@ -114,7 +114,7 @@ export default function Suscriptions() {
         </Header>
         <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)'  }}>
             <TableWrapper>
-              <StyledTable $gridTemplateColumns="minmax(150px, 50px) minmax(120px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(150px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(300px, 70px) minmax(300px, 70px) minmax(300px , 50px) minmax(300px, 50px)  minmax(300px, 50px)   minmax(300px, 50px)   minmax(300px, 50px) minmax(150px, max-content)">
+              <StyledTable $gridTemplateColumns="minmax(150px, 50px) minmax(120px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(150px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px)  minmax(220px, 50px) minmax(220px, 50px)  minmax(220px, 50px)  minmax(220px, 50px)  minmax(220px, 50px) minmax(300px, 70px) minmax(300px, 70px) minmax(300px , 50px) minmax(300px, 50px)  minmax(300px, 50px)   minmax(300px, 50px)   minmax(300px, 50px) minmax(150px, max-content)">
                 <StyledHeadCell>Acción</StyledHeadCell>
                 <StyledHeadCell>Logo</StyledHeadCell>
                 <StyledHeadCell>Image Body</StyledHeadCell>
@@ -126,6 +126,11 @@ export default function Suscriptions() {
                 <StyledHeadCell>Fecha</StyledHeadCell>
                 <StyledHeadCell>Vencimiento</StyledHeadCell>
                 <StyledHeadCell>Estado</StyledHeadCell>
+                <StyledHeadCell>Categorías Tienda</StyledHeadCell>  
+                <StyledHeadCell>Productos Tienda</StyledHeadCell>                
+                <StyledHeadCell>Pedidos Tienda</StyledHeadCell>                
+                <StyledHeadCell>Ventas Total Tienda</StyledHeadCell>                
+                <StyledHeadCell>Clientes Tienda</StyledHeadCell>                
                 <StyledHeadCell>FaceBook</StyledHeadCell>
                 <StyledHeadCell>Instagram</StyledHeadCell>
                 <StyledHeadCell>SEO Título</StyledHeadCell>
@@ -165,6 +170,11 @@ export default function Suscriptions() {
                            <StyledBodyCell>{item.fecha_suscripcion}</StyledBodyCell>
                           <StyledBodyCell>{item.fecha_vencimiento}</StyledBodyCell>
                           <StyledBodyCell>{item.estado}</StyledBodyCell>
+                          <StyledBodyCell>{item.categorias_aggregate.aggregate.count}</StyledBodyCell>
+                          <StyledBodyCell>{item.productos_aggregate.aggregate.count}</StyledBodyCell>
+                          <StyledBodyCell>{item.pedidos_aggregate.aggregate.count}</StyledBodyCell>
+                          <StyledBodyCell>{item.pedidos_aggregate.aggregate.sum.total}</StyledBodyCell>
+                          <StyledBodyCell>{item.clientes_aggregate.aggregate.count}</StyledBodyCell>
                           <StyledBodyCell>{item.facebook}</StyledBodyCell>
                           <StyledBodyCell>{item.instagram}</StyledBodyCell>
                           <StyledBodyCell>{item.titulo}</StyledBodyCell>

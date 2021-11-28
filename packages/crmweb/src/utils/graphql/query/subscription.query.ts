@@ -29,7 +29,7 @@ query suscripciones ($email: String!) {
       is_negocio_web
       shop_image_body
       shop_image_logo
-      crm_image_user 
+      crm_image_user
       rubro_negocio
       titulo
       descripcion
@@ -42,9 +42,33 @@ query suscripciones ($email: String!) {
       estado
       facebook
       instagram
-      is_root 
-      direccion_tienda 
+      is_root
+      direccion_tienda
+      categorias_aggregate {
+        aggregate {
+          count
+        }
+      }
+      productos_aggregate {
+        aggregate {
+          count
+        }
+      }
+      pedidos_aggregate {
+        aggregate {
+          count
+          sum {
+            total
+          }
+        }
+      }
+      clientes_aggregate {
+        aggregate {
+          count
+        }
+      }
     }
-  }  
+  }
+  
   `;
 
