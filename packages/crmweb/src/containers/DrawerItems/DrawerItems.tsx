@@ -10,16 +10,20 @@ import ProductUpdateForm from '../ProductForm/ProductUpdateForm';
 import SubscriptionUpdateForm from '../SubscriptionForm/SubscriptionUpdateForm';
 import CampaingForm from '../CampaingForm/CampaingForm';
 import CategoryForm from '../CategoryForm/CategoryForm';
+import CategoryUpdateForm from 'containers/CategoryForm/CategoryUpdateForm';
 import StaffMemberForm from '../StaffMemberForm/StaffMemberForm';
 import Sidebar from '../Layout/Sidebar/Sidebar';
+
 
 /** Components Name Constants */
 const DRAWER_COMPONENTS = {
   PRODUCT_FORM: ProductForm,
   PRODUCT_UPDATE_FORM: ProductUpdateForm,
+  
   SUBSCRIPTION_UPDATE_FORM: SubscriptionUpdateForm,
   CAMPAING_FORM: CampaingForm,
   CATEGORY_FORM: CategoryForm,
+  CATEGORY_UPDATE_FORM: CategoryUpdateForm,
   STAFF_MEMBER_FORM: StaffMemberForm,
   SIDEBAR: Sidebar,
 };
