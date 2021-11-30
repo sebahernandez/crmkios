@@ -42,36 +42,16 @@ export default function Settings() {
       <Col md={6}>
           <SettingsCard
             icon={<SiteSettings />}
-            title="Configuraciones CRM"
-            subtitle="Ver y actualizar la configuración del CRM"
+            title="Configuración"
+            subtitle="Ver y actualizar la configuración del CRM / Tienda"
             onClick={() => history.push(SITE_SETTINGS)}
           />
         </Col>
-        <Col md={6}>
-          <SettingsCard
-            icon={<SiteSettings />}
-            title="Configuraciones SHOP"
-            subtitle="Ver y actualizar la configuración del Shop "
-            onClick={() => history.push(SITE_SETTINGS)}
-          />
-        </Col>
-      </Row>
-
-      <Row>
         <Col md={6}>
           <SettingsCard
             icon={<Members />}
             title="Añadir Miembros"
             subtitle="Añade tus miembros del equipo aquí"
-            onClick={openStaffForm}
-          />
-        </Col>
-
-        <Col md={6}>
-          <SettingsCard
-            icon={<Members />}
-            title="Añadir Roles y Perfiles"
-            subtitle="Añade Roles y Perfiles aquí"
             onClick={openStaffForm}
           />
         </Col>

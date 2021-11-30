@@ -91,24 +91,24 @@ const sidebarMenus = [
 ];
 
 const sidebarMenusRoot = [
-  {
-    name: 'Dashboard',
-    path: DASHBOARD,
-    exact: true,
-    icon: <DashboardIcon />,
-  },
+  // {
+  //   name: 'Dashboard',
+  //   path: DASHBOARD,
+  //   exact: true,
+  //   icon: <DashboardIcon />,
+  // },
   {
     name: 'Suscripciones',
     path: SUBSCRIPTIONS,
     exact: false,
     icon: <CustomerIcon />,
   },
-  {
-    name: 'Configuración',
-    path: SETTINGS,
-    exact: false,
-    icon: <SettingIcon />,
-  },
+  // {
+  //   name: 'Configuración',
+  //   path: SETTINGS,
+  //   exact: false,
+  //   icon: <SettingIcon />,
+  // },
   {
     name: 'Soporte',
     path: SITE_HELP,

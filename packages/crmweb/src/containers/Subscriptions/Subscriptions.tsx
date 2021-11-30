@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled, withStyle } from 'baseui'; 
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox';
 import { CheckMark } from 'assets/icons/CheckMark'
@@ -6,6 +6,7 @@ import {  useSubscription } from '@apollo/client';
 import { Wrapper,Header, Heading } from 'components/Wrapper.style';
 import SubscriptionButton from 'components/SubscriptionCard/SubscriptionButton';
 import NoResult from 'components/NoResult/NoResult';
+import { DASHBOARD, SUBSCRIPTIONS } from '../../settings/constants';
 import Cookies  from 'universal-cookie';
 import { GET_SUBSCRIPTIONS } from 'utils/graphql/query/subscription.query';
 
@@ -14,7 +15,9 @@ import {
   StyledTable,
   StyledHeadCell,
   StyledBodyCell,
-} from '../Customers/Customers.style'; 
+} from '../Customers/Customers.style';  
+import { useHistory, useLocation } from 'react-router';
+import { AuthContext } from 'context/auth';
 
 export const SubscriptionsRow = styled('div', ({ $theme }) => ({
   display: 'flex',
@@ -89,18 +92,41 @@ const ImageRoot = styled('img', () => ({
 export default function Suscriptions() {
   const cookie = new Cookies() 
   const clientid = cookie.get('suscriptor').clientid
-
- 
-  
-  // lista de Subscriptionos totales x clientid
+  let location = useLocation()
+  let history = useHistory();
+  const [usuario, SetUsuario] = useState('matias.aravena.a@gmail.com');
+	const [password, SetPassword] = useState('1234');
+	let { dashboard } = (location.state as any) || { dashboard: { pathname: DASHBOARD } };
   const { data  } = useSubscription(GET_SUBSCRIPTIONS);
- 
+  const { authenticate } = useContext(AuthContext);
  
 
     useEffect(()=> {
       if(data)console.log('data',data) 
     },[clientid, data])
  
+
+    const auth = () => {
+	 
+      authenticate({ usuario, password }, async () => { 
+            
+        
+            history.replace(dashboard);
+        
+      });
+       
+    }
+  
+
+	const handleMoreInfo = async () => {
+		 
+	  
+    alert('Prontamente disponible')
+    // auth()
+		
+
+	}
+
   
   function Detail(){
   return (
@@ -114,8 +140,9 @@ export default function Suscriptions() {
         </Header>
         <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)'  }}>
             <TableWrapper>
-              <StyledTable $gridTemplateColumns="minmax(150px, 50px) minmax(120px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(150px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px)  minmax(220px, 50px) minmax(220px, 50px)  minmax(220px, 50px)  minmax(220px, 50px)  minmax(220px, 50px) minmax(300px, 70px) minmax(300px, 70px) minmax(300px , 50px) minmax(300px, 50px)  minmax(300px, 50px)   minmax(300px, 50px)   minmax(300px, 50px) minmax(150px, max-content)">
+              <StyledTable $gridTemplateColumns="minmax(150px, 50px) minmax(150px, 50px) minmax(120px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(120px, 50px) minmax(150px, 50px) minmax(150px, 50px)  minmax(200px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px) minmax(220px, 50px)  minmax(220px, 50px) minmax(220px, 50px)  minmax(220px, 50px)  minmax(220px, 50px)  minmax(220px, 50px) minmax(300px, 70px) minmax(300px, 70px) minmax(300px , 50px) minmax(300px, 50px)  minmax(300px, 50px)   minmax(300px, 50px)   minmax(300px, 50px) minmax(150px, max-content)">
                 <StyledHeadCell>Acción</StyledHeadCell>
+                <StyledHeadCell>CRM</StyledHeadCell>
                 <StyledHeadCell>Logo</StyledHeadCell>
                 <StyledHeadCell>Image Body</StyledHeadCell>
                 <StyledHeadCell>ClientID</StyledHeadCell>
@@ -123,9 +150,11 @@ export default function Suscriptions() {
                 <StyledHeadCell>Suscriptor</StyledHeadCell>
                 <StyledHeadCell>Teléfono</StyledHeadCell>
                 <StyledHeadCell>Correo</StyledHeadCell>
+                <StyledHeadCell>Password</StyledHeadCell>
                 <StyledHeadCell>Fecha</StyledHeadCell>
                 <StyledHeadCell>Vencimiento</StyledHeadCell>
-                <StyledHeadCell>Estado</StyledHeadCell>
+                <StyledHeadCell>Estado Cuenta</StyledHeadCell>
+                <StyledHeadCell>Estado Web Shop</StyledHeadCell>
                 <StyledHeadCell>Categorías Tienda</StyledHeadCell>  
                 <StyledHeadCell>Productos Tienda</StyledHeadCell>                
                 <StyledHeadCell>Pedidos Tienda</StyledHeadCell>                
@@ -148,6 +177,10 @@ export default function Suscriptions() {
                                          data={item}
                             />  }
                         </StyledBodyCell>  
+                        <StyledBodyCell>
+                             { <button onClick={handleMoreInfo} className="btn-login">Ingresar</button>  }
+                        </StyledBodyCell>  
+
                            <StyledBodyCell>
                             <ImageWrapper>
                               <ImageRoot src={item.shop_image_logo !== null &&  item.shop_image_logo}   />
@@ -166,10 +199,12 @@ export default function Suscriptions() {
                           </StyledBodyCell>
                             <StyledBodyCell>{item.nombre}</StyledBodyCell>
                             <StyledBodyCell>{item.telefono}</StyledBodyCell>
-                            <StyledBodyCell>{item.correo}</StyledBodyCell>
+                            <StyledBodyCell>{item.usuario}</StyledBodyCell>
+                            <StyledBodyCell>{item.clave}</StyledBodyCell>
                            <StyledBodyCell>{item.fecha_suscripcion}</StyledBodyCell>
                           <StyledBodyCell>{item.fecha_vencimiento}</StyledBodyCell>
                           <StyledBodyCell>{item.estado}</StyledBodyCell>
+                          <StyledBodyCell>{item.status_shop}</StyledBodyCell>
                           <StyledBodyCell>{item.categorias_aggregate.aggregate.count}</StyledBodyCell>
                           <StyledBodyCell>{item.productos_aggregate.aggregate.count}</StyledBodyCell>
                           <StyledBodyCell>{item.pedidos_aggregate.aggregate.count}</StyledBodyCell>

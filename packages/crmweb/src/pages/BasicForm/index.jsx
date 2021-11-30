@@ -11,7 +11,7 @@ import Cookies  from 'universal-cookie';
 import { useQuery } from '@apollo/client';
 import { CREATE_SUBSCRIPCION } from 'utils/graphql/mutation/subscription';
 import { CREATE_NOTIFY } from 'utils/graphql/mutation/notification';
-import { GET_SUBSCRIPCION } from 'utils/graphql/query/subscription.query';
+import { GET_SUBSCRIPCION_MAIL } from 'utils/graphql/query/subscription.query';
 import { useMutation } from '@apollo/client';
 
 export const BasicForm = () => {
@@ -30,7 +30,7 @@ export const BasicForm = () => {
 
 
 
-  const { data:data1 } = useQuery(GET_SUBSCRIPCION,{
+  const { data:data1 } = useQuery(GET_SUBSCRIPCION_MAIL,{
     variables: { 
         email:  (cookie.get('pagina0') && cookie.get('pagina0').email)?cookie.get('pagina0').email:''
         }

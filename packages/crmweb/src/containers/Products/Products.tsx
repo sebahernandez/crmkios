@@ -11,6 +11,9 @@ import NoResult from 'components/NoResult/NoResult';
 import { CURRENCY } from 'settings/constants'; 
 import Placeholder from 'components/Placeholder/Placeholder'; 
 import Cookies  from 'universal-cookie';
+import { GET_CATEGORIAS, GET_PRODUCTS_X_CATEGORIA } from 'utils/graphql/query/categories.query';
+
+
 
 import {
   TableWrapper,
@@ -66,50 +69,6 @@ export const LoaderItem = styled('div', () => ({
   padding: '0 15px',
   marginBottom: '30px',
 }));
-
-
-
-
-
-const GET_CATEGORIAS = gql`
- subscription  c1($clientid: String!) {
-    categorias (where: {clientid: {_eq: $clientid}}) {
-      id
-      name 
-      value
-    }
-  }  
-`;
-
-// CASO SIN FILTRO
-
- 
-// clientid: {_eq: $clientid}}}, order_by: {precio_venta: $sort}) {
-const GET_PRODUCTS_X_CATEGORIA = gql`
-subscription s1($clientid: String!, $idcategoria: Int!) {
-  producto(where: {clientid: {_eq: $clientid}, _and: {categorias: {id: {_eq: $idcategoria}}}}) {
-    id
-    clientid
-    nombre
-    descripcion
-    sku
-    precio
-    cantidad
-    unidad 
-    gallery
-    categoria
-    categorias {
-      id
-      name
-      value
-    }
-    descuento
-    precio_venta
-    fecha_creacion
-  }
-}
-`;
-
 
 
 const ImageWrapper = styled('div', ({ $theme }) => ({

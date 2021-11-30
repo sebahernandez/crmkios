@@ -26,3 +26,29 @@ export const GET_CATEGORIAS = gql`
     }
   }  
 `;
+
+
+export const GET_PRODUCTS_X_CATEGORIA = gql`
+subscription s1($clientid: String!, $idcategoria: Int!) {
+  producto(where: {clientid: {_eq: $clientid}, _and: {categorias: {id: {_eq: $idcategoria}}}}) {
+    id
+    clientid
+    nombre
+    descripcion
+    sku
+    precio
+    cantidad
+    unidad 
+    gallery
+    categoria
+    categorias {
+      id
+      name
+      value
+    }
+    descuento
+    precio_venta
+    fecha_creacion
+  }
+}
+`;

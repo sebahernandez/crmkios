@@ -37,10 +37,10 @@ export const CREATE_SUBSCRIPCION = gql`
 // los suscriptores, como url shop, autorizaciones
 // y muchas cosas mas..
 export const UPDATE_SUBSCRIPTION = gql`
-mutation update_suscripciones($clientid: String!,$nombre: String!, $authorized: Boolean!, $url: String!, $status: String!, 
+mutation update_suscripciones($clientid: String!,$nombre: String!, $authorized: Boolean!, $url: String!, $status: String!, $status_offline: String! 
   $shop_image_logo:String!, $shop_image_body:String!,$facebook: String!, $instagram: String!, $titulo: String!,$descripcion: String!, $tags: String!,$canonical: String!,$telefono: String!, $correo: String!) {
   update_suscripciones(where: {clientid: {_eq: $clientid}}, _set: { telefono: $telefono, correo: $correo, facebook: $facebook, instagram: $instagram, 
-    titulo: $titulo,descripcion: $descripcion, tags: $tags,canonical: $canonical,nombre: $nombre, shop_image_logo: $shop_image_logo, shop_image_body: $shop_image_body,is_negocio_web: $authorized, negocio_web: $url, estado: $status}) {
+    titulo: $titulo,descripcion: $descripcion, tags: $tags,canonical: $canonical,nombre: $nombre, shop_image_logo: $shop_image_logo, shop_image_body: $shop_image_body,is_negocio_web: $authorized, negocio_web: $url, estado: $status, status_shop: $status_offline}) {
     affected_rows
   }
 }

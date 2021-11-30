@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { withStyle, createThemedUseStyletron } from 'baseui';
+import { withStyle } from 'baseui';
 import dayjs from 'dayjs';
 import { Grid, Row as Rows, Col as Column } from 'components/FlexBox/FlexBox'; 
 import Input from 'components/Input/Input'; 
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Wrapper, Header, Heading } from 'components/Wrapper.style'; 
 import Cookies  from 'universal-cookie';
+import { GET_ORDERS } from 'utils/graphql/query/orders.query';
 
 import {
   TableWrapper,
@@ -15,22 +16,6 @@ import {
 } from './Orders.style';
 import NoResult from 'components/NoResult/NoResult';
 
-const GET_ORDERS = gql`
-  query getOrders($clientid: String!,$searchText: String!) {
-    pedido (where: {clientid: {_eq: $clientid}, delivery_address: {_like: $searchText}}, order_by: {creation_date: desc}) {
-      id
-      cliente
-      creation_date
-      delivery_address
-      total
-      metodo_pago
-      contacto
-      estado
-      status
-      order
-    }
-  }
-`;
 
 const Col = withStyle(Column, () => ({
   '@media only screen and (max-width: 767px)': {

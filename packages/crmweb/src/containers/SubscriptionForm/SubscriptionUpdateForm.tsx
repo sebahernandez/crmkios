@@ -26,6 +26,14 @@ type Props = any;
 
 const ModifySubscription: React.FC<Props> = () => {
 
+
+  const options_offline = [
+    { value: 'active', name: 'Activa' },
+    { value: 'maintenance', name: 'En Mantención' },
+    { value: 'turn-off', name: 'Caida' },
+  ];
+   
+
   let options = [
     {"name": "Activa","value": "Activa"},
     {"name": "Pausada","value": "Pausada"},
@@ -49,6 +57,7 @@ const ModifySubscription: React.FC<Props> = () => {
   const [shop_image_logo,setShop_image_logo] = useState(data1.shop_image_logo); 
   const [shop_image_body,setShop_image_body] = useState(data1.shop_image_body); 
   const [estado, setEstado] = useState([{ value: data1.estado }]); 
+  const [estadoOffline, setEstadoOffline] = useState([{ value: data1.status_shop }]); 
   const [authorized, setAuthorized] = useState([{ value: data1.is_negocio_web }]); 
   const [isLoading, setIsLoading] = useState(false);  
   const [isLoading2, setIsLoading2] = useState(false); 
@@ -68,6 +77,7 @@ const ModifySubscription: React.FC<Props> = () => {
     register({ name: 'facebook' }); 
     register({ name: 'instagram' }); 
     register({ name: 'estado' }); 
+    register({ name: 'status_shop' }); 
     register({ name: 'authorized' }); 
     register({ name: 'negocio_web' }); 
     register({ name: 'is_negocio_web' }); 
@@ -82,6 +92,17 @@ const ModifySubscription: React.FC<Props> = () => {
     {
       setValue('estado', value[0].id);
       setEstado(value);
+    }  
+   
+  };  
+
+
+
+  const handleMultiChangeOffline = ({ value }) => {
+    if(value && value.length > 0)
+    {
+      setValue('status_shop', value[0].id);
+      setEstadoOffline(value);
     }  
    
   };  
@@ -143,6 +164,7 @@ const ModifySubscription: React.FC<Props> = () => {
         authorized: authorized[0].value,
         url: data.negocio_web,
         status: estado[0].value,
+        status_offline: estadoOffline[0].value,
         shop_image_logo: shop_image_logo,
         shop_image_body: shop_image_body,
         facebook: data.facebook,        
@@ -155,14 +177,13 @@ const ModifySubscription: React.FC<Props> = () => {
         correo: data.correo,
       };    
       console.log(suscripcion, 'actualizando Suscripcion');
-       // $clientid: String!, $authorized: Boolean!, $url: String!, $status: String!, 
-     // $shop_image_logo:String!, $shop_image_body:String!,$facebook: String!, $instagram: String!, $telefono: String!, $correo: String!
       update_suscripcion({
         variables: {clientid: suscripcion.clientid,
                     nombre: suscripcion.nombre,
                     authorized: suscripcion.authorized,         
                     url: suscripcion.url,
                     status: suscripcion.status,
+                    status_offline: suscripcion.status_offline,
                     shop_image_logo: suscripcion.shop_image_logo,
                     shop_image_body: suscripcion.shop_image_body,
                     facebook:  suscripcion.facebook,
@@ -317,7 +338,7 @@ const ModifySubscription: React.FC<Props> = () => {
                   />
                 </FormFields>
                 <FormFields>
-                  <FormLabel>Estado</FormLabel>
+                  <FormLabel>Estado Cuenta</FormLabel>
                   <Select
                     options={options}
                     labelKey="name"
@@ -362,6 +383,46 @@ const ModifySubscription: React.FC<Props> = () => {
                     name="negocio_web"
                   />
                 </FormFields>
+                <FormFields>
+                  <FormLabel>Estado Web Shop</FormLabel>
+                  <Select
+                    options={options_offline}
+                    labelKey="name"
+                    valueKey="value"
+                    placeholder="seleccione"
+                    value={estadoOffline}
+                    onChange={handleMultiChangeOffline} 
+                    overrides={{
+                      Placeholder: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold11,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      DropdownListItem: {
+                        style: ({ $theme }) => {
+                          return {
+                            ...$theme.typography.fontBold11,
+                            color: $theme.colors.textNormal,
+                          };
+                        },
+                      },
+                      Popover: {
+                        props: {
+                          overrides: {
+                            Body: {
+                              style: { zIndex: 5 },
+                            },
+                          },
+                        },
+                      },
+                    }}
+                    // multi
+                  />
+                </FormFields> 
+
                  
                 <FormFields>
                   <FormLabel>Acceso al Command Order</FormLabel>

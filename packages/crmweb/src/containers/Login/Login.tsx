@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Wrapper, FormWrapper, LogoImage, LogoWrapper } from './Login.style';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router';
 import Logoimage from 'assets/image/tuecommerce.png';
 import '../../settings/constants';
@@ -9,47 +9,8 @@ import { AuthContext } from 'context/auth';
 import { FormFields, FormTitle } from 'components/FormFields/FormFields';
 import { Alert } from 'react-bootstrap';
 import Cookies  from 'universal-cookie';
-/**
- * Develop by Alejandro Sandoval 
- * Alias Joker
- */
-/* 
-const GET_SUSCRIPTOR = gql`
-	query GETSUSCRIPTOR($usuario: String!,$password: String!) {
-		suscripciones(where: {usuario: {_eq: $usuario}, clave: {_eq: $password},fecha_vencimiento: {_gte: "now()"}}) {
-		usuario
-		clave
-		clientid
-		imageURL
-	}
-}
+import { GET_SUSCRIPTOR } from 'utils/graphql/query/subscription.query';
 
-`;
- */
-const GET_SUSCRIPTOR = gql`
-query GETSUSCRIPTOR($usuario: String!,$password: String!) {
-	suscripciones(where: {usuario: {_eq: $usuario}, clave: {_eq: $password},fecha_vencimiento: {_gte: "now()"}}) {
-	clientid
-	usuario
-	clave
-	telefono
-	correo
-	is_negocio_web
-	is_root
-	shop_image_body
-	shop_image_logo
-	rubro_negocio
-	descripcion
-	fecha_suscripcion
-	fecha_vencimiento
-	negocio_web
-	nombre
-	estado 
-	direccion_tienda
-	id
-}
-}
-`;
 
 export default function Login() {
 	const cookie = new Cookies();
@@ -61,8 +22,8 @@ export default function Login() {
 	const { authenticate } = useContext(AuthContext);
 	let history = useHistory();
 	let location = useLocation();
-	let { from } = (location.state as any) || { from: { pathname: DASHBOARD } };
-	let { from2 } = (location.state as any) || { from2: { pathname: SUBSCRIPTIONS } };
+	let { dashboard } = (location.state as any) || { dashboard: { pathname: DASHBOARD } };
+	let { root } = (location.state as any) || { root: { pathname: SUBSCRIPTIONS } };
  
 	const togglePassword = () => {
 		// When the handler is invoked
@@ -85,7 +46,7 @@ export default function Login() {
 				break;
 			case 'password':
 				SetPassword(e.target.value);
-				break;
+				break; 
 		}
 	}
 
@@ -102,24 +63,28 @@ export default function Login() {
 
 	const auth = () => {
 	 
-		authenticate({ usuario, password }, () => { 
-			if(cookie.get('suscriptor').is_root)
+		authenticate({ usuario, password }, async () => { 
+			if(cookie.get('suscriptor').is_root === false)
 			{
-				history.replace(from2);
+			 
+				history.replace(dashboard);
 			} else {
-				history.replace(from);
+				 
+				history.replace(root);
 			} 
+			SetIsAuth(false)
 		});
 		 
 	}
 
-	const handleMoreInfo = () => {
+	const handleMoreInfo = async () => {
 		 
 	 
 		if(data2  && data2.suscripciones && data2.suscripciones.length > 0) {
 			cookie.set('suscriptor',data2.suscripciones[0])
 			cookie.set('negocio_web',data2.suscripciones[0].negocio_web)
-			auth()
+			await auth()
+			SetIsAuth(true)
 		}	else {
 			SetIsAuth(false)
 			
