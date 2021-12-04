@@ -10,6 +10,9 @@ import { FormFields, FormTitle } from 'components/FormFields/FormFields';
 import { Alert } from 'react-bootstrap';
 import Cookies  from 'universal-cookie';
 import { GET_SUSCRIPTOR } from 'utils/graphql/query/subscription.query';
+import showPwdImg from 'assets/image/show-password.svg';
+import hidePwdImg from 'assets/image/hide-password.svg';
+
 
 
 export default function Login() {
@@ -25,6 +28,8 @@ export default function Login() {
 	let { dashboard } = (location.state as any) || { dashboard: { pathname: DASHBOARD } };
 	let { root } = (location.state as any) || { root: { pathname: SUBSCRIPTIONS } };
  
+	
+
 	const togglePassword = () => {
 		// When the handler is invoked
 		// inverse the boolean state of passwordShown
@@ -49,6 +54,8 @@ export default function Login() {
 				break; 
 		}
 	}
+
+	
 
 	useEffect(()=> {
 		if(data2  && data2.suscripciones && data2.suscripciones.length > 0) {
@@ -106,6 +113,7 @@ const loadMessage = () => {
 
 }
 
+
 	return (
 	  <>
 			<Wrapper>
@@ -129,8 +137,12 @@ const loadMessage = () => {
 
 						<div className="form-group">
 							<label>Contraseña:</label>
-							 <input type={passwordShown ? "text" : "password"} name="password" className="form-control" onChange={handleInput} placeholder="Ingrese su clave"  />
-      						<button onClick={togglePassword}>Mostrar</button>
+							 <input type={passwordShown ? "text" : "password"} name="password" className="form-control showPass" onChange={handleInput} placeholder="Ingrese su clave" value={password} />
+							 <img
+								title={passwordShown ? "Hide password" : "Show password"}
+								src={passwordShown ? hidePwdImg : showPwdImg}
+								onClick={() => setPasswordShown(prevState => !prevState)}
+       						 />
 						</div>
 
 						<div className="form-group">
