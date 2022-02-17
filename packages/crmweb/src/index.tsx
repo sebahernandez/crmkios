@@ -16,14 +16,14 @@ const createApolloClient = () => {
 
   return new ApolloClient({
       link: new WebSocketLink({ 
-      uri: 'wss://cuddly-hog-22.hasura.app/v1/graphql',
+      uri: 'wss://equal-grub-39.hasura.app/v1/graphql',
       options: {
         reconnect: true,
         timeout: 10000,
         connectionParams: {
           headers: {
             'content-type' : 'application/json',
-            'x-hasura-admin-secret':  'kxUJ2vmT0kihpyf9x7MDVAj1OoURuQzMXhN9O8JuLvMhVk05aSIKL4IdQZ4WXNDN',
+            'x-hasura-admin-secret':  'bKC2ddnyj5W3Z7AeZa1oY8DjThmTtG82c7MHqQG9ZupgkpeNIwYutcmVdAr2ztxu',
             Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik9FWTJSVGM1UlVOR05qSXhSRUV5TUR`
           }
         }

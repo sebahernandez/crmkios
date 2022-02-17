@@ -27,8 +27,7 @@ export default function Login() {
 	let location = useLocation();
 	let { dashboard } = (location.state as any) || { dashboard: { pathname: DASHBOARD } };
 	let { root } = (location.state as any) || { root: { pathname: SUBSCRIPTIONS } };
- 
-	
+
 
 	const togglePassword = () => {
 		// When the handler is invoked
@@ -105,7 +104,7 @@ const loadMessage = () => {
 	 
  	if(	usuario && password ) { 
 		return <Alert key={1} variant={'danger'} transition={true}>
-    			Suscriptor no identificado o problemas para validar sus datos, intente nuevamente o contacte al administrador!!!
+    			Usuario o contraseña no valido, vuelva a intentar o contácte al administrador
   			</Alert>
 	 }	else {
 		return
